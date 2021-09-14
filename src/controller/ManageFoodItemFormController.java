@@ -207,7 +207,6 @@ public class ManageFoodItemFormController {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, " Saved successfully.....", ButtonType.CLOSE);
                 alert.initOwner(context.getScene().getWindow());
                 alert.show();
-                System.out.println("#001");
                 mealClearAll(null);
             }else{
                 Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);

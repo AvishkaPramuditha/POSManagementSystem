@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="692.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageDiscountFormController">
+   <children>
+      <Text layoutX="17.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Discount ID :">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Text>
+      <ComboBox layoutX="624.0" layoutY="45.0" prefHeight="41.0" prefWidth="242.0" style="-fx-border-width: 3; -fx-border-color: #2c3e50;" />
+      <TextField layoutX="188.0" layoutY="42.0" prefHeight="39.0" prefWidth="242.0" promptText="itemName-StartDate-ID" style="-fx-background-radius: 8; -fx-border-color: #2c3e50; -fx-border-radius: 8; -fx-border-width: 3;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Text layoutX="477.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Food Item :">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="17.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Discount Price :">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="17.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Close Date       :">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="480.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date   :">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Text>
+      <TextField layoutX="187.0" layoutY="117.0" prefHeight="39.0" prefWidth="242.0" style="-fx-background-radius: 8; -fx-border-color: #2c3e50; -fx-border-radius: 8; -fx-border-width: 3;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="187.0" layoutY="187.0" prefHeight="39.0" prefWidth="242.0" promptText="YYYY/MM/DD" style="-fx-background-radius: 8; -fx-border-color: #2c3e50; -fx-border-radius: 8; -fx-border-width: 3;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="624.0" layoutY="117.0" prefHeight="39.0" prefWidth="242.0" promptText="YYYY/MM/DD" style="-fx-background-radius: 8; -fx-border-color: #2c3e50; -fx-border-radius: 8; -fx-border-width: 3;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <JFXButton buttonType="RAISED" layoutX="755.0" layoutY="601.0" prefHeight="45.0" prefWidth="111.0" style="-fx-background-color: #16a085; -fx-background-radius: 8;" text="Add" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="566.0" layoutY="601.0" prefHeight="45.0" prefWidth="111.0" style="-fx-background-color: #2980b9; -fx-background-radius: 8;" text="update" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="379.0" layoutY="601.0" prefHeight="45.0" prefWidth="102.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <TableView layoutX="19.0" layoutY="264.0" prefHeight="294.0" prefWidth="896.0" style="-fx-background-color: #ecf0f1; -fx-border-color: #2c3e50; -fx-border-width: 3;">
+        <columns>
+          <TableColumn prefWidth="109.0" style="-fx-border-color: #487eb0; -fx-border-width: 3;" text="Discount ID" />
+          <TableColumn prefWidth="292.0" style="-fx-border-color: #487eb0; -fx-border-width: 3;" text="Food Item" />
+            <TableColumn prefWidth="150.0" style="-fx-border-color: #487eb0; -fx-border-width: 3;" text="Discount Price" />
+            <TableColumn prefWidth="192.0" style="-fx-border-color: #487eb0; -fx-border-width: 3;" text="Start Date" />
+            <TableColumn prefWidth="145.0" style="-fx-border-color: #487eb0; -fx-border-width: 3;" text="Close Date" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="context" prefHeight="563.0" prefWidth="1032.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageFoodItemFormController">
+   <children>
+      <TabPane layoutX="-1.0" prefHeight="563.0" prefWidth="1032.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="50.0" tabMinWidth="242.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab onSelectionChanged="#clearPageMeal" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Meal">
+               <content>
+                  <Pane prefHeight="480.0" prefWidth="1033.0">
+                     <children>
+                        <JFXButton layoutX="104.0" layoutY="246.0" onAction="#openAndSelectMealImage" style="-fx-background-color: #778ca3; -fx-background-radius: 8;" text="Upload">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <Text layoutX="329.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Meal ID :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <ImageView fx:id="mealImageView" fitHeight="190.0" fitWidth="225.0" layoutX="41.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+                           <viewport>
+                              <Rectangle2D height="190.0" width="220.0" />
+                           </viewport>
+                        </ImageView>
+                        <TextField fx:id="txtMealID" layoutX="424.0" layoutY="140.0" prefHeight="38.0" prefWidth="180.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="329.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select The Meal">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <ComboBox fx:id="mealCombo" layoutX="329.0" layoutY="75.0" prefHeight="38.0" prefWidth="662.0" />
+                        <Text layoutX="626.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtMealDescription" layoutX="753.0" layoutY="140.0" prefHeight="44.0" prefWidth="240.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="329.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Portion :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtMealPortion" layoutX="424.0" layoutY="209.0" prefHeight="38.0" prefWidth="180.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="330.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unit Price :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtMealUnitPrice" layoutX="443.0" layoutY="276.0" prefHeight="44.0" prefWidth="164.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="626.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <JFXButton layoutX="585.0" layoutY="385.0" onAction="#addMeal" prefHeight="44.0" prefWidth="81.0" style="-fx-background-color: #16a085; -fx-background-radius: 8;" text="ADD">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="724.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="880.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="378.0" layoutY="388.0" onAction="#mealClearAll" prefHeight="31.0" prefWidth="148.0" style="-fx-background-color: #f39c12; -fx-background-radius: 8;" text="Clear Selection">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXToggleButton fx:id="toggleMealAvailable" contentDisplay="RIGHT" layoutX="617.0" layoutY="202.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Available Today :" />
+                     </children>
+                  </Pane>
+               </content>
+          </Tab>
+          <Tab onSelectionChanged="#clearPagePizza" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Pizza">
+               <content>
+                  <Pane prefHeight="480.0" prefWidth="1033.0">
+                     <children>
+                        <JFXButton layoutX="104.0" layoutY="246.0" onAction="#openAndSelectPizzaImage" style="-fx-background-color: #778ca3; -fx-background-radius: 8;" text="Upload">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <Text layoutX="329.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pizza ID :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <ImageView fx:id="pizzaImageView" fitHeight="190.0" fitWidth="225.0" layoutX="41.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" />
+                        <TextField fx:id="txtPizzaID" layoutX="424.0" layoutY="140.0" prefHeight="38.0" prefWidth="180.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="329.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select The Pizza">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <ComboBox fx:id="comboPizza" layoutX="329.0" layoutY="75.0" prefHeight="38.0" prefWidth="662.0" />
+                        <Text layoutX="626.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtPizzaDescription" layoutX="753.0" layoutY="140.0" prefHeight="44.0" prefWidth="240.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="329.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Size        :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtPizzaSize" layoutX="424.0" layoutY="209.0" prefHeight="38.0" prefWidth="180.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="330.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unit Price :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtPizzaUnitPrice" layoutX="443.0" layoutY="276.0" prefHeight="44.0" prefWidth="164.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="626.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantity On Hand :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtPizzaQuantityOnHand" layoutX="813.0" layoutY="209.0" prefHeight="38.0" prefWidth="180.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <JFXButton layoutX="585.0" layoutY="385.0" onAction="#addPizza" prefHeight="44.0" prefWidth="81.0" style="-fx-background-color: #16a085; -fx-background-radius: 8;" text="ADD">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="724.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="880.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="378.0" layoutY="388.0" onAction="#pizzaClearAll" prefHeight="31.0" prefWidth="148.0" style="-fx-background-color: #f39c12; -fx-background-radius: 8;" text="Clear Selection">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </Pane>
+               </content>
+          </Tab>
+            <Tab onSelectionChanged="#clearPageSub" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Sub_Burgers&amp;Others">
+               <content>
+                  <Pane prefHeight="480.0" prefWidth="1033.0">
+                     <children>
+                        <JFXButton layoutX="104.0" layoutY="246.0" onAction="#openAndSelectSubImage" style="-fx-background-color: #778ca3; -fx-background-radius: 8;" text="Upload">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <Text layoutX="329.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sanwich ID  :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <ImageView fx:id="subImageView" fitHeight="190.0" fitWidth="225.0" layoutX="41.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" />
+                        <TextField fx:id="txtSandwichID" layoutX="457.0" layoutY="140.0" prefHeight="38.0" prefWidth="180.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="329.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select The Food">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <ComboBox fx:id="combSub" layoutX="329.0" layoutY="75.0" prefHeight="38.0" prefWidth="662.0" />
+                        <Text layoutX="330.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtSandwichDescription" layoutX="457.0" layoutY="205.0" prefHeight="44.0" prefWidth="240.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="330.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unit Price    :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtSandwichUnitPrice" layoutX="457.0" layoutY="274.0" prefHeight="44.0" prefWidth="164.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="654.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantity On Hand :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtSandwichQuantityOnHand" layoutX="843.0" layoutY="140.0" prefHeight="44.0" prefWidth="149.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <JFXButton layoutX="585.0" layoutY="385.0" onAction="#addSub" prefHeight="44.0" prefWidth="81.0" style="-fx-background-color: #16a085; -fx-background-radius: 8;" text="ADD">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="724.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="880.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="378.0" layoutY="388.0" onAction="#subClearAll" prefHeight="31.0" prefWidth="148.0" style="-fx-background-color: #f39c12; -fx-background-radius: 8;" text="Clear Selecton">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </Pane>
+               </content>
+            </Tab>
+            <Tab onSelectionChanged="#clearPageDrink" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Drinks">
+               <content>
+                  <Pane prefHeight="592.0" prefWidth="1033.0">
+                     <children>
+                        <JFXButton layoutX="104.0" layoutY="246.0" onAction="#openAndSelectDrinkImage" style="-fx-background-color: #778ca3; -fx-background-radius: 8;" text="Upload">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <ImageView fx:id="drinkImageView" fitHeight="190.0" fitWidth="225.0" layoutX="41.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" />
+                        <Text layoutX="329.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Beverage ID :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtBeverageID" layoutX="462.0" layoutY="139.0" prefHeight="38.0" prefWidth="180.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="329.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select The Drink">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <ComboBox fx:id="comboDrink" layoutX="329.0" layoutY="75.0" prefHeight="38.0" prefWidth="662.0" />
+                        <Text layoutX="329.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description  :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtDrinkDescription" layoutX="462.0" layoutY="206.0" prefHeight="44.0" prefWidth="240.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="330.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unit Price     :">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtDrinkUnitPrice" layoutX="462.0" layoutY="275.0" prefHeight="44.0" prefWidth="164.0" style="-fx-border-color: #16a085; -fx-border-width: 3;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <JFXButton layoutX="585.0" layoutY="385.0" onAction="#addDrink" prefHeight="44.0" prefWidth="81.0" style="-fx-background-color: #16a085; -fx-background-radius: 8;" text="ADD">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="724.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="880.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="378.0" layoutY="388.0" onAction="#drinkClearAll" prefHeight="31.0" prefWidth="148.0" style="-fx-background-color: #f39c12; -fx-background-radius: 8;" text="Clear Selecton">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXToggleButton fx:id="toggleDrinkAvailable" contentDisplay="RIGHT" layoutX="713.0" layoutY="127.0" style="-fx-font-size: 20; -fx-font-weight: bold;" text="Available Today :" />
+                     </children>
+                  </Pane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

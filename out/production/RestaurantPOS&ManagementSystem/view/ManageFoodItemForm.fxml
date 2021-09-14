@@ -46,7 +46,7 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <ComboBox fx:id="mealCombo" layoutX="329.0" layoutY="75.0" prefHeight="38.0" prefWidth="662.0" />
+                        <ComboBox fx:id="mealCombo" layoutX="329.0" layoutY="75.0" onShowing="#refresh" prefHeight="38.0" prefWidth="662.0" />
                         <Text layoutX="626.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description :">
                            <font>
                               <Font name="System Bold" size="20.0" />
@@ -82,22 +82,22 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <JFXButton layoutX="585.0" layoutY="385.0" onAction="#addMeal" prefHeight="44.0" prefWidth="81.0" style="-fx-background-color: #16a085; -fx-background-radius: 8;" text="ADD">
+                        <JFXButton buttonType="RAISED" layoutX="585.0" layoutY="385.0" onAction="#addMeal" prefHeight="44.0" prefWidth="81.0" style="-fx-background-color: #16a085; -fx-background-radius: 8;" text="ADD">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton layoutX="724.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
+                        <JFXButton buttonType="RAISED" layoutX="724.0" layoutY="385.0" onAction="#updateMeal" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton layoutX="880.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
+                        <JFXButton buttonType="RAISED" layoutX="880.0" layoutY="385.0" onAction="#deleteMeal" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton layoutX="378.0" layoutY="388.0" onAction="#mealClearAll" prefHeight="31.0" prefWidth="148.0" style="-fx-background-color: #f39c12; -fx-background-radius: 8;" text="Clear Selection">
+                        <JFXButton buttonType="RAISED" layoutX="378.0" layoutY="388.0" onAction="#mealClearAll" prefHeight="31.0" prefWidth="148.0" style="-fx-background-color: #f39c12; -fx-background-radius: 8;" text="Clear Selection">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>
@@ -132,7 +132,7 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <ComboBox fx:id="comboPizza" layoutX="329.0" layoutY="75.0" prefHeight="38.0" prefWidth="662.0" />
+                        <ComboBox fx:id="comboPizza" layoutX="329.0" layoutY="75.0" onShowing="#refresh" prefHeight="38.0" prefWidth="662.0" />
                         <Text layoutX="626.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description :">
                            <font>
                               <Font name="System Bold" size="20.0" />
@@ -178,12 +178,12 @@
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton layoutX="724.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
+                        <JFXButton layoutX="724.0" layoutY="385.0" onAction="#updatePizza" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton layoutX="880.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
+                        <JFXButton layoutX="880.0" layoutY="385.0" onAction="#deletePizza" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>
@@ -222,7 +222,7 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <ComboBox fx:id="combSub" layoutX="329.0" layoutY="75.0" prefHeight="38.0" prefWidth="662.0" />
+                        <ComboBox fx:id="combSub" layoutX="329.0" layoutY="75.0" onShowing="#refresh" prefHeight="38.0" prefWidth="662.0" />
                         <Text layoutX="330.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description :">
                            <font>
                               <Font name="System Bold" size="20.0" />
@@ -258,12 +258,12 @@
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton layoutX="724.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
+                        <JFXButton layoutX="724.0" layoutY="385.0" onAction="#updateSub" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton layoutX="880.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
+                        <JFXButton layoutX="880.0" layoutY="385.0" onAction="#deleteSub" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>
@@ -302,7 +302,7 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <ComboBox fx:id="comboDrink" layoutX="329.0" layoutY="75.0" prefHeight="38.0" prefWidth="662.0" />
+                        <ComboBox fx:id="comboDrink" layoutX="329.0" layoutY="75.0" onShowing="#refresh" prefHeight="38.0" prefWidth="662.0" />
                         <Text layoutX="329.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description  :">
                            <font>
                               <Font name="System Bold" size="20.0" />
@@ -328,12 +328,12 @@
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton layoutX="724.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
+                        <JFXButton layoutX="724.0" layoutY="385.0" onAction="#updateDrink" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="UPDATE">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton layoutX="880.0" layoutY="385.0" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
+                        <JFXButton layoutX="880.0" layoutY="385.0" onAction="#deleteDrink" prefHeight="44.0" prefWidth="103.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8;" text="DELETE" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>

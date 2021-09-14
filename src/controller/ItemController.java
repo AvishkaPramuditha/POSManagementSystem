@@ -130,7 +130,7 @@ public class ItemController {
         preparedStatement.setBoolean(5,meal.isAvailable());
         FileInputStream inputStream=new FileInputStream(meal.getMealImage());
         preparedStatement.setBinaryStream(6,(InputStream) inputStream,(int)meal.getMealImage().length());
-        return preparedStatement.executeUpdate()>0 ?true:false;
+        return preparedStatement.executeUpdate()>0;
     }
 
 
@@ -143,7 +143,7 @@ public class ItemController {
         preparedStatement.setInt(5,pizza.getQuantityOnHand());
         FileInputStream inputStream=new FileInputStream(pizza.getPizzaImage());
         preparedStatement.setBinaryStream(6,(InputStream) inputStream,(int)pizza.getPizzaImage().length());
-        return preparedStatement.executeUpdate()>0? true:false;
+        return preparedStatement.executeUpdate()>0;
     }
 
     public boolean addSub(SubBurgersAndOthers sub) throws SQLException, ClassNotFoundException, FileNotFoundException {
@@ -154,7 +154,7 @@ public class ItemController {
         preparedStatement.setInt(4,sub.getQuantityOnHand());
         FileInputStream inputStream=new FileInputStream(sub.getSubImage());
         preparedStatement.setBinaryStream(5,(InputStream) inputStream,(int)sub.getSubImage().length());
-        return preparedStatement.executeUpdate()>0?true:false;
+        return preparedStatement.executeUpdate()>0;
     }
 
     public boolean addDrink(Drink drink) throws SQLException, ClassNotFoundException, FileNotFoundException {
@@ -165,10 +165,73 @@ public class ItemController {
         preparedStatement.setBoolean(4,drink.isAvailable());
         FileInputStream inputStream=new FileInputStream(drink.getDrinkImage());
         preparedStatement.setBinaryStream(5,(InputStream) inputStream,(int)drink.getDrinkImage().length());
-        return preparedStatement.executeUpdate()>0?true:false;
+        return preparedStatement.executeUpdate()>0;
     }
 
 
+    public boolean updateMeal(Meal meal,String mealID) throws SQLException, ClassNotFoundException, FileNotFoundException {
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("UPDATE meal set MealID=?,Description=?,Portion=?,UnitPrice=?,isAvailable=?,Image=? WHERE MealID=?");
+         preparedStatement.setString(1,meal.getMealID());
+         preparedStatement.setString(2,meal.getDescription());
+         preparedStatement.setString(3,meal.getPortion());
+         preparedStatement.setDouble(4,meal.getUnitPrice());
+         preparedStatement.setBoolean(5,meal.isAvailable());
+        FileInputStream inputStream=new FileInputStream(meal.getMealImage());
+        preparedStatement.setBinaryStream(6,(InputStream) inputStream,(int)meal.getMealImage().length());
+         preparedStatement.setString(7,mealID);
+         return preparedStatement.executeUpdate()>0;
+    }
+
+    public boolean updatePizza(Pizza pizza,String pizzaID) throws SQLException, ClassNotFoundException, FileNotFoundException {
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("UPDATE pizza SET PizzaID=?,Description=?,Size=?,UnitPrice=?,QuantityOnHand=?,Image=? WHERE pizzaID=?");
+        preparedStatement.setString(1,pizza.getPizzaID());
+        preparedStatement.setString(2,pizza.getDescription());
+        preparedStatement.setString(3,pizza.getSize());
+        preparedStatement.setDouble(4,pizza.getUnitPrize());
+        preparedStatement.setInt(5,pizza.getQuantityOnHand());
+        FileInputStream inputStream=new FileInputStream(pizza.getPizzaImage());
+        preparedStatement.setBinaryStream(6,(InputStream) inputStream,(int)pizza.getPizzaImage().length());
+        preparedStatement.setString(7,pizzaID);
+        return preparedStatement.executeUpdate()>0;
+    }
+
+    public boolean updateSub(SubBurgersAndOthers sub,String sandwichID) throws SQLException, ClassNotFoundException, FileNotFoundException {
+        PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("UPDATE SubBurgersAndOthers SET SandwichID=?,Description=?,UnitPrice=?,QuantityOnHand=?,Image=? WHERE SandwichID=?");
+        preparedStatement.setString(1,sub.getSandwichID());
+        preparedStatement.setString(2,sub.getDescription());
+        preparedStatement.setDouble(3,sub.getUnitPrice());
+        preparedStatement.setInt(4,sub.getQuantityOnHand());
+        FileInputStream inputStream=new FileInputStream(sub.getSubImage());
+        preparedStatement.setBinaryStream(5,(InputStream) inputStream,(int)sub.getSubImage().length());
+        preparedStatement.setString(6,sandwichID);
+        return preparedStatement.executeUpdate()>0;
+    }
+
+     public boolean updateDrink(Drink drink,String beverageID) throws SQLException, ClassNotFoundException, FileNotFoundException {
+         PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("UPDATE drink SET BeverageID=?,Description=?,UnitPrice=?,isAvailable=?,Image=? WHERE BeverageID=?");
+         preparedStatement.setString(1,drink.getBeverage());
+         preparedStatement.setString(2,drink.getDescription());
+         preparedStatement.setDouble(3,drink.getUnitPrice());
+         preparedStatement.setBoolean(4,drink.isAvailable());
+         FileInputStream inputStream=new FileInputStream(drink.getDrinkImage());
+         preparedStatement.setBinaryStream(5,(InputStream) inputStream,(int)drink.getDrinkImage().length());
+         preparedStatement.setString(6,beverageID);
+         return preparedStatement.executeUpdate()>0;
+     }
+
+     public boolean deleteMeal(String mealID) throws SQLException, ClassNotFoundException {
+       return DbConnection.getInstance().getConnection().prepareStatement("DELETE FROM meal WHERE MealID='"+mealID+"'").executeUpdate()>0;
+     }
+     public boolean deletePizza(String pizzaID) throws SQLException, ClassNotFoundException {
+       return DbConnection.getInstance().getConnection().prepareStatement("DELETE FROM Pizza WHERE PizzaID='"+pizzaID+"'").executeUpdate()>0?true:false;
+     }
+     public boolean deleteSub(String sandwichID) throws SQLException, ClassNotFoundException {
+       return DbConnection.getInstance().getConnection().prepareStatement("DELETE FROM SubBurgersAndOthers WHERE sandwichID='"+sandwichID+"'").executeUpdate()>0?true:false;
+     }
+
+     public boolean deleteDrink(String beverageID) throws SQLException, ClassNotFoundException {
+   return DbConnection.getInstance().getConnection().prepareStatement("DELETE FROM drink Where BeverageID='"+beverageID+"' ").executeUpdate()>0;
+     }
 
 
 }

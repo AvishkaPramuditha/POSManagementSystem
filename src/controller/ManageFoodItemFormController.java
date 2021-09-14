@@ -52,11 +52,8 @@ public class ManageFoodItemFormController {
     private File subImage;
     private File drinkImage;
 
-    public void initialize() throws SQLException, ClassNotFoundException {
-       mealCombo.setItems(new ItemController().getMealID_Description_Portion());
-       comboPizza.setItems(new ItemController().getPizzaID_Description_Portion());
-       combSub.setItems(new ItemController().getSubs_Description());
-       comboDrink.setItems(new ItemController().getDrink_Description());
+    public void initialize(){
+      refresh(null);
        setMealTextFields();
        setPizzaTextFields();
        setSubBurgersTextFields();
@@ -74,6 +71,7 @@ public class ManageFoodItemFormController {
                     toggleMealAvailable.setSelected(meal.isAvailable());
                 if(meal.getMealImage()!=null){
                     Image image=new Image( meal.getMealImage().toURI().toString(),220,190,true,true);
+                    mealImage=meal.getMealImage();
                     mealImageView.setImage(image);
                 }
             }
@@ -93,6 +91,7 @@ public class ManageFoodItemFormController {
                 txtPizzaQuantityOnHand.setText(String.valueOf(pizza.getQuantityOnHand()));
                 if(pizza.getPizzaImage()!=null){
                     Image image=new Image( pizza.getPizzaImage().toURI().toString(),220,190,true,true);
+                    pizzaImage=pizza.getPizzaImage();
                     pizzaImageView.setImage(image);
                 }
             }
@@ -113,6 +112,7 @@ public class ManageFoodItemFormController {
                     txtSandwichQuantityOnHand.setText(String.valueOf(sandwich.getQuantityOnHand()));
                         if(sandwich.getSubImage()!=null){
                             Image image=new Image(sandwich.getSubImage().toURI().toString(),220,190,true,true);
+                            subImage=sandwich.getSubImage();
                             subImageView.setImage(image);
                         }
                     }
@@ -132,6 +132,7 @@ public class ManageFoodItemFormController {
                             toggleDrinkAvailable.setSelected(drink.isAvailable());
                             if(drink.getDrinkImage()!=null){
                                 Image image=new Image( drink.getDrinkImage().toURI().toString(),220,190,true,true);
+                                drinkImage=drink.getDrinkImage();
                                 drinkImageView.setImage(image);
                             }
                         }
@@ -320,5 +321,155 @@ public class ManageFoodItemFormController {
             Image image=new Image(drinkImage.toURI().toString(),220,190,true,true);
             drinkImageView.setImage(image);
         }
+    }
+
+    public void updateMeal(ActionEvent actionEvent) {
+        try {
+            if (new ItemController().updateMeal(new Meal(txtMealID.getText(),txtMealDescription.getText(),txtMealPortion.getText(),Double.valueOf(txtMealUnitPrice.getText()),toggleMealAvailable.isSelected(),mealImage),mealCombo.getSelectionModel().getSelectedItem().getMealID())){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, " Update successfully.....", ButtonType.CLOSE);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+                mealClearAll(null);
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            }
+        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();}
+    }
+
+
+    public void updatePizza(ActionEvent actionEvent) {
+        try {
+            if (new ItemController().updatePizza(new Pizza(txtPizzaID.getText(), txtPizzaDescription.getText(), txtPizzaSize.getText(), Double.valueOf(txtPizzaUnitPrice.getText()), Integer.valueOf(txtPizzaQuantityOnHand.getText()),pizzaImage),comboPizza.getSelectionModel().getSelectedItem().getPizzaID())) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+                pizzaClearAll(null);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            }
+        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
+        }
+    }
+
+    public void updateSub(ActionEvent actionEvent) {
+        try {
+            if (new ItemController().updateSub(new SubBurgersAndOthers(txtSandwichID.getText(), txtSandwichDescription.getText(), Double.valueOf(txtSandwichUnitPrice.getText()),Integer.valueOf(txtSandwichQuantityOnHand.getText()),subImage),combSub.getSelectionModel().getSelectedItem().getSandwichID())) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+                subClearAll(null);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            }
+        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
+        }
+    }
+
+    public void updateDrink(ActionEvent actionEvent) {
+        try {
+            if (new ItemController().updateDrink(new Drink(txtBeverageID.getText(), txtDrinkDescription.getText(), Double.valueOf(txtDrinkUnitPrice.getText()),toggleDrinkAvailable.isSelected(),drinkImage),comboDrink.getSelectionModel().getSelectedItem().getBeverageID())) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+                drinkClearAll(null);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            }
+        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
+        }
+    }
+
+    public void deleteMeal(ActionEvent actionEvent) {
+        try {
+            if (new ItemController().deleteMeal(mealCombo.getSelectionModel().getSelectedItem().getMealID())){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+                mealClearAll(null);
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            }
+        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+
+    }
+
+    public void deleteSub(ActionEvent actionEvent) {
+        try {
+            if (new ItemController().deleteSub(combSub.getSelectionModel().getSelectedItem().getSandwichID())){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+                subClearAll(null);
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            }
+        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+    }
+
+    public void deletePizza(ActionEvent actionEvent) {
+        try {
+            if (new ItemController().deletePizza(comboPizza.getSelectionModel().getSelectedItem().getPizzaID())){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+                pizzaClearAll(null);
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            }
+        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+    }
+
+    public void deleteDrink(ActionEvent actionEvent) {
+        try {
+            if (new ItemController().deleteDrink(comboDrink.getSelectionModel().getSelectedItem().getBeverageID())){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+                drinkClearAll(null);
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            }
+        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+    }
+
+    public void refresh(Event event) {
+        try {
+            mealCombo.setItems(new ItemController().getMealID_Description_Portion());
+            comboPizza.setItems(new ItemController().getPizzaID_Description_Portion());
+            combSub.setItems(new ItemController().getSubs_Description());
+            comboDrink.setItems(new ItemController().getDrink_Description());
+        }catch (SQLException | ClassNotFoundException e){e.printStackTrace();}
+
     }
 }

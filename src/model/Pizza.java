@@ -2,7 +2,7 @@ package model;
 
 import java.io.File;
 
-public class Pizza {
+public class Pizza implements Item {
     private String pizzaID;
     private String description;
     private String size;
@@ -81,5 +81,10 @@ public class Pizza {
 
     public void setPizzaImage(File pizzaImage) {
         this.pizzaImage = pizzaImage;
+    }
+
+    @Override
+    public String getID() {
+        return pizzaID;
     }
 }

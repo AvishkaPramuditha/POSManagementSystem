@@ -2,7 +2,7 @@ package model;
 
 import java.io.File;
 
-public class SubBurgersAndOthers {
+public class SubBurgersAndOthers implements Item {
     private String sandwichID;
     private String description;
     private double unitPrice;
@@ -68,5 +68,10 @@ public class SubBurgersAndOthers {
 
     public void setSubImage(File subImage) {
         this.subImage = subImage;
+    }
+
+    @Override
+    public String getID() {
+        return sandwichID;
     }
 }

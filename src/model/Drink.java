@@ -2,7 +2,7 @@ package model;
 
 import java.io.File;
 
-public class Drink {
+public class Drink implements Item{
     private String beverageID;
     private String description;
     private double unitPrice;
@@ -76,5 +76,10 @@ public class Drink {
 
     public void setDrinkImage(File drinkImage) {
         this.drinkImage = drinkImage;
+    }
+
+    @Override
+    public String getID() {
+        return beverageID;
     }
 }

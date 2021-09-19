@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-public class Meal {
+public class Meal implements Item{
    private String mealID;
    private String description;
    private String portion;
@@ -84,5 +84,10 @@ public class Meal {
    @Override
    public String toString() {
       return  mealID+" - "+description+" - "+portion;
+   }
+
+   @Override
+   public String getID() {
+     return mealID;
    }
 }

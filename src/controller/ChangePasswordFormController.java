@@ -28,7 +28,6 @@ public class ChangePasswordFormController {
          setCmbUserNames();
     }
 
-
     public void changePassword(ActionEvent actionEvent) {
         if (checkCurrentPassword(txtCurrentPassword.getText(),cmbUserName.getSelectionModel().getSelectedItem())){
             if (txtNewPassword.getText().equals(txtConformNewPassword.getText())){

@@ -421,7 +421,7 @@ public class ManageFoodItemFormController {
     public void deleteSub(ActionEvent actionEvent) {
         try {
             if (new ItemController().deleteSub(combSub.getSelectionModel().getSelectedItem().getSandwichID())){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete successfully .....", ButtonType.CLOSE);
                 alert.initOwner(context.getScene().getWindow());
                 alert.show();
                 subClearAll(null);
@@ -436,7 +436,7 @@ public class ManageFoodItemFormController {
     public void deletePizza(ActionEvent actionEvent) {
         try {
             if (new ItemController().deletePizza(comboPizza.getSelectionModel().getSelectedItem().getPizzaID())){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete successfully .....", ButtonType.CLOSE);
                 alert.initOwner(context.getScene().getWindow());
                 alert.show();
                 pizzaClearAll(null);
@@ -451,7 +451,7 @@ public class ManageFoodItemFormController {
     public void deleteDrink(ActionEvent actionEvent) {
         try {
             if (new ItemController().deleteDrink(comboDrink.getSelectionModel().getSelectedItem().getBeverageID())){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete successfully .....", ButtonType.CLOSE);
                 alert.initOwner(context.getScene().getWindow());
                 alert.show();
                 drinkClearAll(null);

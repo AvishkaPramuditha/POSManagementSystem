@@ -233,5 +233,33 @@ public class ItemController {
    return DbConnection.getInstance().getConnection().prepareStatement("DELETE FROM drink Where BeverageID='"+beverageID+"' ").executeUpdate()>0;
      }
 
+     public String getMealDescription(String mealID) throws SQLException, ClassNotFoundException {
+         ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT Description FROM meal WHERE MealID='" + mealID + "'").executeQuery();
+         if (resultSet.next()){
+             return resultSet.getString(1);
+         }
+         return null;
+     }
+    public String getPizzaDescription(String  pizzaID) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT Description FROM pizza WHERE PizzaID='" + pizzaID + "'").executeQuery();
+        if (resultSet.next()){
+            return resultSet.getString(1);
+        }
+        return null;
+    }
+    public String getSubDescription(String  SandwichID) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT Description FROM SubBurgersAndOthers WHERE SandwichID='" + SandwichID + "'").executeQuery();
+        if (resultSet.next()){
+            return resultSet.getString(1);
+        }
+        return null;
+    }
+    public String getDrinkDescription(String  BeverageID) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT Description FROM drink WHERE BeverageID='" +  BeverageID+ "'").executeQuery();
+        if (resultSet.next()){
+            return resultSet.getString(1);
+        }
+        return null;
+    }
 
 }

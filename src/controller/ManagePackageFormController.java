@@ -1,5 +1,6 @@
 package controller;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,9 +24,14 @@ public class ManagePackageFormController {
     public TextField txtPackagePrice;
     public ComboBox<String> cmbPackageName;
     public ComboBox<String> cmbPackageCode;
+    public JFXButton btnUpdate;
+    public JFXButton btnDelete;
+    public JFXButton btnSave;
     private ObservableList<PackageTM> packageTMS= FXCollections.observableArrayList();
 
     public void initialize(){
+        btnDelete.setDisable(true);
+        btnUpdate.setDisable(true);
         setItemCombo();
         loadPackageCombo();
         tblView.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("foodCode"));
@@ -36,14 +42,21 @@ public class ManagePackageFormController {
             try{
                if (newValue!=null){
                    Package package1= new PackageController().getPackageDetail(newValue, null);
-                   setDataToFields(package1);}
+                   setDataToFields(package1);
+                   txtPackageCode.setDisable(true);
+                   btnSave.setDisable(true);
+                   btnDelete.setDisable(false);btnUpdate.setDisable(false);
+               }else {btnDelete.setDisable(true);btnUpdate.setDisable(true);}
             }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
         });
         cmbPackageName.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             try{
                 if (newValue!=null){
                     Package package1= new PackageController().getPackageDetail(null, newValue);
-                    setDataToFields(package1);}
+                    setDataToFields(package1);
+                    txtPackageCode.setDisable(true);
+                    btnDelete.setDisable(false);btnUpdate.setDisable(false);
+                    btnSave.setDisable(true);}else {btnDelete.setDisable(true);btnUpdate.setDisable(true);}
             }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
         });
     }
@@ -61,6 +74,7 @@ public class ManagePackageFormController {
 
     public void deleteItem(ActionEvent actionEvent) {
        tblView.getItems().remove(tblView.getSelectionModel().getSelectedItem());
+
     }
 
     public void savePackage(ActionEvent actionEvent) {
@@ -94,9 +108,37 @@ public class ManagePackageFormController {
         cmbPackageCode.getSelectionModel().clearSelection();
         tblView.getItems().clear();
         tblView.refresh();
+        btnSave.setDisable(false);
+        txtPackageCode.setDisable(false);
     }
 
     public void update(ActionEvent actionEvent) {
+         boolean b;
+        try {
+            b = new PackageController().deletePackage(txtPackageCode.getText(),null);
+            ArrayList<PackageDetail> list=new ArrayList<>();
+            for (PackageTM tm:packageTMS
+            ) {
+                list.add(new PackageDetail(tm.getFoodType(),tm.getFoodCode(),tm.getQuantity()));
+            }
+            Package aPackage = new Package(txtPackageCode.getText(), txtPackageName.getText(), Double.valueOf(txtPackagePrice.getText()), list);
+            b = new PackageController().addPackage(aPackage);
+            Alert alert;
+            if (b){
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Update  Successfully", ButtonType.OK);
+                clear(null);
+                loadPackageCombo();
+
+            }else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+            }
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void deletePackage(ActionEvent actionEvent) {
@@ -156,7 +198,7 @@ public class ManagePackageFormController {
              }else if (detail.getFoodType()=="Sub"){description=new ItemController().getSubDescription(detail.getFoodCode());}else{description=new ItemController().getDrinkDescription(detail.getFoodCode());}
              tms.add(new PackageTM(detail.getFoodCode(),description,detail.getQuantity(),detail.getFoodType()));
          }
-              tblView.setItems(tms);
+              tblView.setItems((packageTMS=tms));
 
      }
 

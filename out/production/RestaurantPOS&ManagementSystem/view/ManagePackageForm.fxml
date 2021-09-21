@@ -76,7 +76,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="689.0" layoutY="632.0" onAction="#savePackage" prefHeight="44.0" prefWidth="157.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="Save Package" textFill="WHITE">
+      <JFXButton fx:id="btnSave" buttonType="RAISED" layoutX="689.0" layoutY="632.0" onAction="#savePackage" prefHeight="44.0" prefWidth="157.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="Save Package" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
@@ -98,12 +98,12 @@
             <Font name="System Bold" size="17.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="356.0" layoutY="632.0" onAction="#update" prefHeight="44.0" prefWidth="116.0" style="-fx-background-color: #0652DD; -fx-background-radius: 8;" text="Update" textFill="WHITE">
+      <JFXButton fx:id="btnUpdate" buttonType="RAISED" layoutX="356.0" layoutY="632.0" onAction="#update" prefHeight="44.0" prefWidth="116.0" style="-fx-background-color: #0652DD; -fx-background-radius: 8;" text="Update" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="493.0" layoutY="632.0" onAction="#deletePackage" prefHeight="44.0" prefWidth="175.0" style="-fx-background-color: #ff3f34; -fx-background-radius: 8;" text="Delete Package" textFill="WHITE">
+      <JFXButton fx:id="btnDelete" buttonType="RAISED" layoutX="493.0" layoutY="632.0" onAction="#deletePackage" prefHeight="44.0" prefWidth="175.0" style="-fx-background-color: #ff3f34; -fx-background-radius: 8;" text="Delete Package" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>

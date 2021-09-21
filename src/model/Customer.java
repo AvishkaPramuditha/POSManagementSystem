@@ -1,15 +1,22 @@
 package model;
 
 public class Customer {
+    private  String custID;
     private String customerName;
     private String CustomerAddress;
     private String customerMobile;
 
-
-    public Customer(String customerName,  String customerAddress,String customerMobile) {
+    public Customer(String customerName, String customerAddress, String customerMobile,String custID) {
         this.customerName = customerName;
-        this.customerMobile = customerMobile;
         CustomerAddress = customerAddress;
+        this.customerMobile = customerMobile;
+        this.custID = custID;
+    }
+
+    public Customer(String customerName, String customerAddress, String customerMobile) {
+        this.setCustomerName(customerName);
+        this.setCustomerMobile(customerMobile);
+        setCustomerAddress(customerAddress);
     }
 
     public String getCustomerName() {
@@ -34,5 +41,13 @@ public class Customer {
 
     public void setCustomerAddress(String customerAddress) {
         CustomerAddress = customerAddress;
+    }
+
+    public String getCustID() {
+        return custID;
+    }
+
+    public void setCustID(String custID) {
+        this.custID = custID;
     }
 }

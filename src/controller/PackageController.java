@@ -96,5 +96,19 @@ public class PackageController {
       public boolean deletePackage(String packageID ,String packageName) throws SQLException, ClassNotFoundException {
        return DbConnection.getInstance().getConnection().prepareStatement("Delete FROM package WHERE PackageID='"+packageID+"' OR Name='"+packageName+"'").executeUpdate()>0;
       }
+
+      /*public boolean updatePackage(Package aPackage){
+          PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("UPDATE package SET Name=?,price=? WHERE PackageID=?");
+          preparedStatement.setString(1,aPackage.getName());
+          preparedStatement.setDouble(2,aPackage.getPrice());
+          preparedStatement.setString(3,aPackage.getPackageID());
+      }
+      private boolean updatePackageItems(String packageID,ArrayList<PackageDetail> detailArrayList){
+          for (PackageDetail detail:detailArrayList
+               ) {
+              DbConnection.getInstance().getConnection().prepareStatement("UPDATE packageDetail SET "+colum+"=?")
+          }
+
+      }*/
   }
 

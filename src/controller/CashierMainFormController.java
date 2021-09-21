@@ -1,18 +1,20 @@
 package controller;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.Customer;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class CashierMainFormController {
 
@@ -23,8 +25,15 @@ public class CashierMainFormController {
     public FlowPane flowPaneDrink;
     public FlowPane flowPanePackages;
     public AnchorPane mainContext;
+    public TextField txtCustomerMobile;
+    public TextField txtCustomerName;
+    public TextArea txtCustomerAddress;
+    public JFXButton btbCustomerAdd;
+    private String customerID;
 
     public void initialize(){
+        setCustomerID();
+        btbCustomerAdd.setDisable(true);
 /*
         for (int i = 0; i < 10; i++) {
             Button button=new Button(String.valueOf(i));
@@ -96,5 +105,59 @@ public class CashierMainFormController {
     public void logout(ActionEvent actionEvent) throws IOException {
         mainContext.getChildren().clear();
         mainContext.getChildren().add(FXMLLoader.load(getClass().getResource("../view/LoginForm.fxml")));
+    }
+
+    public void addCustomer(ActionEvent actionEvent) {
+        try {
+            boolean b = new CustomerController().addCustomer(new Customer(customerID, txtCustomerName.getText(), txtCustomerAddress.getText(), txtCustomerMobile.getText()));
+            Alert alert;
+            if (b){
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Successfully", ButtonType.OK);
+                 clearFields();
+            }else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+            }
+            alert.initOwner(mainContext.getScene().getWindow());
+            alert.show();
+        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+    }
+
+    public void searchCustomer(ActionEvent actionEvent) {
+        try {
+            Customer customerDetail = new CustomerController().getCustomerDetail(txtCustomerMobile.getText());
+            Alert alert;
+            if (customerDetail==null){
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "NO Customer Please ADD.. ", ButtonType.OK);
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
+                setCustomerID();
+                txtCustomerName.clear();
+                txtCustomerAddress.clear();
+                btbCustomerAdd.setDisable(false);
+
+            }else {
+                  txtCustomerName.setText(customerDetail.getCustomerName());
+                  txtCustomerAddress.setText(customerDetail.getCustomerAddress());
+                  customerID=customerDetail.getCustID();
+                  btbCustomerAdd.setDisable(true);
+
+            }
+        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+
+    }
+    private void setCustomerID(){
+        try {
+            customerID=new CustomerController().getCustomerID();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    private void clearFields(){
+        txtCustomerAddress.clear();
+        txtCustomerName.clear();
+        txtCustomerMobile.clear();
+        btbCustomerAdd.setDisable(true);
     }
 }

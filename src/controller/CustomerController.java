@@ -48,4 +48,12 @@ public class CustomerController {
             return "C-0001";
         }
     }
+
+    public String getCustomerIdOfNumber(String mobile) throws SQLException, ClassNotFoundException {
+
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT CustID FROM customer WHERE  CustMobileNumber='" + mobile + "'").executeQuery();
+        if (resultSet.next()){
+            return resultSet.getString(1);
+        }else{return null;}
+    }
 }

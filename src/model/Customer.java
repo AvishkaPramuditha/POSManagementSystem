@@ -6,7 +6,10 @@ public class Customer {
     private String CustomerAddress;
     private String customerMobile;
 
-    public Customer(String customerName, String customerAddress, String customerMobile,String custID) {
+    public Customer() {
+    }
+
+    public Customer(String customerName, String customerAddress, String customerMobile, String custID) {
         this.customerName = customerName;
         CustomerAddress = customerAddress;
         this.customerMobile = customerMobile;
@@ -14,9 +17,17 @@ public class Customer {
     }
 
     public Customer(String customerName, String customerAddress, String customerMobile) {
-        this.setCustomerName(customerName);
-        this.setCustomerMobile(customerMobile);
-        setCustomerAddress(customerAddress);
+       this.customerName=customerName;
+        this.CustomerAddress = customerAddress;
+       this.customerMobile=customerMobile;
+
+    }
+
+    public Customer setCustomerDetail(String custID,String customerName,String customerMobile){
+        this.custID = custID;
+        this.customerName=customerName;
+        this.customerMobile=customerMobile;
+            return this;
     }
 
     public String getCustomerName() {

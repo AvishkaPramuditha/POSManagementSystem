@@ -85,7 +85,7 @@ public class ItemController {
         return null;
     }
 
-    public ObservableList getMealID_Description_Portion() throws SQLException, ClassNotFoundException {
+    public ObservableList<Meal> getMealID_Description_Portion() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select mealID,Description,portion from meal").executeQuery();
         ObservableList list= FXCollections.observableArrayList();
         while (resultSet.next()){

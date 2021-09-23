@@ -5,13 +5,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Customer;
+import model.Meal;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -31,16 +35,23 @@ public class CashierMainFormController {
     public JFXButton btbCustomerAdd;
     private String customerID;
 
-    public void initialize(){
+    public void initialize() throws SQLException, ClassNotFoundException, IOException {
         setCustomerID();
         btbCustomerAdd.setDisable(true);
-/*
-        for (int i = 0; i < 10; i++) {
-            Button button=new Button(String.valueOf(i));
-            button.setPrefSize(171,150);
+
+        for (Meal meal :new ItemController().getMealID_Description_Portion()
+                ) {
+            Image image= new Image(String.valueOf("file:"+new ItemController().getMealDetails(meal.getMealID()).getMealImage()));
+            ImageView view=new ImageView(image);
+            view.setFitWidth(171);
+            view.setFitHeight(150);
+            Button button=new Button(meal.getDescription()+" - "+meal.getPortion(),view);
+            button.setFont(new Font(20));
+            button.setStyle("-fx-font-weight: bold;");
+            button.setContentDisplay(ContentDisplay.TOP);
+            button.setPrefSize(171,160);
             flowPaneMeal.getChildren().add(button);
         }
-
         for (int i = 0; i < 15; i++) {
             Button button=new Button(String.valueOf(i));
             button.setPrefSize(171,150);
@@ -65,7 +76,7 @@ public class CashierMainFormController {
             flowPanePackages.getChildren().add(button);
         }
 
-*/
+
 
     }
 

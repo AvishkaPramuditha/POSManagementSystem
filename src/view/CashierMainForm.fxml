@@ -177,15 +177,16 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </JFXButton>
-      <TableView layoutY="456.0" prefHeight="514.0" prefWidth="944.0" style="-fx-border-color: #2c3e50;">
+      <TableView fx:id="orderTblView" layoutY="456.0" prefHeight="514.0" prefWidth="944.0" style="-fx-border-color: #2c3e50;">
         <columns>
-          <TableColumn prefWidth="182.3333282470703" style="-fx-font-size: 20; -fx-background-color: #95a5a6;" text="Food Code" />
-            <TableColumn prefWidth="406.9999542236328" style="-fx-font-size: 20; -fx-background-color: #95a5a6;" text="Description" />
-            <TableColumn prefWidth="198.66668701171875" style="-fx-font-size: 20; -fx-background-color: #95a5a6;" text="Price" />
-            <TableColumn prefWidth="150.33331298828125" style="-fx-font-size: 20; -fx-background-color: #95a5a6;" text="Quantity" />
+          <TableColumn prefWidth="223.0" style="-fx-font-size: 20; -fx-background-color: #d1ccc0; -fx-font-weight: bold;" text="Food Code" />
+            <TableColumn prefWidth="310.0" style="-fx-font-size: 20; -fx-background-color: #d1ccc0; -fx-font-weight: bold;" text="Description" />
+            <TableColumn prefWidth="144.0" style="-fx-font-size: 20; -fx-background-color: #d1ccc0; -fx-font-weight: bold;" text="  Price" />
+            <TableColumn prefWidth="94.0" style="-fx-font-size: 20; -fx-background-color: #d1ccc0; -fx-font-weight: bold;" text="Quantity" />
+            <TableColumn prefWidth="175.0" style="-fx-font-size: 20; -fx-background-color: #d1ccc0; -fx-font-weight: bold;" text="Amount" />
         </columns>
       </TableView>
-      <ComboBox layoutX="163.0" layoutY="379.0" prefHeight="38.0" prefWidth="211.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
+      <ComboBox fx:id="cmbOrderType" layoutX="163.0" layoutY="379.0" prefHeight="38.0" prefWidth="211.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
       <Text layoutX="423.0" layoutY="402.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Driver :" wrappingWidth="92.66663299500942">
          <font>
             <Font name="System Bold" size="24.0" />
@@ -197,7 +198,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Text layoutX="1223.0" layoutY="751.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1850.00" wrappingWidth="241.630381308496">
+      <Text fx:id="lblSubTot" layoutX="1223.0" layoutY="751.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1850.00" wrappingWidth="241.630381308496">
          <font>
             <Font name="System Bold" size="40.0" />
          </font>
@@ -207,7 +208,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Text layoutX="1223.0" layoutY="807.0" strokeType="OUTSIDE" strokeWidth="0.0" text="185.00" wrappingWidth="231.33328948915005">
+      <Text fx:id="lblDelivery" layoutX="1223.0" layoutY="807.0" strokeType="OUTSIDE" strokeWidth="0.0" text="185.00" wrappingWidth="231.33328948915005">
          <font>
             <Font name="System Bold" size="40.0" />
          </font>
@@ -217,7 +218,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Text fill="#ff0b0b" layoutX="1222.0" layoutY="877.0" strokeType="OUTSIDE" strokeWidth="0.0" text="112035.00" wrappingWidth="268.6666329950094">
+      <Text fx:id="lblGrandTot" fill="#ff0b0b" layoutX="1222.0" layoutY="877.0" strokeType="OUTSIDE" strokeWidth="0.0" text="112035.00" wrappingWidth="268.6666329950094">
          <font>
             <Font name="System Bold" size="54.0" />
          </font>
@@ -231,12 +232,12 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="314.0" layoutY="997.0" prefHeight="33.0" prefWidth="110.0" style="-fx-background-color: #e84118;" stylesheets="@../styles/Styles.css" text="Delete">
+      <JFXButton buttonType="RAISED" layoutX="314.0" layoutY="997.0" onAction="#deleteItemFromTable" prefHeight="33.0" prefWidth="110.0" style="-fx-background-color: #e84118;" stylesheets="@../styles/Styles.css" text="Delete">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="501.0" layoutY="997.0" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #e84118;" stylesheets="@../styles/Styles.css" text="Clear">
+      <JFXButton buttonType="RAISED" layoutX="501.0" layoutY="997.0" onAction="#clearTable" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #e84118;" stylesheets="@../styles/Styles.css" text="Clear">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
@@ -266,5 +267,15 @@
             <Font name="System Bold" size="21.0" />
          </font>
       </Text>
+      <JFXButton layoutX="706.0" layoutY="997.0" onAction="#increaseQuantity" prefHeight="38.0" prefWidth="31.0" style="-fx-background-color: #34ace0;" stylesheets="@../styles/Styles.css" text="+">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="168.0" layoutY="997.0" onAction="#decreaseQuantity" prefHeight="31.0" prefWidth="31.0" style="-fx-background-color: #34ace0;" stylesheets="@../styles/Styles.css" text="-">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

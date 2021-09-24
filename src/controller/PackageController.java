@@ -97,18 +97,13 @@ public class PackageController {
        return DbConnection.getInstance().getConnection().prepareStatement("Delete FROM package WHERE PackageID='"+packageID+"' OR Name='"+packageName+"'").executeUpdate()>0;
       }
 
-      /*public boolean updatePackage(Package aPackage){
-          PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("UPDATE package SET Name=?,price=? WHERE PackageID=?");
-          preparedStatement.setString(1,aPackage.getName());
-          preparedStatement.setDouble(2,aPackage.getPrice());
-          preparedStatement.setString(3,aPackage.getPackageID());
-      }
-      private boolean updatePackageItems(String packageID,ArrayList<PackageDetail> detailArrayList){
-          for (PackageDetail detail:detailArrayList
-               ) {
-              DbConnection.getInstance().getConnection().prepareStatement("UPDATE packageDetail SET "+colum+"=?")
+      public ObservableList<String>getPackageCode() throws SQLException, ClassNotFoundException {
+          ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT PackageID FROM package").executeQuery();
+          ObservableList<String> list=FXCollections.observableArrayList();
+          while (resultSet.next()){
+              list.add(resultSet.getString(1));
           }
-
-      }*/
+          return list;
+      }
   }
 

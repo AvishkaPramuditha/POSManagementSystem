@@ -3,16 +3,14 @@ package controller;
 import database.DbConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Drink;
-import model.Meal;
-import model.Pizza;
-import model.SubBurgersAndOthers;
+import model.*;
 
 import java.io.*;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ItemController {
    public Meal getMealDetails(String mealID) throws SQLException, ClassNotFoundException, IOException {
@@ -94,7 +92,7 @@ public class ItemController {
         return list;
     }
 
-    public ObservableList getPizzaID_Description_Portion() throws SQLException, ClassNotFoundException {
+    public ObservableList<Pizza> getPizzaID_Description_Portion() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select PizzaID,Description,Size from pizza").executeQuery();
         ObservableList list= FXCollections.observableArrayList();
         while (resultSet.next()){
@@ -103,7 +101,7 @@ public class ItemController {
         return list;
     }
 
-    public ObservableList getSubs_Description() throws SQLException, ClassNotFoundException {
+    public ObservableList<SubBurgersAndOthers> getSubs_Description() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select sandwichID,Description from subBurgersAndOthers").executeQuery();
         ObservableList list= FXCollections.observableArrayList();
         while (resultSet.next()){
@@ -112,7 +110,7 @@ public class ItemController {
         return list;
     }
 
-    public ObservableList getDrink_Description() throws SQLException, ClassNotFoundException {
+    public ObservableList<Drink> getDrink_Description() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select BeverageID,Description from Drink").executeQuery();
         ObservableList list= FXCollections.observableArrayList();
         while (resultSet.next()){
@@ -262,4 +260,36 @@ public class ItemController {
         return null;
     }
 
+    public ArrayList<MealButton> getMeals() throws SQLException, ClassNotFoundException {
+       ArrayList<MealButton> mealButtons=new ArrayList<>();
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select m.MealID,m.Description,m.Portion,m.isAvailable,m.Unitprice,d.DiscountPrice From meal m LEFT JOIN discount d ON m.MealID=d.MealID").executeQuery();
+        while (resultSet.next()){
+            mealButtons.add(new MealButton(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getBoolean(4),resultSet.getDouble(5),resultSet.getDouble(6)));
+        }
+        return mealButtons;
+    }
+    public ArrayList<PizzaButton> getPizza() throws SQLException, ClassNotFoundException {
+        ArrayList<PizzaButton> pizzaButtons=new ArrayList<>();
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select p.PizzaID,p.Description,p.Size,p.QuantityOnHand,p.Unitprice,d.DiscountPrice From pizza p LEFT JOIN discount d ON p.PizzaID=d.PizzaID").executeQuery();
+        while (resultSet.next()){
+            pizzaButtons.add(new PizzaButton(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4),resultSet.getDouble(5),resultSet.getDouble(6)));
+        }
+        return  pizzaButtons;
+    }
+    public ArrayList<SubButton> getSub() throws SQLException, ClassNotFoundException {
+        ArrayList<SubButton> subButtons=new ArrayList<>();
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select s.SandwichID,s.Description,s.QuantityOnHand,s.Unitprice,d.DiscountPrice From subBurgersAndOthers s LEFT JOIN discount d ON s.SandwichID=d.SandwichID").executeQuery();
+        while (resultSet.next()){
+            subButtons.add(new SubButton(resultSet.getString(1),resultSet.getString(2),resultSet.getInt(3),resultSet.getDouble(4),resultSet.getDouble(5)));
+        }
+        return  subButtons;
+    }
+    public ArrayList<DrinkButton> getDrink() throws SQLException, ClassNotFoundException {
+        ArrayList<DrinkButton> drinkButtons=new ArrayList<>();
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select di.BeverageID,di.Description,di.isAvailable,di.Unitprice,d.DiscountPrice From drink di LEFT JOIN discount d ON di.BeverageID=d.BeverageID").executeQuery();
+        while (resultSet.next()){
+            drinkButtons.add(new DrinkButton(resultSet.getString(1),resultSet.getString(2),resultSet.getBoolean(3),resultSet.getDouble(4),resultSet.getDouble(5)));
+        }
+        return drinkButtons;
+    }
 }

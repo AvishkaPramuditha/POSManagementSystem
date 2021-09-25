@@ -1,6 +1,8 @@
 package controller;
 
 import database.DbConnection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Employee;
 
 import java.sql.Connection;
@@ -186,6 +188,13 @@ public class EmployeeController {
         return preparedStatement.executeUpdate()>0;
     }
 
-
+   public ObservableList<Employee> getDrivers() throws SQLException, ClassNotFoundException {
+       ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT e.EmployeeId ,e.EmployeeName FROM employee e INNER JOIN driver d ON e.EmployeeID=d.EmployeeID ").executeQuery();
+       ObservableList<Employee> list= FXCollections.observableArrayList();
+       while (resultSet.next()){
+           list.add(new Employee(resultSet.getString(1),resultSet.getString(2)));
+       }
+       return list;
+   }
 
 }

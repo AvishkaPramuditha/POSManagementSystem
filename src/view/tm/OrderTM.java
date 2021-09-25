@@ -1,20 +1,23 @@
 package view.tm;
 
-import java.util.Objects;
-
 public class OrderTM {
     private String foodCode;
     private String description;
     private double price;
     private int quantity;
     private double amount;
+    private  String foodType;
 
-    public OrderTM(String foodCode, String description, double price, int quantity, double amount) {
+    public OrderTM() {
+    }
+
+    public OrderTM(String foodCode, String description, double price, int quantity, double amount, String foodType) {
         this.foodCode = foodCode;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
         this.amount = amount;
+        this.foodType = foodType;
     }
 
     public String getFoodCode() {
@@ -57,4 +60,11 @@ public class OrderTM {
         this.amount = amount;
     }
 
+    public String getFoodType() {
+        return foodType;
+    }
+
+    public void setFoodType(String foodType) {
+        this.foodType = foodType;
+    }
 }

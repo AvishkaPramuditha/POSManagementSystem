@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class LoginFormController {
@@ -26,20 +28,19 @@ public class LoginFormController {
      
     }
 
-
-
-
-
     public void btnLogin(ActionEvent actionEvent) throws IOException {
       if(rdioAdmin.isSelected()){
           context.getChildren().clear();
           context.getChildren().add(FXMLLoader.load(getClass().getResource("../view/AdminHomeForm.fxml")));
       }else{
           context.getChildren().clear();
-          context.getChildren().add(FXMLLoader.load(getClass().getResource("../view/CashierMainForm.fxml")));
+          FXMLLoader loader=new FXMLLoader(getClass().getResource("../view/CashierMainForm.fxml"));
+          Parent load = loader.load();
+          CashierMainFormController controller = loader.getController();
+          controller.lblUser.setText("Nadee");
+          controller.lblUser.setText("E-0001");
+           context.getChildren().add(load);
       }
-
-
 
     }
 

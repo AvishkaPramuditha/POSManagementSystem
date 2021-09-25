@@ -15,7 +15,7 @@
             <Font name="System Bold" size="23.0" />
          </font>
       </Text>
-      <Text fill="#ff0505" layoutX="124.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2095.00" wrappingWidth="283.28515625">
+      <Text fx:id="total" fill="#ff0505" layoutX="124.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="283.28515625">
          <font>
             <Font name="System Bold" size="26.0" />
          </font>
@@ -25,7 +25,7 @@
             <Font name="System Bold" size="22.0" />
          </font>
       </Text>
-      <Text layoutX="196.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="O-8956" wrappingWidth="204.28515625">
+      <Text fx:id="orderID" layoutX="196.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="204.28515625">
          <font>
             <Font name="System Bold" size="23.0" />
          </font>
@@ -39,7 +39,7 @@
             <Font name="System Bold" size="23.0" />
          </font>
       </Text>
-      <TextField layoutX="125.0" layoutY="154.0" prefHeight="38.0" prefWidth="156.0">
+      <TextField fx:id="cash" layoutX="125.0" layoutY="154.0" onAction="#DoTransaction" prefHeight="38.0" prefWidth="156.0">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
@@ -53,7 +53,7 @@
          <effect>
             <ColorAdjust brightness="-0.24" />
          </effect></Separator>
-      <Text fill="#001aff" layoutX="151.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" wrappingWidth="204.28515142947435">
+      <Text fx:id="balance" fill="#001aff" layoutX="151.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="204.28515142947435">
          <font>
             <Font name="System Bold" size="26.0" />
          </font>
@@ -73,7 +73,7 @@
             <Font name="System Bold" size="21.0" />
          </font>
       </Text>
-      <JFXButton layoutX="121.0" layoutY="330.0" onAction="#closePaymentStage" prefHeight="42.0" prefWidth="177.0" style="-fx-background-color: #e67e22;" stylesheets="@../styles/Styles.css" text="Close">
+      <JFXButton fx:id="btnClose" layoutX="63.0" layoutY="328.0" onAction="#closePaymentStage" prefHeight="42.0" prefWidth="87.0" style="-fx-background-color: #e67e22;" stylesheets="@../styles/Styles.css" text="Close">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
@@ -82,5 +82,10 @@
          <effect>
             <ColorAdjust brightness="-0.24" />
          </effect></Separator>
+      <JFXButton fx:id="btnOk" layoutX="238.0" layoutY="328.0" onAction="#returnToHome" prefHeight="42.0" prefWidth="87.0" style="-fx-background-color: #2ecc71;" stylesheets="@../styles/Styles.css" text="OK">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

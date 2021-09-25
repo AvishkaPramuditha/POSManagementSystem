@@ -1,10 +1,14 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,13 +21,17 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import model.*;
 import model.Package;
 import view.tm.OrderTM;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CashierMainFormController {
@@ -44,13 +52,24 @@ public class CashierMainFormController {
     public Text lblSubTot;
     public Text lblDelivery;
     public Text lblGrandTot;
+    public ComboBox<Employee> cmbDriver;
+    public Text lblTime;
+    public Text lblDate;
+    public Text lblOrderNo;
+    public Text lblUser;
+    public JFXButton btnPay;
+    public JFXButton btnCancelOrder;
+    public JFXButton btnPlaceOrder;
     private String customerID;
+    public String cashierID;
     private  ObservableList<OrderTM> orderTMS= FXCollections.observableArrayList();
     public void initialize() {
-        cmbOrderType.setItems(FXCollections.observableArrayList("Dine - IN","Take-Away","Delivery"));
-        cmbOrderType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {calculation();});
+        setCmd();
+        setDateAndTime();
+        setOrderID();
         setCustomerID();
         btbCustomerAdd.setDisable(true);
+        btnPay.setDisable(true);
         setMealsButton();
         setPizzaButton();
         setSubButton();
@@ -61,6 +80,39 @@ public class CashierMainFormController {
         orderTblView.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("price"));
         orderTblView.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("quantity"));
         orderTblView.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("amount"));
+
+    }
+    private void setDateAndTime(){
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("hh:mm:ss a");
+            lblDate.setText(LocalDateTime.now().format(formatter1));
+            lblTime.setText(LocalDateTime.now().format(formatter2));
+        }), new KeyFrame(Duration.seconds(1)));
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+    }
+    private void setOrderID(){
+        try {
+            lblOrderNo.setText(new OrderController().getNextOrderID());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    private void setCmd(){
+        try {
+            cmbOrderType.setItems(FXCollections.observableArrayList("Dine - IN","Take-Away","Delivery"));
+            cmbOrderType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue=="Delivery"){
+                    cmbDriver.setDisable(false);
+                }else{
+                    cmbDriver.getSelectionModel().clearSelection();
+                    cmbDriver.setDisable(true);}
+                calculation();});
+            cmbDriver.setItems(new EmployeeController().getDrivers());
+        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
 
     }
     private void setPackageButton(){
@@ -80,14 +132,14 @@ public class CashierMainFormController {
                 button.setOnAction(event -> {
                     try {
                         ArrayList<PackageDetail> packD = packageDetail.getPackageDetails();
-                        OrderTM orderTM = new OrderTM(packageDetail.getPackageID(), packageDetail.getName(), packageDetail.getPrice(), 1, packageDetail.getPrice() * 1);
+                        OrderTM orderTM = new OrderTM(packageDetail.getPackageID(), packageDetail.getName(), packageDetail.getPrice(), 1, packageDetail.getPrice() * 1,"Package");
                         orderTblView.getItems().add(orderTM);
                         for (PackageDetail detail:packD
                         ) {
                             String description;
                             if (detail.getFoodType()=="Meal"){description=new ItemController().getMealDescription(detail.getFoodCode());}else if (detail.getFoodType()=="Pizza"){description=new ItemController().getPizzaDescription(detail.getFoodCode());}
                             else if(detail.getFoodType()=="Sub"){description=new ItemController().getSubDescription(detail.getFoodCode());}else {description=new ItemController().getDrinkDescription(detail.getFoodCode());}
-                            OrderTM orderT = new OrderTM(packageDetail.getPackageID() + "-" + detail.getFoodCode(), description, 0, detail.getQuantity(), 0);
+                            OrderTM orderT = new OrderTM(packageDetail.getPackageID() + "-" + detail.getFoodCode(), description, 0, detail.getQuantity(), 0,null);
                             orderTMS.add(orderT);
                             calculation();
                         }
@@ -121,7 +173,7 @@ public class CashierMainFormController {
                     button.setContentDisplay(ContentDisplay.TOP);
                     button.setPrefSize(200, 160);
                     button.setOnAction(event -> {
-                        OrderTM orderTM = new OrderTM(drink.getBeverageID(), drink.getDescription(), price, 1,price*1);
+                        OrderTM orderTM = new OrderTM(drink.getBeverageID(), drink.getDescription(), price, 1,price*1,"Drink");
                         if (!searchOrderTM(orderTM)){
                             orderTMS.add(orderTM);
                             calculation();
@@ -155,7 +207,7 @@ public class CashierMainFormController {
                     button.setPrefSize(200, 160);
                     button.setOnAction(event -> {
                         if (sub.getQuantityOnHand()>max.get()){
-                            OrderTM orderTM = new OrderTM(sub.getSandwichId(),sub.getDescription(), price, 1,price*1);
+                            OrderTM orderTM = new OrderTM(sub.getSandwichId(),sub.getDescription(), price, 1,price*1,"Sub");
                             if (!searchOrderTM(orderTM)){
                                 orderTMS.add(orderTM);
                                 calculation();
@@ -195,7 +247,7 @@ public class CashierMainFormController {
                     button.setPrefSize(250, 160);
                     button.setOnAction(event -> {
                         if (pizza.getQuantityOnHand() > max.get()) {
-                        OrderTM orderTM = new OrderTM(pizza.getPizzaID(), pizza.getDescription(), price, 1, price * 1);
+                        OrderTM orderTM = new OrderTM(pizza.getPizzaID(), pizza.getDescription(), price, 1, price * 1,"Pizza");
                         if (!searchOrderTM(orderTM)) {
                             orderTMS.add(orderTM);
                             calculation();
@@ -234,7 +286,7 @@ public class CashierMainFormController {
                     button.setContentDisplay(ContentDisplay.TOP);
                     button.setPrefSize(200, 160);
                     button.setOnAction(event -> {
-                        OrderTM orderTM = new OrderTM(meal.getMealID(), meal.getDescription(), price, 1,price*1);
+                        OrderTM orderTM = new OrderTM(meal.getMealID(), meal.getDescription(), price, 1,price*1,"Meal");
                         if (!searchOrderTM(orderTM)){
                          orderTMS.add(orderTM);
                             calculation();
@@ -255,7 +307,14 @@ public class CashierMainFormController {
         stage.setTitle("payments");
         stage.initOwner(mainContext.getScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/PaymentForm.fxml"))));
+        FXMLLoader loader=new FXMLLoader((getClass().getResource("../view/PaymentForm.fxml")));
+        Parent parent=loader.load();
+        PaymentFormController controller = loader.getController();
+        controller.orderID.setText(lblOrderNo.getText());
+        controller.total.setText(lblGrandTot.getText());
+        controller.cashierID=cashierID;
+        controller.customerID=customerID;
+        stage.setScene(new Scene(parent));
         stage.show();
     }
 
@@ -301,11 +360,11 @@ public class CashierMainFormController {
     }
     public void addCustomer(ActionEvent actionEvent) {
         try {
-            boolean b = new CustomerController().addCustomer(new Customer(customerID, txtCustomerName.getText(), txtCustomerAddress.getText(), txtCustomerMobile.getText()));
+            boolean b = new CustomerController().addCustomer(new Customer(txtCustomerName.getText(), txtCustomerAddress.getText(), txtCustomerMobile.getText(),customerID));
             Alert alert;
             if (b){
                 alert = new Alert(Alert.AlertType.CONFIRMATION, "Successfully", ButtonType.OK);
-                 clearFields();
+
             }else {
                 alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
             }
@@ -346,7 +405,7 @@ public class CashierMainFormController {
             e.printStackTrace();
         }
     }
-    private void clearFields(){
+   private void clearCustomerFields(){
         txtCustomerAddress.clear();
         txtCustomerName.clear();
         txtCustomerMobile.clear();
@@ -404,5 +463,41 @@ public class CashierMainFormController {
        lblSubTot.setText(String.valueOf(subTot));
        lblDelivery.setText(String.valueOf(deliveryCharges));
        lblGrandTot.setText(String.valueOf(grandTotal));
+    }
+
+    public void placeOrder(ActionEvent actionEvent){
+        btnPay.setDisable(false);
+        btnCancelOrder.setText("Next Order");
+        btnCancelOrder.setStyle("-fx-background-color : blue");
+      ArrayList<OrderDetail> list=new ArrayList<>();
+        for (OrderTM tm:orderTMS
+             ) {
+            list.add(new OrderDetail(tm.getFoodCode(),tm.getDescription(),tm.getPrice(),tm.getQuantity(),tm.getFoodType()));
+        }
+        boolean b = new OrderController().placeOrder(new Order(lblOrderNo.getText(), customerID, lblDate.getText(), lblTime.getText(), cmbOrderType.getSelectionModel().getSelectedItem(), Double.valueOf(lblSubTot.getText()), Double.valueOf(lblDelivery.getText()), Double.valueOf(lblGrandTot.getText()), "NonPaid", list));
+        Alert alert;
+        if (b){
+            alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Placed ....", ButtonType.OK);
+            btnPlaceOrder.setDisable(true);
+        }else {
+            alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+        }
+        alert.initOwner(mainContext.getScene().getWindow());
+        alert.show();
+
+         }
+    public  void cancelOrder(ActionEvent actionEvent) {
+        btnPlaceOrder.setDisable(false);
+        btnPay.setDisable(true);
+        btnCancelOrder.setText("Cancel Order");
+        btnCancelOrder.setStyle("-fx-background-color :  #ff3f34");
+        clearCustomerFields();
+        cmbDriver.getSelectionModel().clearSelection();
+        cmbOrderType.getSelectionModel().clearSelection();
+        orderTMS.clear();
+        lblGrandTot.setText(null);
+        lblDelivery.setText(null);
+        lblSubTot.setText(null);
+        setOrderID();
     }
 }

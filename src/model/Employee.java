@@ -13,6 +13,10 @@ public class Employee {
     private String userName;
     private String password;
 
+    public Employee(String employeeID, String employeeName) {
+        this.employeeID = employeeID;
+        this.employeeName = employeeName;
+    }
 
     public Employee(String employeeID, String employeeNIC, String employeeName, String employeeAddress, String employeeContactNumber, String jobRole, String workingHours, String bikeNo, String drivingLicenseNumber, String userName, String password) {
         this.employeeID = employeeID;
@@ -129,5 +133,10 @@ public class Employee {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return employeeID+" - "+employeeName;
     }
 }

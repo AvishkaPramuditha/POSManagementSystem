@@ -1,6 +1,7 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import database.DbConnection;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -27,6 +28,7 @@ import model.Package;
 import view.tm.OrderTM;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -57,19 +59,20 @@ public class CashierMainFormController {
     public Text lblDate;
     public Text lblOrderNo;
     public Text lblUser;
-    public JFXButton btnPay;
     public JFXButton btnCancelOrder;
     public JFXButton btnPlaceOrder;
+    public TextField txtCash;
+    public Text lblBalance;
     private String customerID;
     public String cashierID;
     private  ObservableList<OrderTM> orderTMS= FXCollections.observableArrayList();
     public void initialize() {
+        txtCash.setDisable(true);
         setCmd();
         setDateAndTime();
         setOrderID();
         setCustomerID();
         btbCustomerAdd.setDisable(true);
-        btnPay.setDisable(true);
         setMealsButton();
         setPizzaButton();
         setSubButton();
@@ -300,23 +303,6 @@ public class CashierMainFormController {
 
     }
 
-    public void moveToPaymentForm(ActionEvent actionEvent) throws IOException {
-        Stage stage=new Stage();
-        stage.setResizable(false);
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setTitle("payments");
-        stage.initOwner(mainContext.getScene().getWindow());
-        stage.initModality(Modality.APPLICATION_MODAL);
-        FXMLLoader loader=new FXMLLoader((getClass().getResource("../view/PaymentForm.fxml")));
-        Parent parent=loader.load();
-        PaymentFormController controller = loader.getController();
-        controller.orderID.setText(lblOrderNo.getText());
-        controller.total.setText(lblGrandTot.getText());
-        controller.cashierID=cashierID;
-        controller.customerID=customerID;
-        stage.setScene(new Scene(parent));
-        stage.show();
-    }
 
     public void moveToReservation(ActionEvent actionEvent) throws IOException {
         Stage stage=new Stage();
@@ -465,20 +451,21 @@ public class CashierMainFormController {
        lblGrandTot.setText(String.valueOf(grandTotal));
     }
 
-    public void placeOrder(ActionEvent actionEvent){
-        btnPay.setDisable(false);
-        btnCancelOrder.setText("Next Order");
-        btnCancelOrder.setStyle("-fx-background-color : blue");
+    public void placeOrder(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
       ArrayList<OrderDetail> list=new ArrayList<>();
         for (OrderTM tm:orderTMS
              ) {
             list.add(new OrderDetail(tm.getFoodCode(),tm.getDescription(),tm.getPrice(),tm.getQuantity(),tm.getFoodType()));
         }
         boolean b = new OrderController().placeOrder(new Order(lblOrderNo.getText(), customerID, lblDate.getText(), lblTime.getText(), cmbOrderType.getSelectionModel().getSelectedItem(), Double.valueOf(lblSubTot.getText()), Double.valueOf(lblDelivery.getText()), Double.valueOf(lblGrandTot.getText()), "NonPaid", list));
+        if (cmbOrderType.getSelectionModel().getSelectedItem()=="Delivery"){b=new DeliveryController().addDelivery(lblOrderNo.getText(),cmbDriver.getSelectionModel().getSelectedItem().getEmployeeID());}
         Alert alert;
         if (b){
             alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Placed ....", ButtonType.OK);
+            btnCancelOrder.setText("Next Order");
+            btnCancelOrder.setStyle("-fx-background-color : blue");
             btnPlaceOrder.setDisable(true);
+            txtCash.setDisable(false);
         }else {
             alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
         }
@@ -488,7 +475,7 @@ public class CashierMainFormController {
          }
     public  void cancelOrder(ActionEvent actionEvent) {
         btnPlaceOrder.setDisable(false);
-        btnPay.setDisable(true);
+        txtCash.setDisable(true);
         btnCancelOrder.setText("Cancel Order");
         btnCancelOrder.setStyle("-fx-background-color :  #ff3f34");
         clearCustomerFields();
@@ -498,6 +485,38 @@ public class CashierMainFormController {
         lblGrandTot.setText(null);
         lblDelivery.setText(null);
         lblSubTot.setText(null);
+        lblBalance.setText(null);
+        txtCash.clear();
         setOrderID();
+
+    }
+
+    public void doPayment(ActionEvent actionEvent) {
+        double totalD= Double.parseDouble(lblGrandTot.getText());
+        double paidAmountD= Double.parseDouble(txtCash.getText());
+        double balanceD=paidAmountD-totalD;
+        lblBalance.setText(String.valueOf(balanceD));
+        try {
+            PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("INSERT INTO transaction VALUES (?,?,?,?,?,?)");
+            preparedStatement.setString(1,lblOrderNo.getText());
+            preparedStatement.setString(2,customerID);
+            preparedStatement.setString(3,cashierID);
+            preparedStatement.setDouble(4,totalD);
+            preparedStatement.setDouble(5,paidAmountD);
+            preparedStatement.setDouble(6,balanceD);
+            boolean b=preparedStatement.executeUpdate()>0;
+            Alert alert;
+            if (b){
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Paid  ....", ButtonType.OK);
+                btnCancelOrder.setText("Next Order");
+                btnCancelOrder.setStyle("-fx-background-color : blue");
+                txtCash.setDisable(true);
+            }else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+            }
+            alert.initOwner(mainContext.getScene().getWindow());
+            alert.show();
+
+        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
     }
 }

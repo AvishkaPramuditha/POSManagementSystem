@@ -38,12 +38,11 @@ public class LoginFormController {
           Parent load = loader.load();
           CashierMainFormController controller = loader.getController();
           controller.lblUser.setText("Nadee");
-          controller.lblUser.setText("E-0001");
+          controller.cashierID=("E-0001");
            context.getChildren().add(load);
       }
 
     }
-
 
     public void btnShutDown(MouseEvent mouseEvent) {
         Stage stage = (Stage) context.getScene().getWindow();

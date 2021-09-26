@@ -4,6 +4,7 @@ import database.DbConnection;
 import model.Order;
 import model.OrderDetail;
 import model.PackageDetail;
+import view.tm.OrderTM;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +19,7 @@ public class OrderController {
         Integer integer = Integer.valueOf(resultSet.getString(1).split("-")[1])+1;
         if (integer<9){
             return "O-0000000"+integer;
-        }else if (integer<99){ return "R-000000"+integer;}else if (integer<999){ return "R-00000"+integer;}else if (integer<9999){return "R-0000"+integer;}else if (integer<99999){return "R-000"+integer;}else if (integer<999999){return "R-00"+integer;}else if (integer<9999999){return "R-0"+integer;}else {return "R-"+integer;}
+        }else if (integer<99){ return "O-000000"+integer;}else if (integer<999){ return "O-00000"+integer;}else if (integer<9999){return "O-0000"+integer;}else if (integer<99999){return "O-000"+integer;}else if (integer<999999){return "O-00"+integer;}else if (integer<9999999){return "O-0"+integer;}else {return "O-"+integer;}
     }else {
         return "O-00000001";
     }
@@ -39,9 +40,9 @@ public class OrderController {
             preparedStatement.setDouble(8,order.getTotal());
             preparedStatement.setString(9,order.getOrderStatus());
             if (preparedStatement.executeUpdate()>0){
-                    if (orderDetail(order.getOrderedItem(),order.getOrderID())){
-                        connection.commit();
-                        return true;
+                    if (saveOrderDetail(order.getOrderedItem(),order.getOrderID())){
+                            connection.commit();
+                            return true;
                     }else {
                         connection.rollback();
                         return false;
@@ -58,7 +59,7 @@ public class OrderController {
 
        return false;
     }
-    private boolean orderDetail(ArrayList<OrderDetail> orderDetails, String orderID) throws SQLException, ClassNotFoundException {
+    private boolean saveOrderDetail(ArrayList<OrderDetail> orderDetails, String orderID) throws SQLException, ClassNotFoundException {
         String table;
         for (OrderDetail detail:orderDetails
              ) {
@@ -72,5 +73,22 @@ public class OrderController {
           if (preparedStatement.executeUpdate()>0){}else{return false;}
         }
         return true;
+    }
+
+    public Order getOrderDetail(String orderID,String orderType) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT c.CustID,c.CustName,o.SubTotal,o.DeliveryCharges,o.Total,o.OrderStatus from Orders o INNER JOIN customer c ON c.CustID=o.CustID WHERE OrderType='" + orderType + "' AND OrderID='" + orderID + "'").executeQuery();
+          if (resultSet.next()){
+              ArrayList<OrderDetail> itemOnOrder = getItemOnOrder(orderID);
+              return new Order(resultSet.getString(1),resultSet.getString(2),resultSet.getDouble(3),resultSet.getDouble(4),resultSet.getDouble(5),resultSet.getString(6),itemOnOrder);
+          }else {return null;}
+
+    }
+    private ArrayList<OrderDetail> getItemOnOrder(String orderID) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("(SELECT MealID As foodCode,Description,SellingPrice,Quantity,\"Meal\" as tempField from orderMealDetail WHERE OrderID='" + orderID + "')UNION (SELECT PizzaID As foodCode,Description,SellingPrice,Quantity,\"Pizza\" as tempField from orderPizzaDetail WHERE  OrderID='" + orderID + "')UNION (SELECT SandwichID As foodCode,Description,SellingPrice,Quantity,\"Sub\" as tempField from orderSubDetail WHERE  OrderID='" + orderID + "')UNION (SELECT BeverageID As foodCode,Description,SellingPrice,Quantity,\"Drink\" as tempField from orderDrinkDetail WHERE  OrderID='" + orderID + "')UNION (SELECT PackageID As foodCode,Description,SellingPrice,Quantity,\"Package\" as tempField from orderPackageDetail WHERE  OrderID='" + orderID + "') ;").executeQuery();
+        ArrayList<OrderDetail> list=new ArrayList<>();
+        while (resultSet.next()){
+            list.add(new OrderDetail(resultSet.getString(1),resultSet.getString(2),resultSet.getDouble(3),resultSet.getInt(4),resultSet.getString(5)));
+        }
+        return list;
     }
 }

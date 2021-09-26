@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="context" prefHeight="684.0" prefWidth="1423.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageOrderFormController">
+<AnchorPane fx:id="mainContext" prefHeight="684.0" prefWidth="1423.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageOrderFormController">
    <children>
       <TabPane prefHeight="684.0" prefWidth="1423.0" style="-fx-border-color: #2c2c54;" tabClosingPolicy="UNAVAILABLE" tabMinHeight="50.0">
         <tabs>
@@ -21,7 +21,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="652.0" prefWidth="1421.0">
                      <children>
-                        <TextField layoutX="258.0" layoutY="24.0" prefHeight="37.0" prefWidth="248.0" promptText="Search By Order ID/Mobile" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                        <TextField fx:id="txtSearchDT" layoutX="258.0" layoutY="24.0" onAction="#searchOrder" prefHeight="37.0" prefWidth="248.0" promptText="Search By Order ID/Mobile" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -31,17 +31,18 @@
                               <Font name="System Bold" size="22.0" />
                            </font>
                         </Text>
-                        <Text layoutX="787.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avishka" wrappingWidth="203.2500039115548">
+                        <Text fx:id="lblCustomerNameDT" layoutX="787.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="203.2500039115548">
                            <font>
                               <Font name="System Bold" size="24.0" />
                            </font>
                         </Text>
-                        <TableView layoutX="15.0" layoutY="117.0" prefHeight="271.0" prefWidth="902.0">
+                        <TableView fx:id="dineTakeTableView" layoutX="15.0" layoutY="117.0" prefHeight="271.0" prefWidth="902.0">
                           <columns>
-                            <TableColumn prefWidth="113.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Food Code" />
-                            <TableColumn prefWidth="480.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Description" />
-                              <TableColumn prefWidth="168.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Price" />
-                              <TableColumn prefWidth="141.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Quantity" />
+                            <TableColumn prefWidth="127.99996948242188" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Food Code" />
+                            <TableColumn prefWidth="369.0000305175781" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Description" />
+                              <TableColumn prefWidth="175.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Price" />
+                              <TableColumn prefWidth="83.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Quantity" />
+                              <TableColumn prefWidth="147.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Amount" />
                           </columns>
                         </TableView>
                         <Pane layoutX="947.0" layoutY="89.0" prefHeight="370.0" prefWidth="438.0" style="-fx-border-color: #2c2c54;">
@@ -113,7 +114,7 @@
                               <Font name="System Bold" size="22.0" />
                            </font>
                         </Text>
-                        <Text fill="#ff0202" layoutX="115.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1478.00" wrappingWidth="203.2500039115548">
+                        <Text fx:id="lblTotal" fill="#ff0202" layoutX="115.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1478.00" wrappingWidth="203.2500039115548">
                            <font>
                               <Font name="System Bold" size="28.0" />
                            </font>
@@ -128,7 +129,7 @@
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </JFXButton>
-                        <ComboBox layoutX="18.0" layoutY="24.0" prefHeight="44.0" prefWidth="160.0" promptText="Order Type" style="-fx-border-color: #2c3e50; -fx-border-width: 3; -fx-font-size: 17; -fx-font-weight: bold;" />
+                        <ComboBox fx:id="cmbOrderTypeDT" layoutX="18.0" layoutY="24.0" prefHeight="44.0" prefWidth="160.0" promptText="Order Type" style="-fx-border-color: #2c3e50; -fx-border-width: 3; -fx-font-size: 17; -fx-font-weight: bold;" />
                      </children>
                   </AnchorPane>
             </content>

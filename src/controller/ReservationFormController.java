@@ -164,7 +164,7 @@ public class ReservationFormController {
 
     public void getReservations(Event event) {
         try {
-            tblView.setItems(new ReservationController().getReservationOnDate(Date.valueOf(viewDatePicker.getValue())));
+            tblView.setItems(new ReservationController().getReservationOnDate(Date.valueOf(viewDatePicker.getValue().toString())));
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

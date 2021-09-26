@@ -227,7 +227,7 @@
          <effect>
             <ColorAdjust brightness="-0.52" />
          </effect></Separator>
-      <JFXButton fx:id="btnPlaceOrder" buttonType="RAISED" layoutX="1103.0" layoutY="954.0" onAction="#placeOrder" prefHeight="25.0" prefWidth="181.0" style="-fx-background-color: #40739e;" stylesheets="@../styles/Styles.css" text="Place Order " textFill="WHITE">
+      <JFXButton fx:id="btnPlaceOrder" buttonType="RAISED" layoutX="1226.0" layoutY="954.0" onAction="#placeOrder" prefHeight="25.0" prefWidth="181.0" style="-fx-background-color: #40739e;" stylesheets="@../styles/Styles.css" text="Place Order " textFill="WHITE">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
@@ -242,12 +242,7 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="btnPay" buttonType="RAISED" layoutX="1388.0" layoutY="954.0" onAction="#moveToPaymentForm" prefHeight="7.0" prefWidth="181.0" style="-fx-background-color: #2ecc71;" stylesheets="@../styles/Styles.css" text="Pay">
-         <font>
-            <Font name="System Bold" size="25.0" />
-         </font>
-      </JFXButton>
-      <JFXButton fx:id="btnCancelOrder" buttonType="RAISED" layoutX="1667.0" layoutY="954.0" onAction="#cancelOrder" prefHeight="54.0" prefWidth="189.0" style="-fx-background-color: #ff3f34;" stylesheets="@../styles/Styles.css" text="Cancel Order" textFill="WHITE">
+      <JFXButton fx:id="btnCancelOrder" buttonType="RAISED" layoutX="1518.0" layoutY="955.0" onAction="#cancelOrder" prefHeight="54.0" prefWidth="189.0" style="-fx-background-color: #ff3f34;" stylesheets="@../styles/Styles.css" text="Cancel Order" textFill="WHITE">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
@@ -277,5 +272,35 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </JFXButton>
+      <TextField fx:id="txtCash" layoutX="1707.0" layoutY="711.0" onAction="#doPayment" prefHeight="50.0" prefWidth="181.0" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <Text layoutX="1564.0" layoutY="744.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cash     :" wrappingWidth="101.00004124641418">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="1664.0" layoutY="744.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rs" wrappingWidth="31.28515625">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <Text layoutX="1564.0" layoutY="816.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Balance :" wrappingWidth="101.0000182390213">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="1667.0" layoutY="816.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rs" wrappingWidth="31.28515625">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <Text fx:id="lblBalance" fill="#7f07ff" layoutX="1711.0" layoutY="817.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="101.0000182390213">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

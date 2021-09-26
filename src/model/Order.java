@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Order {
     private String orderID;
     private String custId;
+    private String custName;
     private String orderDate;
     private String orderTime;
     private String orderType;
@@ -13,6 +14,24 @@ public class Order {
     private double total;
     private String orderStatus;
     private ArrayList<OrderDetail> orderedItem;
+
+    public String getCustName() {
+        return custName;
+    }
+
+    public void setCustName(String custName) {
+        this.custName = custName;
+    }
+
+    public Order(String custId, String custName, double subTotal, double deliveryCharges, double total, String orderStatus, ArrayList<OrderDetail> orderedItem) {
+        this.custId = custId;
+        this.custName = custName;
+        this.subTotal = subTotal;
+        this.deliveryCharges = deliveryCharges;
+        this.total = total;
+        this.orderStatus = orderStatus;
+        this.orderedItem = orderedItem;
+    }
 
     public Order(String orderID, String custId, String orderDate, String orderTime, String orderType, double subTotal, double deliveryCharges, double total, String orderStatus, ArrayList<OrderDetail> orderedItem) {
         this.orderID = orderID;

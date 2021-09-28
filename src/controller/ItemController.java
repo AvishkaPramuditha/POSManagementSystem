@@ -292,4 +292,33 @@ public class ItemController {
         }
         return drinkButtons;
     }
+
+    public MealButton getMealDetailWithDiscount(String mealID) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select m.MealID,m.Description,m.Portion,m.isAvailable,m.Unitprice,d.DiscountPrice From meal m LEFT JOIN discount d ON m.MealID=d.MealID WHERE m.MealID='" + mealID + "'").executeQuery();
+        if (resultSet.next()){
+          return  new MealButton(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getBoolean(4),resultSet.getDouble(5),resultSet.getDouble(6));
+        }
+        return null;
+    }
+    public PizzaButton getPizzaDetailWithDiscount(String pizzaID) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select p.PizzaID,p.Description,p.Size,p.QuantityOnHand,p.Unitprice,d.DiscountPrice From pizza p LEFT JOIN discount d ON p.PizzaID=d.PizzaID WHERE p.PizzaID='" +pizzaID+"'").executeQuery();
+      if (resultSet.next()){
+         return    new PizzaButton(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4),resultSet.getDouble(5),resultSet.getDouble(6));
+        }
+        return null;
+    }
+    public SubButton getSubDetailWithDiscount(String sandwichID) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select s.SandwichID,s.Description,s.QuantityOnHand,s.Unitprice,d.DiscountPrice From subBurgersAndOthers s LEFT JOIN discount d ON s.SandwichID=d.SandwichID WHERE s.SandwichID='"+sandwichID+"'").executeQuery();
+        if (resultSet.next()){
+            return new SubButton(resultSet.getString(1),resultSet.getString(2),resultSet.getInt(3),resultSet.getDouble(4),resultSet.getDouble(5));
+        }
+        return  null;
+    }
+    public DrinkButton getDrinkDetailWithDiscount(String beverageID) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("select di.BeverageID,di.Description,di.isAvailable,di.Unitprice,d.DiscountPrice From drink di LEFT JOIN discount d ON di.BeverageID=d.BeverageID WHERE di.BeverageID='"+beverageID+"'").executeQuery();
+       if(resultSet.next()){
+           return new DrinkButton(resultSet.getString(1),resultSet.getString(2),resultSet.getBoolean(3),resultSet.getDouble(4),resultSet.getDouble(5));
+        }
+        return null;
+    }
 }

@@ -17,11 +17,11 @@
    <children>
       <TabPane prefHeight="684.0" prefWidth="1423.0" style="-fx-border-color: #2c2c54;" tabClosingPolicy="UNAVAILABLE" tabMinHeight="50.0">
         <tabs>
-          <Tab style="-fx-font-size: 15; -fx-font-weight: bold;" text="Dine-In &amp; Take-Away">
+          <Tab fx:id="tabDineIn" onSelectionChanged="#changeTab" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Dine-In &amp; Take-Away">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="652.0" prefWidth="1421.0">
                      <children>
-                        <TextField fx:id="txtSearchDT" layoutX="258.0" layoutY="24.0" onAction="#searchOrder" prefHeight="37.0" prefWidth="248.0" promptText="Search By Order ID/Mobile" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                        <TextField fx:id="txtSearchDT" layoutX="258.0" layoutY="24.0" onAction="#searchOrder" prefHeight="37.0" prefWidth="248.0" promptText="Search By Order ID" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -47,31 +47,31 @@
                         </TableView>
                         <Pane layoutX="947.0" layoutY="89.0" prefHeight="370.0" prefWidth="438.0" style="-fx-border-color: #2c2c54;">
                            <children>
-                              <ComboBox layoutX="104.0" layoutY="17.0" prefHeight="38.0" prefWidth="294.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
+                              <ComboBox fx:id="cmbMeal" layoutX="104.0" layoutY="17.0" onHiding="#cmbOnHide" prefHeight="38.0" prefWidth="294.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
                               <Text layoutX="28.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Meal :" wrappingWidth="76.25000391155481">
                                  <font>
                                     <Font name="System Bold" size="21.0" />
                                  </font>
                               </Text>
-                              <ComboBox layoutX="101.0" layoutY="309.0" prefHeight="38.0" prefWidth="301.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
+                              <ComboBox fx:id="cmbDrink" layoutX="101.0" layoutY="309.0" onHiding="#cmbOnHide" prefHeight="38.0" prefWidth="301.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
                               <Text layoutX="28.0" layoutY="334.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drink :" wrappingWidth="76.25000391155481">
                                  <font>
                                     <Font name="System Bold" size="21.0" />
                                  </font>
                               </Text>
-                              <ComboBox layoutX="105.0" layoutY="94.0" prefHeight="38.0" prefWidth="294.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
+                              <ComboBox fx:id="cmbPizza" layoutX="105.0" layoutY="94.0" onHiding="#cmbOnHide" prefHeight="38.0" prefWidth="294.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
                               <Text layoutX="28.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pizza:" wrappingWidth="63.25000391155481">
                                  <font>
                                     <Font name="System Bold" size="21.0" />
                                  </font>
                               </Text>
-                              <ComboBox layoutX="171.0" layoutY="166.0" prefHeight="38.0" prefWidth="230.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
+                              <ComboBox fx:id="cmbSub" layoutX="171.0" layoutY="166.0" onHiding="#cmbOnHide" prefHeight="38.0" prefWidth="230.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
                               <Text layoutX="28.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sub_Burgers : " wrappingWidth="143.2500039115548">
                                  <font>
                                     <Font name="System Bold" size="21.0" />
                                  </font>
                               </Text>
-                              <ComboBox layoutX="140.0" layoutY="240.0" prefHeight="38.0" prefWidth="261.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
+                              <ComboBox fx:id="cmbPackage" layoutX="140.0" layoutY="240.0" onHiding="#cmbOnHide" prefHeight="38.0" prefWidth="261.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
                               <Text layoutX="28.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Packages :" wrappingWidth="108.25000391155481">
                                  <font>
                                     <Font name="System Bold" size="21.0" />
@@ -79,32 +79,27 @@
                               </Text>
                            </children>
                         </Pane>
-                        <TextField layoutX="1044.0" layoutY="481.0" prefHeight="45.0" prefWidth="106.0" promptText="Quantity" style="-fx-border-color: #2c3e50; -fx-font-weight: bold;" stylesheets="@../styles/Styles.css">
+                        <TextField fx:id="txtQuantity" layoutX="1011.0" layoutY="503.0" prefHeight="45.0" prefWidth="106.0" promptText="Quantity" style="-fx-border-color: #2c3e50; -fx-font-weight: bold;" stylesheets="@../styles/Styles.css">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </TextField>
-                        <JFXButton buttonType="RAISED" layoutX="1195.0" layoutY="482.0" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #218c74;" stylesheets="@../styles/Styles.css" text="Add" textFill="WHITE">
+                        <JFXButton fx:id="btnAdd" buttonType="RAISED" layoutX="1162.0" layoutY="504.0" onAction="#addQuantity" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #218c74;" stylesheets="@../styles/Styles.css" text="Add" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton buttonType="RAISED" layoutX="815.0" layoutY="397.0" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #ff5252;" stylesheets="@../styles/Styles.css" text="Delete" textFill="WHITE">
+                        <JFXButton buttonType="RAISED" layoutX="815.0" layoutY="397.0" onAction="#deleteItem" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #ff5252;" stylesheets="@../styles/Styles.css" text="Delete" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton buttonType="RAISED" layoutX="40.0" layoutY="532.0" prefHeight="42.0" prefWidth="130.0" style="-fx-background-color: #ffb142;" stylesheets="@../styles/Styles.css" text="Get Invoice">
+                        <JFXButton buttonType="RAISED" layoutX="238.0" layoutY="548.0" prefHeight="42.0" prefWidth="130.0" style="-fx-background-color: #ffb142;" stylesheets="@../styles/Styles.css" text="Get Invoice">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton buttonType="RAISED" layoutX="370.0" layoutY="532.0" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #34ace0;" stylesheets="@../styles/Styles.css" text="Modify" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="19.0" />
-                           </font>
-                        </JFXButton>
-                        <JFXButton buttonType="RAISED" layoutX="203.0" layoutY="532.0" onAction="#moveToPayment" prefHeight="42.0" prefWidth="130.0" style="-fx-background-color: #2ecc71;" stylesheets="@../styles/Styles.css" text="Pay">
+                        <JFXButton buttonType="RAISED" layoutX="406.0" layoutY="548.0" onAction="#modifyOrder" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #34ace0;" stylesheets="@../styles/Styles.css" text="Modify" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
@@ -114,7 +109,7 @@
                               <Font name="System Bold" size="22.0" />
                            </font>
                         </Text>
-                        <Text fx:id="lblTotal" fill="#ff0202" layoutX="115.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1478.00" wrappingWidth="203.2500039115548">
+                        <Text fx:id="lblTotal" fill="#ff0202" layoutX="115.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="203.2500039115548">
                            <font>
                               <Font name="System Bold" size="28.0" />
                            </font>
@@ -124,21 +119,56 @@
                               <Font name="System Bold" size="21.0" />
                            </font>
                         </Text>
-                        <JFXButton buttonType="RAISED" layoutX="505.0" layoutY="532.0" prefHeight="42.0" prefWidth="154.0" style="-fx-background-color: #ff5252;" stylesheets="@../styles/Styles.css" text="Cancel Order" textFill="WHITE">
+                        <JFXButton buttonType="RAISED" layoutX="541.0" layoutY="548.0" onAction="#cancelOrder" prefHeight="42.0" prefWidth="154.0" style="-fx-background-color: #ff5252;" stylesheets="@../styles/Styles.css" text="Cancel Order" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </JFXButton>
                         <ComboBox fx:id="cmbOrderTypeDT" layoutX="18.0" layoutY="24.0" prefHeight="44.0" prefWidth="160.0" promptText="Order Type" style="-fx-border-color: #2c3e50; -fx-border-width: 3; -fx-font-size: 17; -fx-font-weight: bold;" />
+                        <JFXButton alignment="CENTER" buttonType="RAISED" layoutX="1314.0" layoutY="462.0" onAction="#reset" prefHeight="37.0" prefWidth="68.0" style="-fx-background-color: #2ecc71;" stylesheets="@../styles/Styles.css" text="Reset " textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </JFXButton>
+                        <TextField fx:id="txtCashDT" layoutX="114.0" layoutY="455.0" onAction="#doPayment" prefHeight="50.0" prefWidth="181.0" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="14.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cash :" wrappingWidth="77.00004124641418">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="455.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rs" wrappingWidth="31.28515625">
+                           <font>
+                              <Font name="System Bold" size="21.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="350.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Balance :" wrappingWidth="101.0000182390213">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="84.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rs" wrappingWidth="31.28515625">
+                           <font>
+                              <Font name="System Bold" size="21.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="lblBalanceDT" fill="#0713f5" layoutX="491.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="203.2500039115548">
+                           <font>
+                              <Font name="System Bold" size="28.0" />
+                           </font>
+                        </Text>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab style="-fx-font-size: 15; -fx-font-weight: bold;" text="Delivery">
+            <Tab onSelectionChanged="#changeTab" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Delivery">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="618.0" prefWidth="1421.0">
                      <children>
-                        <TextField layoutX="20.0" layoutY="22.0" prefHeight="37.0" prefWidth="248.0" promptText="Search By Order ID/Mobile" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                        <TextField fx:id="txtSearchD" layoutX="20.0" layoutY="22.0" onAction="#searchOrder" prefHeight="37.0" prefWidth="248.0" promptText="Search By Order ID" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -148,46 +178,47 @@
                               <Font name="System Bold" size="22.0" />
                            </font>
                         </Text>
-                        <Text layoutX="552.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avishka" wrappingWidth="203.2500039115548">
+                        <Text fx:id="lblCustomerNameD" layoutX="552.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="203.2500039115548">
                            <font>
                               <Font name="System Bold" size="24.0" />
                            </font>
                         </Text>
-                        <TableView layoutX="15.0" layoutY="117.0" prefHeight="271.0" prefWidth="902.0">
+                        <TableView fx:id="tableViewD" layoutX="15.0" layoutY="117.0" prefHeight="271.0" prefWidth="902.0">
                            <columns>
-                              <TableColumn prefWidth="113.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Food Code" />
-                              <TableColumn prefWidth="480.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Description" />
-                              <TableColumn prefWidth="168.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Price" />
-                              <TableColumn prefWidth="141.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Quantity" />
+                              <TableColumn prefWidth="153.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Food Code" />
+                              <TableColumn prefWidth="357.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Description" />
+                              <TableColumn prefWidth="148.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Price" />
+                              <TableColumn prefWidth="86.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Quantity" />
+                              <TableColumn prefWidth="157.0" style="-fx-font-size: 14; -fx-background-color: #aaa69d;" text="Amount" />
                            </columns>
                         </TableView>
                         <Pane layoutX="946.0" layoutY="145.0" prefHeight="370.0" prefWidth="438.0" style="-fx-border-color: #2c2c54;">
                            <children>
-                              <ComboBox layoutX="104.0" layoutY="17.0" prefHeight="38.0" prefWidth="294.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
+                              <ComboBox fx:id="cmbMealD" layoutX="104.0" layoutY="17.0" onHiding="#cmbOnHide" prefHeight="38.0" prefWidth="294.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
                               <Text layoutX="28.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Meal :" wrappingWidth="76.25000391155481">
                                  <font>
                                     <Font name="System Bold" size="21.0" />
                                  </font>
                               </Text>
-                              <ComboBox layoutX="101.0" layoutY="309.0" prefHeight="38.0" prefWidth="301.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
+                              <ComboBox fx:id="cmbDrinkD" layoutX="101.0" layoutY="309.0" onHiding="#cmbOnHide" prefHeight="38.0" prefWidth="301.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
                               <Text layoutX="28.0" layoutY="334.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drink :" wrappingWidth="76.25000391155481">
                                  <font>
                                     <Font name="System Bold" size="21.0" />
                                  </font>
                               </Text>
-                              <ComboBox layoutX="105.0" layoutY="94.0" prefHeight="38.0" prefWidth="294.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
+                              <ComboBox fx:id="cmbPizzaD" layoutX="105.0" layoutY="94.0" onHiding="#cmbOnHide" prefHeight="38.0" prefWidth="294.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
                               <Text layoutX="28.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pizza:" wrappingWidth="63.25000391155481">
                                  <font>
                                     <Font name="System Bold" size="21.0" />
                                  </font>
                               </Text>
-                              <ComboBox layoutX="171.0" layoutY="166.0" prefHeight="38.0" prefWidth="230.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
+                              <ComboBox fx:id="cmbSubD" layoutX="171.0" layoutY="166.0" onHiding="#cmbOnHide" prefHeight="38.0" prefWidth="230.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
                               <Text layoutX="28.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sub_Burgers : " wrappingWidth="143.2500039115548">
                                  <font>
                                     <Font name="System Bold" size="21.0" />
                                  </font>
                               </Text>
-                              <ComboBox layoutX="140.0" layoutY="240.0" prefHeight="38.0" prefWidth="261.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
+                              <ComboBox fx:id="cmbPackageD" layoutX="140.0" layoutY="240.0" onHiding="#cmbOnHide" prefHeight="38.0" prefWidth="261.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3;" />
                               <Text layoutX="28.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Packages :" wrappingWidth="108.25000391155481">
                                  <font>
                                     <Font name="System Bold" size="21.0" />
@@ -195,32 +226,27 @@
                               </Text>
                            </children>
                         </Pane>
-                        <TextField layoutX="1053.0" layoutY="537.0" prefHeight="29.0" prefWidth="96.0" promptText="Quantity" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                        <TextField fx:id="txtQuantityD" layoutX="1010.0" layoutY="551.0" prefHeight="29.0" prefWidth="96.0" promptText="Quantity" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </TextField>
-                        <JFXButton buttonType="RAISED" layoutX="1194.0" layoutY="538.0" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #218c74;" stylesheets="@../styles/Styles.css" text="Add" textFill="WHITE">
+                        <JFXButton fx:id="btnAddD" buttonType="RAISED" layoutX="1151.0" layoutY="552.0" onAction="#addQuantity" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #218c74;" stylesheets="@../styles/Styles.css" text="Add" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton buttonType="RAISED" layoutX="815.0" layoutY="397.0" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #ff5252;" stylesheets="@../styles/Styles.css" text="Delete" textFill="WHITE">
+                        <JFXButton buttonType="RAISED" layoutX="815.0" layoutY="397.0" onAction="#deleteItem" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #ff5252;" stylesheets="@../styles/Styles.css" text="Delete" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton buttonType="RAISED" layoutX="40.0" layoutY="540.0" prefHeight="42.0" prefWidth="130.0" style="-fx-background-color: #ffb142;" stylesheets="@../styles/Styles.css" text="Get Invoice">
+                        <JFXButton buttonType="RAISED" layoutX="474.0" layoutY="569.0" prefHeight="42.0" prefWidth="130.0" style="-fx-background-color: #ffb142;" stylesheets="@../styles/Styles.css" text="Get Invoice">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton buttonType="RAISED" layoutX="370.0" layoutY="540.0" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #34ace0;" stylesheets="@../styles/Styles.css" text="Modify" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="19.0" />
-                           </font>
-                        </JFXButton>
-                        <JFXButton buttonType="RAISED" layoutX="198.0" layoutY="540.0" onAction="#moveToPayment" prefHeight="42.0" prefWidth="130.0" style="-fx-background-color: #2ecc71;" stylesheets="@../styles/Styles.css" text="Pay">
+                        <JFXButton buttonType="RAISED" layoutX="639.0" layoutY="569.0" onAction="#modifyOrder" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: #34ace0;" stylesheets="@../styles/Styles.css" text="Modify" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
@@ -230,7 +256,7 @@
                               <Font name="System Bold" size="22.0" />
                            </font>
                         </Text>
-                        <Text layoutX="161.0" layoutY="427.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1478.00" wrappingWidth="203.2500039115548">
+                        <Text fx:id="lblSubTotalD" layoutX="161.0" layoutY="427.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1478.00" wrappingWidth="203.2500039115548">
                            <font>
                               <Font name="System Bold" size="28.0" />
                            </font>
@@ -240,7 +266,7 @@
                               <Font name="System Bold" size="21.0" />
                            </font>
                         </Text>
-                        <JFXButton buttonType="RAISED" layoutX="505.0" layoutY="540.0" prefHeight="42.0" prefWidth="154.0" style="-fx-background-color: #ff5252;" stylesheets="@../styles/Styles.css" text="Cancel Order" textFill="WHITE">
+                        <JFXButton buttonType="RAISED" layoutX="763.0" layoutY="569.0" onAction="#cancelOrder" prefHeight="42.0" prefWidth="154.0" style="-fx-background-color: #ff5252;" stylesheets="@../styles/Styles.css" text="Cancel Order" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
@@ -250,7 +276,7 @@
                               <Font name="System Bold" size="22.0" />
                            </font>
                         </Text>
-                        <Text fill="#ff0202" layoutX="187.0" layoutY="475.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1478.00" wrappingWidth="203.2500039115548">
+                        <Text fx:id="lblGrandTotalD" fill="#ff0202" layoutX="187.0" layoutY="475.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1478.00" wrappingWidth="203.2500039115548">
                            <font>
                               <Font name="System Bold" size="31.0" />
                            </font>
@@ -265,7 +291,7 @@
                               <Font name="System Bold" size="22.0" />
                            </font>
                         </Text>
-                        <Text layoutX="599.0" layoutY="429.0" strokeType="OUTSIDE" strokeWidth="0.0" text="147.80" wrappingWidth="203.2500039115548">
+                        <Text fx:id="lblDeliveryChargesD" layoutX="599.0" layoutY="429.0" strokeType="OUTSIDE" strokeWidth="0.0" text="147.80" wrappingWidth="203.2500039115548">
                            <font>
                               <Font name="System Bold" size="28.0" />
                            </font>
@@ -275,12 +301,47 @@
                               <Font name="System Bold" size="21.0" />
                            </font>
                         </Text>
-                        <ComboBox layoutX="767.0" layoutY="23.0" prefHeight="44.0" prefWidth="190.0" promptText="Driver Name" style="-fx-border-color: #2c3e50; -fx-border-width: 3; -fx-font-size: 17; -fx-font-weight: bold;" />
-                        <TextArea layoutX="993.0" layoutY="12.0" prefHeight="113.0" prefWidth="358.0" promptText="Address" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                        <ComboBox fx:id="cmbDriver" layoutX="767.0" layoutY="23.0" prefHeight="44.0" prefWidth="190.0" promptText="Driver Name" style="-fx-border-color: #2c3e50; -fx-border-width: 3; -fx-font-size: 17; -fx-font-weight: bold;" />
+                        <TextArea fx:id="txtAddress" editable="false" layoutX="993.0" layoutY="12.0" prefHeight="113.0" prefWidth="358.0" promptText="Address" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </TextArea>
+                        <JFXButton alignment="CENTER" buttonType="RAISED" layoutX="1318.0" layoutY="519.0" onAction="#reset" prefHeight="37.0" prefWidth="68.0" style="-fx-background-color: #2ecc71;" stylesheets="@../styles/Styles.css" text="Reset " textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </JFXButton>
+                        <TextField fx:id="txtCashD" layoutX="113.0" layoutY="498.0" onAction="#doPayment" prefHeight="50.0" prefWidth="181.0" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="13.0" layoutY="530.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cash :" wrappingWidth="77.00004124641418">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="420.0" layoutY="532.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rs" wrappingWidth="31.28515625">
+                           <font>
+                              <Font name="System Bold" size="21.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="313.0" layoutY="532.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Balance :" wrappingWidth="101.0000182390213">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="lblBalanceD" fill="#0713f5" layoutX="452.0" layoutY="532.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="203.2500039115548">
+                           <font>
+                              <Font name="System Bold" size="28.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="80.0" layoutY="531.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rs" wrappingWidth="31.28515625">
+                           <font>
+                              <Font name="System Bold" size="21.0" />
+                           </font>
+                        </Text>
                      </children>
                   </AnchorPane>
                </content>

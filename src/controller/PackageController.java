@@ -76,7 +76,16 @@ public class PackageController {
       }
            return null;
       }
-      private ArrayList<PackageDetail> getPackageItems(String packageID) throws SQLException, ClassNotFoundException {
+
+   /*   public ObservableList<Package> getPackageDetailForCmb() throws SQLException, ClassNotFoundException {
+          ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT P FROM Package ").executeQuery();
+          ObservableList<Package> list=FXCollections.observableArrayList();
+          while (resultSet.next()){
+              list.add(new Package(resultSet.getString(1),resultSet.getString(2),resultSet.getDouble(3),getPackageItems(resultSet.getString(1))));
+          }
+          return list;
+      }*/
+     public ArrayList<PackageDetail> getPackageItems(String packageID) throws SQLException, ClassNotFoundException {
           ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT PackageID,MealID,PizzaID,SandWichID,BeverageID,Quantity FROM packageDetail WHERE PackageID='" + packageID + "'").executeQuery();
         ArrayList<PackageDetail> detailArrayList=new ArrayList<>();
          while (resultSet.next()){

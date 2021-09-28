@@ -64,7 +64,7 @@ public class CashierMainFormController {
     public TextField txtCash;
     public Text lblBalance;
     private String customerID;
-    public String cashierID;
+    public static String cashierID;
     private  ObservableList<OrderTM> orderTMS= FXCollections.observableArrayList();
     public void initialize() {
         txtCash.setDisable(true);
@@ -142,7 +142,7 @@ public class CashierMainFormController {
                             String description;
                             if (detail.getFoodType()=="Meal"){description=new ItemController().getMealDescription(detail.getFoodCode());}else if (detail.getFoodType()=="Pizza"){description=new ItemController().getPizzaDescription(detail.getFoodCode());}
                             else if(detail.getFoodType()=="Sub"){description=new ItemController().getSubDescription(detail.getFoodCode());}else {description=new ItemController().getDrinkDescription(detail.getFoodCode());}
-                            OrderTM orderT = new OrderTM(packageDetail.getPackageID() + "-" + detail.getFoodCode(), description, 0, detail.getQuantity(), 0,null);
+                            OrderTM orderT = new OrderTM(packageDetail.getPackageID() + "-" + detail.getFoodCode(), description, 0, detail.getQuantity(), 0,"X");
                             orderTMS.add(orderT);
                             calculation();
                         }
@@ -429,7 +429,7 @@ public class CashierMainFormController {
 
     public void decreaseQuantity(ActionEvent actionEvent) {
         OrderTM selectedItem = orderTblView.getSelectionModel().getSelectedItem();
-        if (selectedItem.getQuantity()!=0&&selectedItem.getPrice()!=0){
+        if (selectedItem.getQuantity()>1&&selectedItem.getPrice()!=0){
             selectedItem.setQuantity(selectedItem.getQuantity()-1);
             selectedItem.setAmount(selectedItem.getQuantity()*selectedItem.getPrice());
             orderTblView.refresh();
@@ -450,12 +450,25 @@ public class CashierMainFormController {
        lblDelivery.setText(String.valueOf(deliveryCharges));
        lblGrandTot.setText(String.valueOf(grandTotal));
     }
+    private  boolean setupPackageOrderItem(ArrayList<OrderDetail> od,OrderDetail oderItem){
+        for (OrderDetail detail:od
+             ) {
+            if (detail.getFoodID().equals(oderItem.getFoodID())&&detail.getDescription().equals(oderItem.getDescription())){
+                detail.setQuantity(detail.getQuantity()+oderItem.getQuantity());
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void placeOrder(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
       ArrayList<OrderDetail> list=new ArrayList<>();
         for (OrderTM tm:orderTMS
              ) {
-            list.add(new OrderDetail(tm.getFoodCode(),tm.getDescription(),tm.getPrice(),tm.getQuantity(),tm.getFoodType()));
+            OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
+            if (!setupPackageOrderItem(list,detail)){
+                list.add(detail);
+            }
         }
         boolean b = new OrderController().placeOrder(new Order(lblOrderNo.getText(), customerID, lblDate.getText(), lblTime.getText(), cmbOrderType.getSelectionModel().getSelectedItem(), Double.valueOf(lblSubTot.getText()), Double.valueOf(lblDelivery.getText()), Double.valueOf(lblGrandTot.getText()), "NonPaid", list));
         if (cmbOrderType.getSelectionModel().getSelectedItem()=="Delivery"){b=new DeliveryController().addDelivery(lblOrderNo.getText(),cmbDriver.getSelectionModel().getSelectedItem().getEmployeeID());}
@@ -505,6 +518,7 @@ public class CashierMainFormController {
             preparedStatement.setDouble(5,paidAmountD);
             preparedStatement.setDouble(6,balanceD);
             boolean b=preparedStatement.executeUpdate()>0;
+            if(b){b=new OrderController().orderPaid(lblOrderNo.getText());}
             Alert alert;
             if (b){
                 alert = new Alert(Alert.AlertType.CONFIRMATION, "Paid  ....", ButtonType.OK);

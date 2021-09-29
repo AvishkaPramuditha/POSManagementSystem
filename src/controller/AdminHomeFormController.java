@@ -1,18 +1,43 @@
 package controller;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class AdminHomeFormController {
 
     public AnchorPane context;
+    public Text lblDate;
+    public Text lblTime;
+    public Text lblAdmin;
+
+    public void  initialize(){
+    setDateAndTime();
+    }
+
+    private void setDateAndTime(){
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("hh:mm:ss a");
+            lblDate.setText(LocalDateTime.now().format(formatter1));
+            lblTime.setText(LocalDateTime.now().format(formatter2));
+        }), new KeyFrame(Duration.seconds(1)));
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+    }
 
     public void logout(ActionEvent actionEvent) throws IOException {
         context.getChildren().clear();

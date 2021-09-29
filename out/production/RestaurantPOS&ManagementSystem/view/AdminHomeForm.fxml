@@ -54,12 +54,12 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Text>
-            <Text layoutX="881.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2021/9/5">
+            <Text fx:id="lblDate" layoutX="881.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2021/9/5">
                <font>
                   <Font name="System Bold" size="29.0" />
                </font>
             </Text>
-            <Text layoutX="1408.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3:15 AM">
+            <Text fx:id="lblTime" layoutX="1408.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3:15 AM">
                <font>
                   <Font name="System Bold" size="29.0" />
                </font>
@@ -74,7 +74,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Text>
-            <Text layoutX="252.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avishka">
+            <Text fx:id="lblAdmin" layoutX="252.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avishka">
                <font>
                   <Font name="System Bold" size="29.0" />
                </font>

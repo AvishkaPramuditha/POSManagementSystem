@@ -134,7 +134,6 @@ public class ManageOrderFormController {
                             continue;
                         }
                         tableItems.add(new OrderTM(detail.getFoodID(), detail.getDescription(), detail.getSellingPrice(), detail.getQuantity(), (detail.getSellingPrice() * detail.getQuantity()), detail.getFoodType()));
-
                     }
                     dineTakeTableView.setItems(tableItems);
                     btnAdd.setDisable(false);
@@ -190,7 +189,6 @@ public class ManageOrderFormController {
                 e.printStackTrace();
             }
         }
-
     }
     private boolean searchOrderTM(OrderTM tm) {
         if (tabDineIn.isSelected()){
@@ -374,7 +372,6 @@ public class ManageOrderFormController {
                                 }
                             }
                         }
-
                     }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
                 }
             }
@@ -473,6 +470,8 @@ public class ManageOrderFormController {
                    Alert alert;
                    if (b) {
                        alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Cancelled Successfully !", ButtonType.OK);
+                       clearDelivery();
+                       clearDineTakeAway();
                    }else {
                        alert=new Alert(Alert.AlertType.CONFIRMATION, "Something Went Wrong try Again ", ButtonType.CLOSE);
                    }
@@ -503,8 +502,6 @@ public class ManageOrderFormController {
         }
         return false;
     }
-
-
 
     public void modifyOrder(ActionEvent actionEvent) {
         if (tabDineIn.isSelected()){
@@ -553,6 +550,7 @@ public class ManageOrderFormController {
             boolean b = true;
             boolean b1 = true;
             boolean b2 = true;
+            boolean b3=true;
             ArrayList<OrderDetail> orderItem=new ArrayList<>();
             try {
                 ArrayList<OrderDetail> pd=new ArrayList<>();
@@ -580,12 +578,10 @@ public class ManageOrderFormController {
             if (!pd.isEmpty()){
                     b1=new OrderController().saveOrderDetail(pd,txtSearchD.getText());}
              b2 = new OrderController().updateOrder(new Order(txtSearchD.getText(), null, null, null, "Delivery", Double.valueOf(lblSubTotalD.getText()), Double.valueOf(lblDeliveryChargesD.getText()), Double.valueOf(lblGrandTotalD.getText()), "NonPaid", orderItem));
+                b3=new DeliveryController().updateDriver(txtSearchD.getText(),cmbDriver.getSelectionModel().getSelectedItem().getEmployeeID());
             }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
-            System.out.println(b);
-            System.out.println(b1);
-            System.out.println(b2);
             Alert alert;
-            if (b&&b1&&b2){
+            if (b&&b1&&b2&&b3){
                 alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Modified ....", ButtonType.OK);
             }else {
                 alert = new Alert(Alert.AlertType.ERROR, "Try Again", ButtonType.OK);
@@ -643,7 +639,48 @@ public class ManageOrderFormController {
         alert.show();
     }
 
-    public void changeTab(Event event) {
+
+    private void clearDineTakeAway(){
+        cmbOrderTypeDT.getSelectionModel().clearSelection();
+        txtSearchDT.clear();
+        lblCustomerNameDT.setText(null);
+        dineTakeTableView.getItems().clear();
+        txtCashDT.clear();
+        txtQuantity.clear();
+        lblTotal.setText(null);
+        lblBalanceDT.setText(null);
+        cmbMeal.getSelectionModel().clearSelection();
+        cmbPizza.getSelectionModel().clearSelection();
+        cmbSub.getSelectionModel().clearSelection();
+        cmbPackage.getSelectionModel().clearSelection();
+        cmbDrink.getSelectionModel().clearSelection();
+    }
+    private void clearDelivery(){
+        cmbDriver.getSelectionModel().select(null);
+        txtSearchD.clear();
+        lblCustomerNameD.setText(null);
+        tableViewD.getItems().clear();
+        txtCashD.clear();
+        txtQuantityD.clear();
+        cmbMealD.getSelectionModel().clearSelection();
+        cmbPizzaD.getSelectionModel().clearSelection();
+        cmbSubD.getSelectionModel().clearSelection();
+        cmbPackageD.getSelectionModel().clearSelection();
+        cmbDrinkD.getSelectionModel().clearSelection();
+        lblSubTotalD.setText(null);
+        lblDeliveryChargesD.setText(null);
+        lblGrandTotalD.setText(null);
+        lblBalanceD.setText(null);
+        txtAddress.clear();
+    }
+    public void dineTakeTab(Event event) {
+        clearDineTakeAway();
+        added.clear();
+        deleted.clear();
+    }
+
+    public void deliveryTab(Event event) {
+        clearDelivery();
         added.clear();
         deleted.clear();
     }

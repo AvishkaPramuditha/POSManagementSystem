@@ -28,7 +28,7 @@ public class ManageEmployeeFormController {
 
 
     public void initialize(){
-        cmbJobRole.setItems(FXCollections.observableArrayList("Cashier","Rider","Chef","Waiter","Kitchen Helper"));
+        cmbJobRole.setItems(FXCollections.observableArrayList("Cashier","Rider","Chef","Waiter","Kitchen Helper","Admin"));
         cmbJobRole.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue=="Rider"){
                 txtBikeNo.setDisable(false);

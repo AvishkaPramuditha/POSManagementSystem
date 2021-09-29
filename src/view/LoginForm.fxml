@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.Cursor?>
@@ -31,14 +32,6 @@
                   <Font size="33.0" />
                </font>
             </Text>
-            <JFXTextField fx:id="txtPassword" layoutX="289.0" layoutY="486.0" prefHeight="87.0" prefWidth="406.0">
-               <effect>
-                  <ColorAdjust brightness="-1.0" contrast="1.0" />
-               </effect>
-               <font>
-                  <Font size="35.0" />
-               </font>
-            </JFXTextField>
             <JFXButton buttonType="RAISED" layoutX="319.0" layoutY="731.0" onAction="#btnLogin" prefHeight="63.0" prefWidth="182.0" style="-fx-background-color: #16a085;" stylesheets="@../styles/Styles.css" text="Login" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="29.0" />
@@ -54,7 +47,7 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <JFXTextField fx:id="txtPassword1" layoutX="289.0" layoutY="341.0" prefHeight="87.0" prefWidth="406.0">
+            <JFXTextField fx:id="txtUserName" layoutX="289.0" layoutY="341.0" prefHeight="87.0" prefWidth="406.0">
                <effect>
                   <ColorAdjust brightness="-1.0" contrast="1.0" />
                </effect>
@@ -74,6 +67,14 @@
                   </ImageView>
                </graphic>
             </JFXButton>
+            <JFXPasswordField fx:id="txtPassword" layoutX="289.0" layoutY="486.0" prefHeight="87.0" prefWidth="406.0">
+               <font>
+                  <Font size="35.0" />
+               </font>
+               <effect>
+                  <ColorAdjust brightness="-1.0" contrast="1.0" />
+               </effect>
+            </JFXPasswordField>
          </children>
       </Pane>
       <Text layoutX="149.0" layoutY="556.0" strokeType="OUTSIDE" strokeWidth="0.0" text="POS &amp; Management System" wrappingWidth="1022.026611328125">

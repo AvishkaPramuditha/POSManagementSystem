@@ -17,7 +17,7 @@
    <children>
       <TabPane prefHeight="684.0" prefWidth="1423.0" style="-fx-border-color: #2c2c54;" tabClosingPolicy="UNAVAILABLE" tabMinHeight="50.0">
         <tabs>
-          <Tab fx:id="tabDineIn" onSelectionChanged="#changeTab" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Dine-In &amp; Take-Away">
+          <Tab fx:id="tabDineIn" onSelectionChanged="#dineTakeTab" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Dine-In &amp; Take-Away">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="652.0" prefWidth="1421.0">
                      <children>
@@ -164,7 +164,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab onSelectionChanged="#changeTab" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Delivery">
+            <Tab onSelectionChanged="#deliveryTab" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Delivery">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="618.0" prefWidth="1421.0">
                      <children>

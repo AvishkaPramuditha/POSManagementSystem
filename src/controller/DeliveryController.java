@@ -18,4 +18,8 @@ public class DeliveryController {
 
 return null;
     }
+    public boolean updateDriver(String orderID,String employeeID) throws SQLException, ClassNotFoundException {
+        return DbConnection.getInstance().getConnection().prepareStatement("UPDATE delivery  set DriverEmployee='"+employeeID+"' WHERE OrderID='"+orderID+"'").executeUpdate()>0;
+    }
 }
+

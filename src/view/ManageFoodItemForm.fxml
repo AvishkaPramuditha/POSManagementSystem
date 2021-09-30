@@ -82,7 +82,7 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <JFXButton buttonType="RAISED" layoutX="585.0" layoutY="385.0" onAction="#addMeal" prefHeight="44.0" prefWidth="81.0" style="-fx-background-color: #16a085; -fx-background-radius: 8;" text="ADD">
+                        <JFXButton fx:id="btnAdd" buttonType="RAISED" layoutX="585.0" layoutY="385.0" onAction="#addMeal" prefHeight="44.0" prefWidth="81.0" style="-fx-background-color: #16a085; -fx-background-radius: 8;" text="ADD">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>

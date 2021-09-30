@@ -1,5 +1,6 @@
 package controller;
 
+import ValidationFields.Validation;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTimePicker;
@@ -81,31 +82,38 @@ public class ReservationFormController {
     }
 
     public void addReservation(ActionEvent actionEvent) {
-        try {Alert alert;
-            boolean b = new ReservationController().addReservation(new Reservation(lblReservation.getText(), customerID,addTabDatePicker.getValue().toString(),addTabTimePicker.getValue().toString(), Integer.valueOf(addTabParticipants.getText())));
-            if (b) {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Successfully", ButtonType.OK);
-                btnAddReservation.setDisable(false);
+        if (new Validation().mobileNumberValidation(txtManageCustomerMobile)&&new Validation().nameValidation(txtManageCustomerName)&&new Validation().quantityValidation(txtManageParticipant)&&!addTabDatePicker.getEditor().getText().isEmpty()&&!addTabTimePicker.getEditor().getText().isEmpty()){
+            try {Alert alert;
+                boolean b = new ReservationController().addReservation(new Reservation(lblReservation.getText(), customerID,addTabDatePicker.getValue().toString(),addTabTimePicker.getValue().toString(), Integer.valueOf(addTabParticipants.getText())));
+                if (b) {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Successfully", ButtonType.OK);
+                    btnAddReservation.setDisable(false);
 
-            } else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                } else {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                }
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+
+
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
             }
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
             alert.show();
-
-
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
         }
+
 
     }
 
     public void cancel(ActionEvent actionEvent) {
         addTabDatePicker.getEditor().clear();
         addTabTimePicker.getEditor().clear();
-        addTabCustomerName.clear();
-        addTabCustomerMobile.clear();
-        addTabParticipants.clear();
+        addTabCustomerName.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
+        addTabCustomerMobile.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
+        addTabParticipants.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
         btnAddReservation.setDisable(true);
 
     }
@@ -122,43 +130,57 @@ public class ReservationFormController {
     }
 
     public void addCustomer(ActionEvent actionEvent) {
-        try {
-            boolean b = new CustomerController().addCustomer(new Customer().setCustomerDetail(customerID, addTabCustomerName.getText(), addTabCustomerMobile.getText()));
-            Alert alert;
-            if (b) {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Successfully", ButtonType.OK);
-                btnAddReservation.setDisable(false);
+        if (new Validation().mobileNumberValidation(txtManageCustomerMobile)&&new Validation().nameValidation(txtManageCustomerName)){
+            try {
+                boolean b = new CustomerController().addCustomer(new Customer().setCustomerDetail(customerID, addTabCustomerName.getText(), addTabCustomerMobile.getText()));
+                Alert alert;
+                if (b) {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Successfully", ButtonType.OK);
+                    btnAddReservation.setDisable(false);
 
-            } else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                } else {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                }
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
             }
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
             alert.show();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
         }
+
+
     }
 
     public void searchCustomer(ActionEvent actionEvent) {
-        try {
-            Customer customerDetail = new CustomerController().getCustomerDetail(addTabCustomerMobile.getText());
-            Alert alert;
-            if (customerDetail == null) {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "NO Customer Please ADD.. ", ButtonType.OK);
-                alert.initOwner(context.getScene().getWindow());
-                alert.show();
-                btnCustomerAdd.setDisable(false);
-                customerID = new CustomerController().getCustomerID();
-                addTabCustomerName.clear();
-            } else {
-                addTabCustomerName.setText(customerDetail.getCustomerName());
-                customerID = customerDetail.getCustID();
-                btnCustomerAdd.setDisable(true);
-                btnAddReservation.setDisable(false);
+        if (new Validation().mobileNumberValidation(txtManageCustomerMobile)){
+            try {
+                Customer customerDetail = new CustomerController().getCustomerDetail(addTabCustomerMobile.getText());
+                Alert alert;
+                if (customerDetail == null) {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "NO Customer Please ADD.. ", ButtonType.OK);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                    btnCustomerAdd.setDisable(false);
+                    customerID = new CustomerController().getCustomerID();
+                    addTabCustomerName.clear();
+                } else {
+                    addTabCustomerName.setText(customerDetail.getCustomerName());
+                    customerID = customerDetail.getCustID();
+                    btnCustomerAdd.setDisable(true);
+                    btnAddReservation.setDisable(false);
 
+                }
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
             }
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid Mobile Number .....", ButtonType.CLOSE);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
         }
     }
 
@@ -181,6 +203,9 @@ public class ReservationFormController {
         addTabParticipants.clear();
         addTabCustomerMobile.clear();
         addTabCustomerName.clear();
+        addTabParticipants.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
+        addTabCustomerMobile.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
+        addTabCustomerName.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
         addTabTimePicker.getEditor().clear();
         addTabDatePicker.getEditor().clear();
     }
@@ -189,67 +214,88 @@ public class ReservationFormController {
         txtManageParticipant.clear();
         txtManageCustomerName.clear();
         txtManageCustomerMobile.clear();
+
+        txtManageParticipant.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
+        txtManageCustomerName.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
+        txtManageCustomerMobile.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
         manageDatePicker.getEditor().clear();
         manageTimePicker.getEditor().clear();
         manageTblView.getItems().clear();
     }
 
     public void manageUpdate(ActionEvent actionEvent) {
-          try {
-              String date= manageDatePicker.getValue().toString();
-              String time= manageTimePicker.getValue().toString();
-              boolean b = new ReservationController().updateReservation(new Reservation(manageTblView.getSelectionModel().getSelectedItem().getReservationID(), date,time, Integer.valueOf(txtManageParticipant.getText())));
-              Alert alert;
-              if (b ){
-                  alert = new Alert(Alert.AlertType.CONFIRMATION, "Update Successfully", ButtonType.OK);
-                  manageTimePicker.getEditor().clear();
-                  manageDatePicker.getEditor().clear();
-                  txtManageParticipant.clear();
-                  manageTblView.setItems(new ReservationController().getReservationOnCustomer(customerID));
+        if (new Validation().mobileNumberValidation(txtManageCustomerMobile)&&new Validation().nameValidation(txtManageCustomerName)&&new Validation().quantityValidation(txtManageParticipant)&&!manageDatePicker.getEditor().getText().isEmpty()&&!manageTimePicker.getEditor().getText().isEmpty()){
+            try {
+                String date= manageDatePicker.getValue().toString();
+                String time= manageTimePicker.getValue().toString();
+                boolean b = new ReservationController().updateReservation(new Reservation(manageTblView.getSelectionModel().getSelectedItem().getReservationID(), date,time, Integer.valueOf(txtManageParticipant.getText())));
+                Alert alert;
+                if (b ){
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Update Successfully", ButtonType.OK);
+                    manageTimePicker.getEditor().clear();
+                    manageDatePicker.getEditor().clear();
+                    txtManageParticipant.clear();
+                    manageTblView.setItems(new ReservationController().getReservationOnCustomer(customerID));
 
-              } else {
-                  alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
-              }
-              alert.initOwner(context.getScene().getWindow());
-              alert.show();
-          }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+                } else {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                }
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
+        }
+
     }
 
     public void Managedelete(ActionEvent actionEvent) {
-        try {
-            boolean b = new ReservationController().deleteReservation(manageTblView.getSelectionModel().getSelectedItem().getReservationID());
-            Alert alert;
-            if (b) {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete Successfully", ButtonType.OK);
-                manageTimePicker.getEditor().clear();
-                manageDatePicker.getEditor().clear();
-                txtManageParticipant.clear();
-                manageTblView.setItems(new ReservationController().getReservationOnCustomer(customerID));
+        if (new Validation().mobileNumberValidation(txtManageCustomerMobile)){
+            try {
+                boolean b = new ReservationController().deleteReservation(manageTblView.getSelectionModel().getSelectedItem().getReservationID());
+                Alert alert;
+                if (b) {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete Successfully", ButtonType.OK);
+                    manageTimePicker.getEditor().clear();
+                    manageDatePicker.getEditor().clear();
+                    txtManageParticipant.clear();
+                    manageTblView.setItems(new ReservationController().getReservationOnCustomer(customerID));
 
-            } else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
-            }
-            alert.initOwner(context.getScene().getWindow());
-            alert.show();
-        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+                } else {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                }
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+        }
+
     }
 
     public void searchCustomerManage(ActionEvent actionEvent) {
-        try {
-            Customer customerDetail = new CustomerController().getCustomerDetail(txtManageCustomerMobile.getText());
-            Alert alert;
-            if (customerDetail == null) {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "NO Customer for this number .. ", ButtonType.OK);
-                alert.initOwner(context.getScene().getWindow());
-                alert.show();
-            } else {
-                txtManageCustomerName.setText(customerDetail.getCustomerName());
-                customerID = customerDetail.getCustID();
-                manageTblView.setItems(new ReservationController().getReservationOnCustomer(customerID));
+        if (new Validation().mobileNumberValidation(txtManageCustomerMobile)){
+            try {
+                Customer customerDetail = new CustomerController().getCustomerDetail(txtManageCustomerMobile.getText());
+                Alert alert;
+                if (customerDetail == null) {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "NO Customer for this number .. ", ButtonType.OK);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                } else {
+                    txtManageCustomerName.setText(customerDetail.getCustomerName());
+                    customerID = customerDetail.getCustID();
+                    manageTblView.setItems(new ReservationController().getReservationOnCustomer(customerID));
+                }
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
             }
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid Mobile Number .....", ButtonType.CLOSE);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
         }
+
     }
 
 }

@@ -18,7 +18,7 @@
          </font>
       </Text>
       <ComboBox fx:id="cmbFoodItem" layoutX="624.0" layoutY="45.0" prefHeight="41.0" prefWidth="242.0" style="-fx-border-width: 3; -fx-border-color: #2c3e50;" />
-      <TextField fx:id="txtDiscountID" layoutX="188.0" layoutY="42.0" prefHeight="39.0" prefWidth="242.0" promptText="itemName-StartDate-ID" style="-fx-background-radius: 8; -fx-border-color: #2c3e50; -fx-border-radius: 8; -fx-border-width: 3;">
+      <TextField fx:id="txtDiscountID" layoutX="188.0" layoutY="42.0" prefHeight="39.0" prefWidth="242.0" promptText="D-XXXX" style="-fx-background-radius: 8; -fx-border-color: #2c3e50; -fx-border-radius: 8; -fx-border-width: 3;">
          <font>
             <Font size="18.0" />
          </font>

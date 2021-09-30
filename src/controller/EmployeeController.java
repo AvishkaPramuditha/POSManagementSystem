@@ -122,6 +122,7 @@ public class EmployeeController {
                      }else {
                          connection.rollback();
                          return false;
+
                      }
                  }else{
                      if(addDriverTable(employee.getEmployeeID(),employee.getBikeNo(),employee.getDrivingLicenseNumber())){
@@ -141,6 +142,9 @@ public class EmployeeController {
                          connection.rollback();
                          return false;
                      }
+                 }else{
+                     connection.commit();
+                     return true;
                  }
              }
 
@@ -159,7 +163,7 @@ public class EmployeeController {
    }
 
    private boolean isIn(String employeeID) throws SQLException, ClassNotFoundException {
-       ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT Em ployeeID from driver WHERE EmployeeID='" + employeeID + "'").executeQuery();
+       ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT EmployeeID from driver WHERE EmployeeID='" + employeeID + "'").executeQuery();
        return resultSet.next();
    }
    private boolean deleteDriver(String employeeID) throws SQLException, ClassNotFoundException {

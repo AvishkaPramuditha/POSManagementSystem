@@ -1,7 +1,8 @@
 package controller;
 
+import ValidationFields.Validation;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
@@ -47,6 +48,7 @@ public class ManageFoodItemFormController {
     public ImageView pizzaImageView;
     public ImageView subImageView;
     public ImageView drinkImageView;
+    public JFXButton btnAdd;
     private File mealImage;
     private File pizzaImage;
     private File subImage;
@@ -149,6 +151,10 @@ public class ManageFoodItemFormController {
         txtSandwichDescription.clear();
         txtSandwichID.clear();
         txtSandwichQuantityOnHand.clear();
+        txtSandwichUnitPrice.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+        txtSandwichDescription.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+        txtSandwichID.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+        txtSandwichQuantityOnHand.setStyle("-fx-border-color : #16a085;-fx-border-width:3");;
         combSub.getSelectionModel().clearSelection();
     }
 
@@ -160,6 +166,11 @@ public class ManageFoodItemFormController {
         txtPizzaSize.clear();
         txtPizzaDescription.clear();
         txtPizzaQuantityOnHand.clear();
+        txtPizzaID.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+        txtPizzaUnitPrice.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+        txtPizzaSize.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+        txtPizzaDescription.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+        txtPizzaQuantityOnHand.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
         comboPizza.getSelectionModel().clearSelection();
     }
 
@@ -170,7 +181,11 @@ public class ManageFoodItemFormController {
         txtMealDescription.clear();
         txtMealPortion.clear();
         txtMealUnitPrice.clear();
-        toggleMealAvailable.setSelected(false);
+        txtMealID.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+
+        txtMealDescription.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+        txtMealPortion.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+        txtMealUnitPrice.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
         mealCombo.getSelectionModel().clearSelection();
 
     }
@@ -181,6 +196,9 @@ public class ManageFoodItemFormController {
         txtDrinkDescription.clear();
         txtDrinkUnitPrice.clear();
         txtBeverageID.clear();
+        txtDrinkDescription.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+        txtDrinkUnitPrice.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
+        txtBeverageID.setStyle("-fx-border-color : #16a085;-fx-border-width:3");
         toggleDrinkAvailable.setSelected(false);
         comboDrink.getSelectionModel().clearSelection();
     }
@@ -202,84 +220,117 @@ public class ManageFoodItemFormController {
     }
 
     public void addMeal(ActionEvent actionEvent) {
-        try {
+        Validation validation = new Validation();
+        if (validation.idValidation(txtMealID)&&validation.descriptionValidation(txtMealDescription)&&validation.priceValidation(txtMealUnitPrice)&&validation.sizeAndPortion(txtMealPortion)&&mealImage!=null){
+            try {
 
-            if (new ItemController().addMeal(new Meal(txtMealID.getText(),txtMealDescription.getText(),txtMealPortion.getText(),Double.valueOf(txtMealUnitPrice.getText()),toggleMealAvailable.isSelected(),mealImage))){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, " Saved successfully.....", ButtonType.CLOSE);
-                alert.initOwner(context.getScene().getWindow());
-                alert.show();
-                mealClearAll(null);
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                if (new ItemController().addMeal(new Meal(txtMealID.getText(),txtMealDescription.getText(),txtMealPortion.getText(),Double.valueOf(txtMealUnitPrice.getText()),toggleMealAvailable.isSelected(),mealImage))){
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, " Saved successfully.....", ButtonType.CLOSE);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                    mealClearAll(null);
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                }
+            }catch (SQLException | ClassNotFoundException | FileNotFoundException e){e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, " Photo Size should be 64KB ", ButtonType.OK);
                 alert.initOwner(context.getScene().getWindow());
                 alert.show();
             }
-        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
             alert.show();
         }
+
 
     }
 
     public void addPizza(ActionEvent actionEvent) {
-        try {
-            if (new ItemController().addPizza(new Pizza(txtPizzaID.getText(), txtPizzaDescription.getText(), txtPizzaSize.getText(), Double.valueOf(txtPizzaUnitPrice.getText()), Integer.valueOf(txtPizzaQuantityOnHand.getText()),pizzaImage))) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved successfully .....", ButtonType.CLOSE);
-                alert.initOwner(context.getScene().getWindow());
-                alert.show();
-                pizzaClearAll(null);
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        Validation validation = new Validation();
+        if (validation.idValidation(txtPizzaID)&&validation.descriptionValidation(txtPizzaDescription)&&validation.sizeAndPortion(txtPizzaSize)&&validation.quantityValidation(txtPizzaQuantityOnHand)&&validation.priceValidation(txtPizzaUnitPrice)&&pizzaImage!=null){
+            try {
+                if (new ItemController().addPizza(new Pizza(txtPizzaID.getText(), txtPizzaDescription.getText(), txtPizzaSize.getText(), Double.valueOf(txtPizzaUnitPrice.getText()), Integer.valueOf(txtPizzaQuantityOnHand.getText()),pizzaImage))) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved successfully .....", ButtonType.CLOSE);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                    pizzaClearAll(null);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                }
+            }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "  Photo Size should be 64KB ", ButtonType.OK);
                 alert.initOwner(context.getScene().getWindow());
                 alert.show();
             }
-        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
             alert.show();
         }
+
     }
 
     public void addSub(ActionEvent actionEvent) {
-        try {
-            if (new ItemController().addSub(new SubBurgersAndOthers(txtSandwichID.getText(), txtSandwichDescription.getText(), Double.valueOf(txtSandwichUnitPrice.getText()),Integer.valueOf(txtSandwichQuantityOnHand.getText()),subImage))) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved successfully .....", ButtonType.CLOSE);
-                alert.initOwner(context.getScene().getWindow());
-                alert.show();
-                subClearAll(null);
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        Validation validation = new Validation();
+        if (validation.idValidation(txtSandwichID)&&validation.descriptionValidation(txtSandwichDescription)&&validation.quantityValidation(txtSandwichQuantityOnHand)&&validation.priceValidation(txtSandwichUnitPrice)&&subImage!=null){
+            try {
+                if (new ItemController().addSub(new SubBurgersAndOthers(txtSandwichID.getText(), txtSandwichDescription.getText(), Double.valueOf(txtSandwichUnitPrice.getText()),Integer.valueOf(txtSandwichQuantityOnHand.getText()),subImage))) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved successfully .....", ButtonType.CLOSE);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                    subClearAll(null);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                }
+            }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "  Photo Size should be 64KB ", ButtonType.OK);
                 alert.initOwner(context.getScene().getWindow());
                 alert.show();
             }
-        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
             alert.show();
         }
+
     }
 
     public void addDrink(ActionEvent actionEvent) {
-        try {
-            if (new ItemController().addDrink(new Drink(txtBeverageID.getText(), txtDrinkDescription.getText(), Double.valueOf(txtDrinkUnitPrice.getText()),toggleDrinkAvailable.isSelected(),drinkImage))) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved successfully .....", ButtonType.CLOSE);
-                alert.initOwner(context.getScene().getWindow());
-                alert.show();
-                drinkClearAll(null);
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        Validation validation = new Validation();
+        if (validation.idValidation(txtBeverageID)&&validation.descriptionValidation(txtDrinkDescription)&&validation.priceValidation(txtDrinkUnitPrice)&&drinkImage!=null){
+            try {
+                if (new ItemController().addDrink(new Drink(txtBeverageID.getText(), txtDrinkDescription.getText(), Double.valueOf(txtDrinkUnitPrice.getText()),toggleDrinkAvailable.isSelected(),drinkImage))) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved successfully .....", ButtonType.CLOSE);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                    drinkClearAll(null);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                }
+            }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, " Photo Size should be 64KB ", ButtonType.OK);
                 alert.initOwner(context.getScene().getWindow());
                 alert.show();
             }
-        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
             alert.show();
         }
+
     }
 
     public void openAndSelectMealImage(ActionEvent actionEvent) {
@@ -324,79 +375,110 @@ public class ManageFoodItemFormController {
     }
 
     public void updateMeal(ActionEvent actionEvent) {
-        try {
-            if (new ItemController().updateMeal(new Meal(txtMealID.getText(),txtMealDescription.getText(),txtMealPortion.getText(),Double.valueOf(txtMealUnitPrice.getText()),toggleMealAvailable.isSelected(),mealImage),mealCombo.getSelectionModel().getSelectedItem().getMealID())){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, " Update successfully.....", ButtonType.CLOSE);
+        Validation validation = new Validation();
+        if (validation.idValidation(txtMealID)&&validation.descriptionValidation(txtMealDescription)&&validation.priceValidation(txtMealUnitPrice)&&validation.sizeAndPortion(txtMealPortion)&&mealImage!=null){
+            try {
+                if (new ItemController().updateMeal(new Meal(txtMealID.getText(),txtMealDescription.getText(),txtMealPortion.getText(),Double.valueOf(txtMealUnitPrice.getText()),toggleMealAvailable.isSelected(),mealImage),mealCombo.getSelectionModel().getSelectedItem().getMealID())){
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, " Update successfully.....", ButtonType.CLOSE);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                    mealClearAll(null);
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                }
+            }catch (SQLException | ClassNotFoundException | FileNotFoundException e){e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Photo Size should be 64KB ", ButtonType.OK);
                 alert.initOwner(context.getScene().getWindow());
-                alert.show();
-                mealClearAll(null);
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
-                alert.initOwner(context.getScene().getWindow());
-                alert.show();
-            }
-        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                alert.show();}
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
-            alert.show();}
+            alert.show();
+        }
+
     }
 
 
     public void updatePizza(ActionEvent actionEvent) {
-        try {
-            if (new ItemController().updatePizza(new Pizza(txtPizzaID.getText(), txtPizzaDescription.getText(), txtPizzaSize.getText(), Double.valueOf(txtPizzaUnitPrice.getText()), Integer.valueOf(txtPizzaQuantityOnHand.getText()),pizzaImage),comboPizza.getSelectionModel().getSelectedItem().getPizzaID())) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
-                alert.initOwner(context.getScene().getWindow());
-                alert.show();
-                pizzaClearAll(null);
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        Validation validation = new Validation();
+        if (validation.idValidation(txtPizzaID)&&validation.descriptionValidation(txtPizzaDescription)&&validation.sizeAndPortion(txtPizzaSize)&&validation.quantityValidation(txtPizzaQuantityOnHand)&&validation.priceValidation(txtPizzaUnitPrice)&&pizzaImage!=null){
+            try {
+                if (new ItemController().updatePizza(new Pizza(txtPizzaID.getText(), txtPizzaDescription.getText(), txtPizzaSize.getText(), Double.valueOf(txtPizzaUnitPrice.getText()), Integer.valueOf(txtPizzaQuantityOnHand.getText()),pizzaImage),comboPizza.getSelectionModel().getSelectedItem().getPizzaID())) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                    pizzaClearAll(null);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                }
+            }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Photo Size should be 64KB ", ButtonType.OK);
                 alert.initOwner(context.getScene().getWindow());
                 alert.show();
             }
-        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
             alert.show();
         }
+
     }
 
     public void updateSub(ActionEvent actionEvent) {
-        try {
-            if (new ItemController().updateSub(new SubBurgersAndOthers(txtSandwichID.getText(), txtSandwichDescription.getText(), Double.valueOf(txtSandwichUnitPrice.getText()),Integer.valueOf(txtSandwichQuantityOnHand.getText()),subImage),combSub.getSelectionModel().getSelectedItem().getSandwichID())) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
-                alert.initOwner(context.getScene().getWindow());
-                alert.show();
-                subClearAll(null);
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        Validation validation = new Validation();
+        if (validation.idValidation(txtSandwichID)&&validation.descriptionValidation(txtSandwichDescription)&&validation.quantityValidation(txtSandwichQuantityOnHand)&&validation.priceValidation(txtSandwichUnitPrice)&&subImage!=null){
+            try {
+                if (new ItemController().updateSub(new SubBurgersAndOthers(txtSandwichID.getText(), txtSandwichDescription.getText(), Double.valueOf(txtSandwichUnitPrice.getText()),Integer.valueOf(txtSandwichQuantityOnHand.getText()),subImage),combSub.getSelectionModel().getSelectedItem().getSandwichID())) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                    subClearAll(null);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                }
+            }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, " Photo Size should be 64KB ", ButtonType.OK);
                 alert.initOwner(context.getScene().getWindow());
                 alert.show();
             }
-        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        }else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
             alert.show();
         }
+
     }
 
     public void updateDrink(ActionEvent actionEvent) {
-        try {
-            if (new ItemController().updateDrink(new Drink(txtBeverageID.getText(), txtDrinkDescription.getText(), Double.valueOf(txtDrinkUnitPrice.getText()),toggleDrinkAvailable.isSelected(),drinkImage),comboDrink.getSelectionModel().getSelectedItem().getBeverageID())) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
-                alert.initOwner(context.getScene().getWindow());
-                alert.show();
-                drinkClearAll(null);
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        Validation validation = new Validation();
+        if (validation.idValidation(txtBeverageID)&&validation.descriptionValidation(txtDrinkDescription)&&validation.priceValidation(txtDrinkUnitPrice)&&drinkImage!=null){
+            try {
+                if (new ItemController().updateDrink(new Drink(txtBeverageID.getText(), txtDrinkDescription.getText(), Double.valueOf(txtDrinkUnitPrice.getText()),toggleDrinkAvailable.isSelected(),drinkImage),comboDrink.getSelectionModel().getSelectedItem().getBeverageID())) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Update successfully .....", ButtonType.CLOSE);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                    drinkClearAll(null);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+                    alert.initOwner(context.getScene().getWindow());
+                    alert.show();
+                }
+            }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Photo Size should be 64KB", ButtonType.OK);
                 alert.initOwner(context.getScene().getWindow());
                 alert.show();
             }
-        }catch (SQLException | ClassNotFoundException | FileNotFoundException e){
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, " Try Again ", ButtonType.OK);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
             alert.show();
         }

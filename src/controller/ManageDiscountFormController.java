@@ -1,5 +1,6 @@
 package controller;
 
+import ValidationFields.Validation;
 import database.DbConnection;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
@@ -43,69 +44,92 @@ public class ManageDiscountFormController {
        });
     }
     public void add(ActionEvent actionEvent) {
-        boolean b;
-        if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof Meal){
-           b = new DiscountController().addMealDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())),  cmbFoodItem.getSelectionModel().getSelectedItem().getID());
-        }else if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof Pizza){
-            b = new DiscountController().addPizzaDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())),  cmbFoodItem.getSelectionModel().getSelectedItem().getID());
-        }else if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof SubBurgersAndOthers){
-            b = new DiscountController().addSubDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())), cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+        Validation validation = new Validation();
+        if (validation.idValidation(txtDiscountID)&&validation.priceValidation(txtDiscountPrice)&&validation.DateValidation(txtCloseDate)&&validation.DateValidation(txtStartDate)&&!cmbFoodItem.getSelectionModel().isEmpty()){
+            boolean b;
+            if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof Meal){
+                b = new DiscountController().addMealDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())),  cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+            }else if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof Pizza){
+                b = new DiscountController().addPizzaDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())),  cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+            }else if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof SubBurgersAndOthers){
+                b = new DiscountController().addSubDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())), cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+            }else{
+                b = new DiscountController().addDrinkDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())), cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+            }
+            Alert alert;
+            if (b){
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved  Successfully", ButtonType.OK);
+                loadItemsToTable();
+                clear(null);
+            }else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+            }
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
         }else{
-            b = new DiscountController().addDrinkDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())), cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
         }
-        Alert alert;
-        if (b){
-            alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved  Successfully", ButtonType.OK);
-            loadItemsToTable();
-            clear(null);
-        }else {
-            alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
-        }
-        alert.initOwner(context.getScene().getWindow());
-        alert.show();
+
     }
 
     public void update(ActionEvent actionEvent) {
-        boolean b;
-        if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof Meal){
-            b = new DiscountController().updateMealDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())),  cmbFoodItem.getSelectionModel().getSelectedItem().getID());
-        }else if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof Pizza){
-            b = new DiscountController().updatePizzaDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())),  cmbFoodItem.getSelectionModel().getSelectedItem().getID());
-        }else if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof SubBurgersAndOthers){
-            b = new DiscountController().updateSubDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())), cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+        Validation validation = new Validation();
+        if (validation.idValidation(txtDiscountID)&&validation.priceValidation(txtDiscountPrice)&&validation.DateValidation(txtCloseDate)&&validation.DateValidation(txtStartDate)&&!cmbFoodItem.getSelectionModel().isEmpty()){
+            boolean b;
+            if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof Meal){
+                b = new DiscountController().updateMealDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())),  cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+            }else if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof Pizza){
+                b = new DiscountController().updatePizzaDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())),  cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+            }else if (cmbFoodItem.getSelectionModel().getSelectedItem() instanceof SubBurgersAndOthers){
+                b = new DiscountController().updateSubDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())), cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+            }else{
+                b = new DiscountController().updateDrinkDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())), cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+            }
+            Alert alert;
+            if (b){
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Update  Successfully", ButtonType.OK);
+                loadItemsToTable();
+                clear(null);
+            }else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+            }
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
         }else{
-            b = new DiscountController().updateDrinkDiscount(new Discount(txtDiscountID.getText(), txtStartDate.getText(), txtCloseDate.getText(), Double.valueOf(txtDiscountPrice.getText())), cmbFoodItem.getSelectionModel().getSelectedItem().getID());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
         }
-        Alert alert;
-        if (b){
-            alert = new Alert(Alert.AlertType.CONFIRMATION, "Update  Successfully", ButtonType.OK);
-            loadItemsToTable();
-            clear(null);
-        }else {
-            alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
-        }
-        alert.initOwner(context.getScene().getWindow());
-        alert.show();
+
 
     }
 
     public void delete(ActionEvent actionEvent) {
-        boolean b = false;
-        try {
-            b = new DiscountController().delete(txtDiscountID.getText());
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+        if (!tableView.getSelectionModel().isEmpty()){
+            boolean b = false;
+            try {
+                b = new DiscountController().delete(txtDiscountID.getText());
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            Alert alert;
+            if (b){
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved  Successfully", ButtonType.OK);
+                clear(null);
+                loadItemsToTable();
+            }else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+            }
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Select The Item From The Table .....", ButtonType.CLOSE);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
         }
-        Alert alert;
-        if (b){
-            alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved  Successfully", ButtonType.OK);
-            clear(null);
-            loadItemsToTable();
-        }else {
-            alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
-        }
-        alert.initOwner(context.getScene().getWindow());
-        alert.show();
+
     }
 
     private void setCmbFoodItem()  {
@@ -135,5 +159,10 @@ public class ManageDiscountFormController {
         txtStartDate.clear();
         txtCloseDate.clear();
         cmbFoodItem.getSelectionModel().clearSelection();
+
+        txtDiscountID.setStyle("-fx-border-radius :8;-fx-background-radius:8;-fx-border-width:3;-fx-border-color: #2c3e50");
+        txtDiscountPrice.setStyle("-fx-border-radius :8;-fx-background-radius:8;-fx-border-width:3;-fx-border-color: #2c3e50");
+        txtStartDate.setStyle("-fx-border-radius :8;-fx-background-radius:8;-fx-border-width:3;-fx-border-color: #2c3e50");
+        txtCloseDate.setStyle("-fx-border-radius :8;-fx-background-radius:8;-fx-border-width:3;-fx-border-color: #2c3e50");
     }
 }

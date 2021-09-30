@@ -1,5 +1,6 @@
 package controller;
 
+import ValidationFields.Validation;
 import com.jfoenix.controls.JFXButton;
 import database.DbConnection;
 import javafx.animation.Animation;
@@ -56,7 +57,7 @@ public class CashierMainFormController {
     public Text lblGrandTot;
     public ComboBox<Employee> cmbDriver;
     public Text lblTime;
-    public Text lblDate;
+    public  Text lblDate;
     public Text lblOrderNo;
     public Text lblUser;
     public JFXButton btnCancelOrder;
@@ -345,41 +346,54 @@ public class CashierMainFormController {
         return false;
     }
     public void addCustomer(ActionEvent actionEvent) {
-        try {
-            boolean b = new CustomerController().addCustomer(new Customer(txtCustomerName.getText(), txtCustomerAddress.getText(), txtCustomerMobile.getText(),customerID));
-            Alert alert;
-            if (b){
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Successfully", ButtonType.OK);
+        if (new Validation().mobileNumberValidation(txtCustomerMobile)&&new Validation().nameValidation(txtCustomerName)&&new Validation().addressValidation(txtCustomerAddress,"Customer")){
+            try {
+                boolean b = new CustomerController().addCustomer(new Customer(txtCustomerName.getText(), txtCustomerAddress.getText(), txtCustomerMobile.getText(),customerID));
+                Alert alert;
+                if (b){
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Successfully", ButtonType.OK);
 
-            }else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
-            }
+                }else {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                }
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
+            }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(mainContext.getScene().getWindow());
             alert.show();
-        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+        }
     }
 
     public void searchCustomer(ActionEvent actionEvent) {
-        try {
-            Customer customerDetail = new CustomerController().getCustomerDetail(txtCustomerMobile.getText());
-            Alert alert;
-            if (customerDetail==null){
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "NO Customer Please ADD.. ", ButtonType.OK);
-                alert.initOwner(mainContext.getScene().getWindow());
-                alert.show();
-                setCustomerID();
-                txtCustomerName.clear();
-                txtCustomerAddress.clear();
-                btbCustomerAdd.setDisable(false);
+        if (new Validation().mobileNumberValidation(txtCustomerMobile)){
+            try {
+                Customer customerDetail = new CustomerController().getCustomerDetail(txtCustomerMobile.getText());
+                Alert alert;
+                if (customerDetail==null){
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "NO Customer Please ADD.. ", ButtonType.OK);
+                    alert.initOwner(mainContext.getScene().getWindow());
+                    alert.show();
+                    setCustomerID();
+                    txtCustomerName.clear();
+                    txtCustomerAddress.clear();
+                    btbCustomerAdd.setDisable(false);
 
-            }else {
-                  txtCustomerName.setText(customerDetail.getCustomerName());
-                  txtCustomerAddress.setText(customerDetail.getCustomerAddress());
-                  customerID=customerDetail.getCustID();
-                  btbCustomerAdd.setDisable(true);
+                }else {
+                    txtCustomerName.setText(customerDetail.getCustomerName());
+                    txtCustomerAddress.setText(customerDetail.getCustomerAddress());
+                    customerID=customerDetail.getCustID();
+                    btbCustomerAdd.setDisable(true);
 
-            }
-        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+                }
+            }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+        }else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid Mobile Number .....", ButtonType.CLOSE);
+            alert.initOwner(mainContext.getScene().getWindow());
+            alert.show();
+        }
+
 
     }
     private void setCustomerID(){
@@ -395,22 +409,31 @@ public class CashierMainFormController {
         txtCustomerAddress.clear();
         txtCustomerName.clear();
         txtCustomerMobile.clear();
+       txtCustomerAddress.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
+       txtCustomerName.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
+       txtCustomerMobile.setStyle("-fx-border-width:3;-fx-border-radius:8;-fx-background-radius:8;-fx-border-color: #2c3e50");
         btbCustomerAdd.setDisable(true);
     }
 
     public void deleteItemFromTable(ActionEvent actionEvent) {
         OrderTM selectedItem = orderTblView.getSelectionModel().getSelectedItem();
-       if (selectedItem.getPrice()!=0) {
-           ObservableList<OrderTM> tmObservableList = FXCollections.observableArrayList(orderTMS);
-           for (OrderTM v : tmObservableList
-           ) {
-               if (v.getFoodCode().contains(selectedItem.getFoodCode())) {
-                   orderTMS.remove(v);
-               }
-           }
-           orderTblView.setItems(orderTMS);
-           calculation();
-       }
+        if (selectedItem!=null){
+            if (selectedItem.getPrice()!=0) {
+                ObservableList<OrderTM> tmObservableList = FXCollections.observableArrayList(orderTMS);
+                for (OrderTM v : tmObservableList
+                ) {
+                    if (v.getFoodCode().contains(selectedItem.getFoodCode())) {
+                        orderTMS.remove(v);
+                    }
+                }
+                orderTblView.setItems(orderTMS);
+                calculation();
+            }
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Select Item From The Table .....", ButtonType.CLOSE);
+            alert.initOwner(mainContext.getScene().getWindow());
+            alert.show();
+        }
     }
 
     public void clearTable(ActionEvent actionEvent) {
@@ -420,20 +443,33 @@ public class CashierMainFormController {
 
     public void increaseQuantity(ActionEvent actionEvent) {
         OrderTM selectedItem = orderTblView.getSelectionModel().getSelectedItem();
-        if (selectedItem.getPrice()!=0){
-            selectedItem.setQuantity(selectedItem.getQuantity()+1);
-            selectedItem.setAmount(selectedItem.getQuantity()*selectedItem.getPrice());
-            orderTblView.refresh();
-            calculation();}
+        if (selectedItem!=null){
+            if (selectedItem.getPrice()!=0){
+                selectedItem.setQuantity(selectedItem.getQuantity()+1);
+                selectedItem.setAmount(selectedItem.getQuantity()*selectedItem.getPrice());
+                orderTblView.refresh();
+                calculation();}
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Select Item From The Table .....", ButtonType.CLOSE);
+            alert.initOwner(mainContext.getScene().getWindow());
+            alert.show();
+        }
+
     }
 
     public void decreaseQuantity(ActionEvent actionEvent) {
         OrderTM selectedItem = orderTblView.getSelectionModel().getSelectedItem();
-        if (selectedItem.getQuantity()>1&&selectedItem.getPrice()!=0){
-            selectedItem.setQuantity(selectedItem.getQuantity()-1);
-            selectedItem.setAmount(selectedItem.getQuantity()*selectedItem.getPrice());
-            orderTblView.refresh();
-            calculation();}
+        if (selectedItem!=null){
+            if (selectedItem.getQuantity()>1&&selectedItem.getPrice()!=0){
+                selectedItem.setQuantity(selectedItem.getQuantity()-1);
+                selectedItem.setAmount(selectedItem.getQuantity()*selectedItem.getPrice());
+                orderTblView.refresh();
+                calculation();}
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Select Item From The Table .....", ButtonType.CLOSE);
+            alert.initOwner(mainContext.getScene().getWindow());
+            alert.show();
+        }
 
     }
     private void calculation(){
@@ -462,30 +498,60 @@ public class CashierMainFormController {
     }
 
     public void placeOrder(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-      ArrayList<OrderDetail> list=new ArrayList<>();
-        for (OrderTM tm:orderTMS
-             ) {
-            OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
-            if (!setupPackageOrderItem(list,detail)){
-                list.add(detail);
+        Validation validation = new Validation();
+        if (cmbOrderType.getSelectionModel().getSelectedItem()==("Delivery")){
+            if (validation.mobileNumberValidation(txtCustomerMobile)&&validation.nameValidation(txtCustomerName)&&validation.addressValidation(txtCustomerAddress,"Customer")&&!cmbOrderType.getSelectionModel().isEmpty()&&!cmbDriver.getSelectionModel().isEmpty()&&!orderTMS.isEmpty()){
+                ArrayList<OrderDetail> list=new ArrayList<>();
+                boolean b;
+                for (OrderTM tm:orderTMS
+                ) {
+                    OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
+                    if (!setupPackageOrderItem(list,detail)){
+                        list.add(detail);
+                    }
+                }
+                 b= new OrderController().placeOrder(new Order(lblOrderNo.getText(), customerID, lblDate.getText(), lblTime.getText(), cmbOrderType.getSelectionModel().getSelectedItem(), Double.valueOf(lblSubTot.getText()), Double.valueOf(lblDelivery.getText()), Double.valueOf(lblGrandTot.getText()), "NonPaid", list));
+               b=new DeliveryController().addDelivery(lblOrderNo.getText(),cmbDriver.getSelectionModel().getSelectedItem().getEmployeeID());
+                Alert alert;
+                if (b){
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Placed ....", ButtonType.OK);
+                    btnCancelOrder.setText("Next Order");
+                    btnCancelOrder.setStyle("-fx-background-color : blue");
+                    btnPlaceOrder.setDisable(true);
+                    txtCash.setDisable(false);
+                }else {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                }
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
+            }
+        }else{
+            if (validation.mobileNumberValidation(txtCustomerMobile)&&validation.nameValidation(txtCustomerName)&&validation.addressValidation(txtCustomerAddress,"Customer")&&!cmbOrderType.getSelectionModel().isEmpty()&&!orderTMS.isEmpty()){
+                ArrayList<OrderDetail> list=new ArrayList<>();
+                for (OrderTM tm:orderTMS
+                ) {
+                    OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
+                    if (!setupPackageOrderItem(list,detail)){
+                        list.add(detail);
+                    }
+                }
+                boolean b = new OrderController().placeOrder(new Order(lblOrderNo.getText(), customerID, lblDate.getText(), lblTime.getText(), cmbOrderType.getSelectionModel().getSelectedItem(), Double.valueOf(lblSubTot.getText()), Double.valueOf(lblDelivery.getText()), Double.valueOf(lblGrandTot.getText()), "NonPaid", list));
+                Alert alert;
+                if (b){
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Placed ....", ButtonType.OK);
+                    btnCancelOrder.setText("Next Order");
+                    btnCancelOrder.setStyle("-fx-background-color : blue");
+                    btnPlaceOrder.setDisable(true);
+                    txtCash.setDisable(false);
+                }else {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                }
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
             }
         }
-        boolean b = new OrderController().placeOrder(new Order(lblOrderNo.getText(), customerID, lblDate.getText(), lblTime.getText(), cmbOrderType.getSelectionModel().getSelectedItem(), Double.valueOf(lblSubTot.getText()), Double.valueOf(lblDelivery.getText()), Double.valueOf(lblGrandTot.getText()), "NonPaid", list));
-        if (cmbOrderType.getSelectionModel().getSelectedItem()=="Delivery"){b=new DeliveryController().addDelivery(lblOrderNo.getText(),cmbDriver.getSelectionModel().getSelectedItem().getEmployeeID());}
-        Alert alert;
-        if (b){
-            alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Placed ....", ButtonType.OK);
-            btnCancelOrder.setText("Next Order");
-            btnCancelOrder.setStyle("-fx-background-color : blue");
-            btnPlaceOrder.setDisable(true);
-            txtCash.setDisable(false);
-        }else {
-            alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
-        }
-        alert.initOwner(mainContext.getScene().getWindow());
-        alert.show();
 
-         }
+     }
     public  void cancelOrder(ActionEvent actionEvent) {
         btnPlaceOrder.setDisable(false);
         txtCash.setDisable(true);
@@ -505,32 +571,34 @@ public class CashierMainFormController {
     }
 
     public void doPayment(ActionEvent actionEvent) {
-        double totalD= Double.parseDouble(lblGrandTot.getText());
-        double paidAmountD= Double.parseDouble(txtCash.getText());
-        double balanceD=paidAmountD-totalD;
-        lblBalance.setText(String.valueOf(balanceD));
-        try {
-            PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("INSERT INTO transaction VALUES (?,?,?,?,?,?)");
-            preparedStatement.setString(1,lblOrderNo.getText());
-            preparedStatement.setString(2,customerID);
-            preparedStatement.setString(3,cashierID);
-            preparedStatement.setDouble(4,totalD);
-            preparedStatement.setDouble(5,paidAmountD);
-            preparedStatement.setDouble(6,balanceD);
-            boolean b=preparedStatement.executeUpdate()>0;
-            if(b){b=new OrderController().orderPaid(lblOrderNo.getText());}
-            Alert alert;
-            if (b){
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Paid  ....", ButtonType.OK);
-                btnCancelOrder.setText("Next Order");
-                btnCancelOrder.setStyle("-fx-background-color : blue");
-                txtCash.setDisable(true);
-            }else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
-            }
-            alert.initOwner(mainContext.getScene().getWindow());
-            alert.show();
+        if (new Validation().priceValidation(txtCash)){
+            double totalD= Double.parseDouble(lblGrandTot.getText());
+            double paidAmountD= Double.parseDouble(txtCash.getText());
+            double balanceD=paidAmountD-totalD;
+            lblBalance.setText(String.valueOf(balanceD));
+            try {
+                PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("INSERT INTO transaction VALUES (?,?,?,?,?,?)");
+                preparedStatement.setString(1,lblOrderNo.getText());
+                preparedStatement.setString(2,customerID);
+                preparedStatement.setString(3,cashierID);
+                preparedStatement.setDouble(4,totalD);
+                preparedStatement.setDouble(5,paidAmountD);
+                preparedStatement.setDouble(6,balanceD);
+                boolean b=preparedStatement.executeUpdate()>0;
+                if(b){b=new OrderController().orderPaid(lblOrderNo.getText());}
+                Alert alert;
+                if (b){
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Paid  ....", ButtonType.OK);
+                    btnCancelOrder.setText("Next Order");
+                    btnCancelOrder.setStyle("-fx-background-color : blue");
+                    txtCash.setDisable(true);
+                }else {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                }
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
 
-        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+            }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+        }
     }
 }

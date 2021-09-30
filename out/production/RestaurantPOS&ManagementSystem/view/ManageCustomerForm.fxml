@@ -12,7 +12,7 @@
 
 <AnchorPane fx:id="context" prefHeight="479.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageCustomerFormController">
    <children>
-      <TextArea fx:id="txtFCustomerAddress" layoutX="29.0" layoutY="255.0" prefHeight="174.0" prefWidth="373.0" style="-fx-border-radius: 8; -fx-background-radius: 8; -fx-border-width: 3; -fx-border-color: #9a9a9a;">
+      <TextArea fx:id="txtFCustomerAddress" layoutX="101.0" layoutY="256.0" prefHeight="174.0" prefWidth="373.0" style="-fx-border-radius: 8; -fx-background-radius: 8; -fx-border-width: 3; -fx-border-color: #9a9a9a;">
          <font>
             <Font size="22.0" />
          </font>

@@ -84,7 +84,7 @@
             <Font size="17.0" />
          </font>
       </TextArea>
-      <TextField fx:id="txtBikeNo" layoutX="404.0" layoutY="406.0" prefHeight="37.0" prefWidth="154.0" style="-fx-background-radius: 8; -fx-border-color: #9a9a9a; -fx-border-width: 3; -fx-border-radius: 8;">
+      <TextField fx:id="txtBikeNo" layoutX="404.0" layoutY="406.0" prefHeight="37.0" prefWidth="154.0" promptText="XXX-XXXX" style="-fx-background-radius: 8; -fx-border-color: #9a9a9a; -fx-border-width: 3; -fx-border-radius: 8;">
          <font>
             <Font size="16.0" />
          </font>
@@ -95,7 +95,7 @@
             <Font size="16.0" />
          </font>
       </TextField>
-      <TextField fx:id="txtWorkingHours" layoutX="774.0" layoutY="94.0" prefHeight="37.0" prefWidth="154.0" style="-fx-background-radius: 8; -fx-border-color: #9a9a9a; -fx-border-width: 3; -fx-border-radius: 8;">
+      <TextField fx:id="txtWorkingHours" layoutX="774.0" layoutY="94.0" prefHeight="37.0" prefWidth="154.0" promptText="X-X" style="-fx-background-radius: 8; -fx-border-color: #9a9a9a; -fx-border-width: 3; -fx-border-radius: 8;">
          <font>
             <Font size="16.0" />
          </font>

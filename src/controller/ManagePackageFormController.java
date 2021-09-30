@@ -1,5 +1,6 @@
 package controller;
 
+import ValidationFields.Validation;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -61,14 +62,20 @@ public class ManagePackageFormController {
         });
     }
     public void addItem(ActionEvent actionEvent) {
-        String foodType=null;
-        Item item=cmbFoodItem.getSelectionModel().getSelectedItem();
-        if (item instanceof Meal){foodType="Meal";}else if (item instanceof Pizza){foodType="Pizza";}else if (item instanceof SubBurgersAndOthers){foodType="Sub";}else{foodType="Drink";}
-        if (!searchTM(cmbFoodItem.getSelectionModel().getSelectedItem().getID(),Integer.parseInt(txtQuantity.getText()))) {
-            packageTMS.add(new PackageTM(item.getID(),item.getDescription(), Integer.parseInt(txtQuantity.getText()),foodType));
-            tblView.setItems(packageTMS);
-            txtQuantity.clear();
-            cmbFoodItem.getSelectionModel().clearSelection();
+        if (new Validation().quantityValidation(txtQuantity)&&!cmbFoodItem.getSelectionModel().isEmpty()){
+            String foodType=null;
+            Item item=cmbFoodItem.getSelectionModel().getSelectedItem();
+            if (item instanceof Meal){foodType="Meal";}else if (item instanceof Pizza){foodType="Pizza";}else if (item instanceof SubBurgersAndOthers){foodType="Sub";}else{foodType="Drink";}
+            if (!searchTM(cmbFoodItem.getSelectionModel().getSelectedItem().getID(),Integer.parseInt(txtQuantity.getText()))) {
+                packageTMS.add(new PackageTM(item.getID(),item.getDescription(), Integer.parseInt(txtQuantity.getText()),foodType));
+                tblView.setItems(packageTMS);
+                txtQuantity.clear();
+                cmbFoodItem.getSelectionModel().clearSelection();
+            }
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
         }
     }
 
@@ -78,24 +85,30 @@ public class ManagePackageFormController {
     }
 
     public void savePackage(ActionEvent actionEvent) {
-        ArrayList<PackageDetail> list=new ArrayList<>();
-        for (PackageTM tm:packageTMS
-             ) {
-         list.add(new PackageDetail(tm.getFoodType(),tm.getFoodCode(),tm.getQuantity()));
-        }
-        Package aPackage = new Package(txtPackageCode.getText(), txtPackageName.getText(), Double.valueOf(txtPackagePrice.getText()), list);
-        boolean b = new PackageController().addPackage(aPackage);
-        Alert alert;
-        if (b){
-            alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved  Successfully", ButtonType.OK);
-            clear(null);
-            loadPackageCombo();
+        if (new Validation().packageNameValidation(txtPackageName)&&new Validation().idValidation(txtPackageCode)&&new Validation().priceValidation(txtPackagePrice)&&!packageTMS.isEmpty()){
+            ArrayList<PackageDetail> list=new ArrayList<>();
+            for (PackageTM tm:packageTMS
+            ) {
+                list.add(new PackageDetail(tm.getFoodType(),tm.getFoodCode(),tm.getQuantity()));
+            }
+            Package aPackage = new Package(txtPackageCode.getText(), txtPackageName.getText(), Double.valueOf(txtPackagePrice.getText()), list);
+            boolean b = new PackageController().addPackage(aPackage);
+            Alert alert;
+            if (b){
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Saved  Successfully", ButtonType.OK);
+                clear(null);
+                loadPackageCombo();
 
-        }else {
-            alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+            }else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+            }
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
+            alert.initOwner(context.getScene().getWindow());
+            alert.show();
         }
-        alert.initOwner(context.getScene().getWindow());
-        alert.show();
     }
 
     public void clear(ActionEvent actionEvent) {
@@ -110,52 +123,70 @@ public class ManagePackageFormController {
         tblView.refresh();
         btnSave.setDisable(false);
         txtPackageCode.setDisable(false);
+
+        txtPackageCode.setStyle("-fx-border-color :  #1abc9c;-fx-border-width:3");
+        txtQuantity.setStyle("-fx-border-color :  #1abc9c;-fx-border-width:3");
+        txtPackagePrice.setStyle("-fx-border-color :  #1abc9c;-fx-border-width:3");
+        txtPackageName.setStyle("-fx-border-color :  #1abc9c;-fx-border-width:3");
     }
 
     public void update(ActionEvent actionEvent) {
-         boolean b;
-        try {
-            b = new PackageController().deletePackage(txtPackageCode.getText(),null);
-            ArrayList<PackageDetail> list=new ArrayList<>();
-            for (PackageTM tm:packageTMS
-            ) {
-                list.add(new PackageDetail(tm.getFoodType(),tm.getFoodCode(),tm.getQuantity()));
-            }
-            Package aPackage = new Package(txtPackageCode.getText(), txtPackageName.getText(), Double.valueOf(txtPackagePrice.getText()), list);
-            b = new PackageController().addPackage(aPackage);
-            Alert alert;
-            if (b){
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Update  Successfully", ButtonType.OK);
-                clear(null);
-                loadPackageCombo();
+        if (new Validation().packageNameValidation(txtPackageName)&&new Validation().idValidation(txtPackageCode)&&new Validation().priceValidation(txtPackagePrice)&&!packageTMS.isEmpty()){
+            boolean b;
+            try {
+                b = new PackageController().deletePackage(txtPackageCode.getText(),null);
+                ArrayList<PackageDetail> list=new ArrayList<>();
+                for (PackageTM tm:packageTMS
+                ) {
+                    list.add(new PackageDetail(tm.getFoodType(),tm.getFoodCode(),tm.getQuantity()));
+                }
+                Package aPackage = new Package(txtPackageCode.getText(), txtPackageName.getText(), Double.valueOf(txtPackagePrice.getText()), list);
+                b = new PackageController().addPackage(aPackage);
+                Alert alert;
+                if (b){
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Update  Successfully", ButtonType.OK);
+                    clear(null);
+                    loadPackageCombo();
 
-            }else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                }else {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                }
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
             alert.show();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
     public void deletePackage(ActionEvent actionEvent) {
-        try {
-            boolean b = new PackageController().deletePackage(cmbPackageCode.getSelectionModel().getSelectedItem(), cmbPackageName.getSelectionModel().getSelectedItem());
-            Alert alert;
-            if (b){
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete  Successfully", ButtonType.OK);
-                clear(null);
-                loadPackageCombo();
+        if (new Validation().idValidation(txtPackageCode)){
+            try {
+                boolean b = new PackageController().deletePackage(cmbPackageCode.getSelectionModel().getSelectedItem(), cmbPackageName.getSelectionModel().getSelectedItem());
+                Alert alert;
+                if (b){
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete  Successfully", ButtonType.OK);
+                    clear(null);
+                    loadPackageCombo();
 
-            }else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
-            }
+                }else {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Try Again", ButtonType.OK);
+                }
+                alert.initOwner(context.getScene().getWindow());
+                alert.show();
+            }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
             alert.initOwner(context.getScene().getWindow());
             alert.show();
-        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+        }
+
     }
 
     private void setItemCombo(){

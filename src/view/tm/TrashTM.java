@@ -6,6 +6,12 @@ public class TrashTM {
     private int quantity;
     private String reason;
 
+    public TrashTM(String foodCode, String description, int quantity) {
+        this.foodCode = foodCode;
+        this.description = description;
+        this.quantity = quantity;
+    }
+
     public TrashTM(String foodCode, String description, int quantity, String reason) {
         this.foodCode = foodCode;
         this.description = description;

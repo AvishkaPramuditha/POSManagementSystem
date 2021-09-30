@@ -50,7 +50,7 @@ public class LoginFormController {
                         alert.initOwner(context.getScene().getWindow());
                         alert.show();
                     }else {
-                        if (admin.getPassword().equals(txtPassword.getText())){
+                        if (admin.getPassword().equals(String.valueOf(txtPassword.getText().hashCode()))){
                             alert=new Alert(Alert.AlertType.CONFIRMATION,"Successfully logged OK To Continue", ButtonType.OK);
                             alert.initOwner(context.getScene().getWindow());
                             alert.showAndWait();
@@ -75,7 +75,7 @@ public class LoginFormController {
                         alert.initOwner(context.getScene().getWindow());
                         alert.show();
                     }else{
-                        if (cashier.getPassword().equals(txtPassword.getText())){
+                        if (cashier.getPassword().equals(String.valueOf(txtPassword.getText().hashCode()))){
                             alert=new Alert(Alert.AlertType.CONFIRMATION,"Successfully logged OK To Continue", ButtonType.OK);
                             alert.initOwner(context.getScene().getWindow());
                             alert.showAndWait();
@@ -99,8 +99,19 @@ public class LoginFormController {
     }
 
     public void btnShutDown(MouseEvent mouseEvent) {
-        Stage stage = (Stage) context.getScene().getWindow();
-        stage.close();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "do you want to Update Trash And Finish the Day", ButtonType.YES, ButtonType.NO);
+        alert.initOwner(context.getScene().getWindow());
+        alert.showAndWait().ifPresent(buttonType ->{
+            if (buttonType==ButtonType.YES){
+                new ManageTrashFormController().finishedDay();
+                Stage stage = (Stage) context.getScene().getWindow();
+                stage.close();
+            }else {
+                Stage stage = (Stage) context.getScene().getWindow();
+                stage.close();
+            }
+        } );
+
     }
 
     private Password checkPassword(String userName, String jobRole) throws SQLException, ClassNotFoundException {

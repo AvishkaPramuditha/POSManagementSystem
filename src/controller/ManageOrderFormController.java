@@ -1,5 +1,6 @@
 package controller;
 
+import ValidationFields.Validation;
 import com.jfoenix.controls.JFXButton;
 import database.DbConnection;
 import javafx.collections.FXCollections;
@@ -108,85 +109,98 @@ public class ManageOrderFormController {
 
     public void searchOrder(ActionEvent actionEvent) {
         if (tabDineIn.isSelected()) {
-            try {
-                dineTakeTableView.getItems().clear();
-                customerID = null;
-                Order orderDetail = new OrderController().getOrderDetail(txtSearchDT.getText(), cmbOrderTypeDT.getSelectionModel().getSelectedItem());
-                if (orderDetail != null) {
-                    lblCustomerNameDT.setText(orderDetail.getCustName());
-                    customerID = orderDetail.getCustId();
-                    lblTotal.setText(String.valueOf(orderDetail.getTotal()));
-                    for (OrderDetail detail : orderDetail.getOrderedItem()
-                    ) {
-                        if (detail.getFoodType().equals("Package")){
-                            for (int i = 0; i < detail.getQuantity(); i++) {
-                                ArrayList<PackageDetail> packageItems = new PackageController().getPackageItems(detail.getFoodID());
-                                tableItems.add(new OrderTM(detail.getFoodID(), detail.getDescription(), detail.getSellingPrice(), 1, (detail.getSellingPrice() * detail.getQuantity()), detail.getFoodType()));
-                                for (PackageDetail detail1:packageItems
-                                ) {
-                                    String description;
-                                    if (detail1.getFoodType().equals("Meal")){description=new ItemController().getMealDescription(detail1.getFoodCode());}else if (detail1.getFoodType().equals("Pizza")){description=new ItemController().getPizzaDescription(detail1.getFoodCode());}
-                                    else if(detail1.getFoodType().equals("Sub")){description=new ItemController().getSubDescription(detail1.getFoodCode());}else {description=new ItemController().getDrinkDescription(detail1.getFoodCode());}
-                                    OrderTM orderT = new OrderTM(detail.getFoodID() + "-" + detail1.getFoodCode(), description, 0, detail1.getQuantity(), 0,"X");
-                                    tableItems.add(orderT);
+            if (new Validation().orderID(txtSearchDT)&&!cmbOrderTypeDT.getSelectionModel().isEmpty()){
+                try {
+                    dineTakeTableView.getItems().clear();
+                    customerID = null;
+                    Order orderDetail = new OrderController().getOrderDetail(txtSearchDT.getText(), cmbOrderTypeDT.getSelectionModel().getSelectedItem());
+                    if (orderDetail != null) {
+                        lblCustomerNameDT.setText(orderDetail.getCustName());
+                        customerID = orderDetail.getCustId();
+                        lblTotal.setText(String.valueOf(orderDetail.getTotal()));
+                        for (OrderDetail detail : orderDetail.getOrderedItem()
+                        ) {
+                            if (detail.getFoodType().equals("Package")){
+                                for (int i = 0; i < detail.getQuantity(); i++) {
+                                    ArrayList<PackageDetail> packageItems = new PackageController().getPackageItems(detail.getFoodID());
+                                    tableItems.add(new OrderTM(detail.getFoodID(), detail.getDescription(), detail.getSellingPrice(), 1, (detail.getSellingPrice() * detail.getQuantity()), detail.getFoodType()));
+                                    for (PackageDetail detail1:packageItems
+                                    ) {
+                                        String description;
+                                        if (detail1.getFoodType().equals("Meal")){description=new ItemController().getMealDescription(detail1.getFoodCode());}else if (detail1.getFoodType().equals("Pizza")){description=new ItemController().getPizzaDescription(detail1.getFoodCode());}
+                                        else if(detail1.getFoodType().equals("Sub")){description=new ItemController().getSubDescription(detail1.getFoodCode());}else {description=new ItemController().getDrinkDescription(detail1.getFoodCode());}
+                                        OrderTM orderT = new OrderTM(detail.getFoodID() + "-" + detail1.getFoodCode(), description, 0, detail1.getQuantity(), 0,"X");
+                                        tableItems.add(orderT);
+                                    }
                                 }
+                                continue;
                             }
-                            continue;
+                            tableItems.add(new OrderTM(detail.getFoodID(), detail.getDescription(), detail.getSellingPrice(), detail.getQuantity(), (detail.getSellingPrice() * detail.getQuantity()), detail.getFoodType()));
                         }
-                        tableItems.add(new OrderTM(detail.getFoodID(), detail.getDescription(), detail.getSellingPrice(), detail.getQuantity(), (detail.getSellingPrice() * detail.getQuantity()), detail.getFoodType()));
+                        dineTakeTableView.setItems(tableItems);
+                        btnAdd.setDisable(false);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid OrderID ....", ButtonType.OK);
+                        alert.initOwner(mainContext.getScene().getWindow());
+                        alert.show();
                     }
-                    dineTakeTableView.setItems(tableItems);
-                    btnAdd.setDisable(false);
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid OrderID ....", ButtonType.OK);
-                    alert.initOwner(mainContext.getScene().getWindow());
-                    alert.show();
+                } catch (ClassNotFoundException | SQLException e) {
+                    e.printStackTrace();
                 }
-            } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
             }
+
         }else{
-            try {
-                tableViewD.getItems().clear();
-                customerID = null;
-                Order orderDetail = new OrderController().getOrderDetail(txtSearchD.getText(), "Delivery");
-                DeliveryInformation deliveryInformation = new DeliveryController().getDeliveryInformation(txtSearchD.getText());
-                if (orderDetail != null&&deliveryInformation!=null) {
-                    lblCustomerNameD.setText(orderDetail.getCustName());
-                    customerID = orderDetail.getCustId();
-                    lblSubTotalD.setText(String.valueOf(orderDetail.getSubTotal()));
-                    lblDeliveryChargesD.setText(String.valueOf(orderDetail.getDeliveryCharges()));
-                    lblGrandTotalD.setText(String.valueOf(orderDetail.getTotal()));
-                    cmbDriver.setValue(new Employee(deliveryInformation.getEmployeeId(),deliveryInformation.getEmployeeName()));
-                    txtAddress.setText(deliveryInformation.getCustMobileNumber()+"\n"+deliveryInformation.getCustAddress());
-                    for (OrderDetail detail : orderDetail.getOrderedItem()
-                    ) {
-                        if (detail.getFoodType().equals("Package")){
-                            for (int i = 0; i < detail.getQuantity(); i++) {
-                                ArrayList<PackageDetail> packageItems = new PackageController().getPackageItems(detail.getFoodID());
-                                tableItemsD.add(new OrderTM(detail.getFoodID(), detail.getDescription(), detail.getSellingPrice(), 1, (detail.getSellingPrice() * detail.getQuantity()), detail.getFoodType()));
-                                for (PackageDetail detail1:packageItems
-                                ) {
-                                    String description;
-                                    if (detail1.getFoodType().equals("Meal")){description=new ItemController().getMealDescription(detail1.getFoodCode());}else if (detail1.getFoodType().equals("Pizza")){description=new ItemController().getPizzaDescription(detail1.getFoodCode());}
-                                    else if(detail1.getFoodType().equals("Sub")){description=new ItemController().getSubDescription(detail1.getFoodCode());}else {description=new ItemController().getDrinkDescription(detail1.getFoodCode());}
-                                    OrderTM orderT = new OrderTM(detail.getFoodID() + "-" + detail1.getFoodCode(), description, 0, detail1.getQuantity(), 0,"X");
-                                    tableItemsD.add(orderT);
+            if (new Validation().orderID(txtSearchD)){
+                try {
+                    tableViewD.getItems().clear();
+                    customerID = null;
+                    Order orderDetail = new OrderController().getOrderDetail(txtSearchD.getText(), "Delivery");
+                    DeliveryInformation deliveryInformation = new DeliveryController().getDeliveryInformation(txtSearchD.getText());
+                    if (orderDetail != null&&deliveryInformation!=null) {
+                        lblCustomerNameD.setText(orderDetail.getCustName());
+                        customerID = orderDetail.getCustId();
+                        lblSubTotalD.setText(String.valueOf(orderDetail.getSubTotal()));
+                        lblDeliveryChargesD.setText(String.valueOf(orderDetail.getDeliveryCharges()));
+                        lblGrandTotalD.setText(String.valueOf(orderDetail.getTotal()));
+                        cmbDriver.setValue(new Employee(deliveryInformation.getEmployeeId(),deliveryInformation.getEmployeeName()));
+                        txtAddress.setText(deliveryInformation.getCustMobileNumber()+"\n"+deliveryInformation.getCustAddress());
+                        for (OrderDetail detail : orderDetail.getOrderedItem()
+                        ) {
+                            if (detail.getFoodType().equals("Package")){
+                                for (int i = 0; i < detail.getQuantity(); i++) {
+                                    ArrayList<PackageDetail> packageItems = new PackageController().getPackageItems(detail.getFoodID());
+                                    tableItemsD.add(new OrderTM(detail.getFoodID(), detail.getDescription(), detail.getSellingPrice(), 1, (detail.getSellingPrice() * detail.getQuantity()), detail.getFoodType()));
+                                    for (PackageDetail detail1:packageItems
+                                    ) {
+                                        String description;
+                                        if (detail1.getFoodType().equals("Meal")){description=new ItemController().getMealDescription(detail1.getFoodCode());}else if (detail1.getFoodType().equals("Pizza")){description=new ItemController().getPizzaDescription(detail1.getFoodCode());}
+                                        else if(detail1.getFoodType().equals("Sub")){description=new ItemController().getSubDescription(detail1.getFoodCode());}else {description=new ItemController().getDrinkDescription(detail1.getFoodCode());}
+                                        OrderTM orderT = new OrderTM(detail.getFoodID() + "-" + detail1.getFoodCode(), description, 0, detail1.getQuantity(), 0,"X");
+                                        tableItemsD.add(orderT);
+                                    }
                                 }
+                                continue;
                             }
-                            continue;
+                            tableItemsD.add(new OrderTM(detail.getFoodID(), detail.getDescription(), detail.getSellingPrice(), detail.getQuantity(), (detail.getSellingPrice() * detail.getQuantity()), detail.getFoodType()));
                         }
-                        tableItemsD.add(new OrderTM(detail.getFoodID(), detail.getDescription(), detail.getSellingPrice(), detail.getQuantity(), (detail.getSellingPrice() * detail.getQuantity()), detail.getFoodType()));
+                        tableViewD.setItems(tableItemsD);
+                        btnAdd.setDisable(false);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid OrderID ....", ButtonType.OK);
+                        alert.initOwner(mainContext.getScene().getWindow());
+                        alert.show();
                     }
-                    tableViewD.setItems(tableItemsD);
-                    btnAdd.setDisable(false);
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid OrderID ....", ButtonType.OK);
-                    alert.initOwner(mainContext.getScene().getWindow());
-                    alert.show();
+                } catch (ClassNotFoundException | SQLException e) {
+                    e.printStackTrace();
                 }
-            } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid Order ID Format .....", ButtonType.CLOSE);
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
             }
         }
     }
@@ -217,169 +231,197 @@ public class ManageOrderFormController {
     }
     public void deleteItem(ActionEvent actionEvent) {
         if (tabDineIn.isSelected()){
-            OrderTM selectedItem = dineTakeTableView.getSelectionModel().getSelectedItem();
-            if (selectedItem.getPrice()!=0) {
-                ObservableList<OrderTM> tmObservableList = FXCollections.observableArrayList(tableItems);
-                for (OrderTM v : tmObservableList
-                ) {
-                    if (v.getFoodCode().contains(selectedItem.getFoodCode())) {
-                        tableItems.remove(v);
-                        deleted.add(v);
+            if (!dineTakeTableView.getSelectionModel().isEmpty()){
+                OrderTM selectedItem = dineTakeTableView.getSelectionModel().getSelectedItem();
+                if (selectedItem.getPrice()!=0) {
+                    ObservableList<OrderTM> tmObservableList = FXCollections.observableArrayList(tableItems);
+                    for (OrderTM v : tmObservableList
+                    ) {
+                        if (v.getFoodCode().contains(selectedItem.getFoodCode())) {
+                            tableItems.remove(v);
+                            deleted.add(v);
+                        }
                     }
+                    dineTakeTableView.setItems(tableItems);
+                    calculation();
                 }
-                dineTakeTableView.setItems(tableItems);
-                calculation();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Please Select The Item From The Table .....", ButtonType.CLOSE);
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
             }
+
         }else{
-            OrderTM selectedItem = tableViewD.getSelectionModel().getSelectedItem();
-            if (selectedItem.getPrice()!=0) {
-                ObservableList<OrderTM> tmObservableList = FXCollections.observableArrayList(tableItemsD);
-                for (OrderTM v : tmObservableList
-                ) {
-                    if (v.getFoodCode().contains(selectedItem.getFoodCode())) {
-                        tableItemsD.remove(v);
-                        deleted.add(v);
+            if (!tableViewD.getSelectionModel().isEmpty()){
+                OrderTM selectedItem = tableViewD.getSelectionModel().getSelectedItem();
+                if (selectedItem.getPrice()!=0) {
+                    ObservableList<OrderTM> tmObservableList = FXCollections.observableArrayList(tableItemsD);
+                    for (OrderTM v : tmObservableList
+                    ) {
+                        if (v.getFoodCode().contains(selectedItem.getFoodCode())) {
+                            tableItemsD.remove(v);
+                            deleted.add(v);
+                        }
                     }
+                    tableViewD.setItems(tableItemsD);
+                    calculation();
                 }
-                tableViewD.setItems(tableItemsD);
-               calculation();
+            }else {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Please Select The Item From The Table .....", ButtonType.CLOSE);
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
             }
+
         }
 
     }
 
     public void addQuantity(ActionEvent actionEvent) throws SQLException, IOException, ClassNotFoundException {
         if (tabDineIn.isSelected()){
-            OrderTM selectedItem = dineTakeTableView.getSelectionModel().getSelectedItem();
-            int quantity= Integer.parseInt(txtQuantity.getText());
-            if (selectedItem!=null&&selectedItem.getPrice()!=0){
-                selectedItem.setQuantity(selectedItem.getQuantity()+Integer.valueOf(txtQuantity.getText()));
-                selectedItem.setAmount(selectedItem.getQuantity()*selectedItem.getPrice());
-                dineTakeTableView.refresh();}else{
-                MealButton meal = null;
-                PizzaButton pizza=null;
-                SubButton sub=null;
-                DrinkButton drink=null;
-                if (!cmbMeal.getSelectionModel().isEmpty()){  meal= new ItemController().getMealDetailWithDiscount(cmbMeal.getSelectionModel().getSelectedItem().getMealID());}
-                if (!cmbPizza.getSelectionModel().isEmpty()){pizza = new ItemController().getPizzaDetailWithDiscount(cmbPizza.getSelectionModel().getSelectedItem().getPizzaID()); }
-                if (!cmbSub.getSelectionModel().isEmpty()){ sub= new ItemController().getSubDetailWithDiscount(cmbSub.getSelectionModel().getSelectedItem().getSandwichID());}
-                if (!cmbDrink.getSelectionModel().isEmpty()){drink= new ItemController().getDrinkDetailWithDiscount(cmbDrink.getSelectionModel().getSelectedItem().getBeverageID());}
-                if (meal!=null){
-                    double d=meal.getUnitPrice();
-                    if (meal.getDiscountPrice()!=0){d=meal.getDiscountPrice();}
-                    OrderTM tm = new OrderTM(meal.getMealID(), meal.getDescription(), d, quantity, d * quantity, "Meal");
-                    if (!searchOrderTM(tm)){
-                        tableItems.add(tm);
-                        added.add(tm);
-                    }
-                }else if (pizza!=null){
-                    double d=pizza.getUnitPrice();
-                    if (pizza.getDiscountPrice()!=0){d=pizza.getDiscountPrice();}
-                    OrderTM tm = new OrderTM(pizza.getPizzaID(), pizza.getDescription(),d, quantity, d * quantity, "Pizza");
-                    if (!searchOrderTM(tm)){  tableItems.add(tm);   added.add(tm);}
-                }else if (sub!=null){
-                    double d=sub.getUnitPrice();
-                    if (sub.getDiscountPrice()!=0){d=sub.getDiscountPrice();}
-                    OrderTM tm = new OrderTM(sub.getSandwichId(), sub.getDescription(), d, quantity, d * quantity, "Sub");
-                    if (!searchOrderTM(tm)){  tableItems.add(tm);   added.add(tm);}
-                }else if (drink!=null){
-                    double d=drink.getUnitPrice();
-                    if (drink.getDiscountPrice()!=0){d=drink.getDiscountPrice();}
-                    OrderTM tm = new OrderTM(drink.getBeverageID(), drink.getDescription(), d, quantity, d * quantity, "Drink");
-                    if (!searchOrderTM(tm)){  tableItems.add(tm);   added.add(tm);}
-                }else{
-                    try {
-                        if (!cmbPackage.getSelectionModel().isEmpty()){
-                            Package packageDetail = new PackageController().getPackageDetail(null,cmbPackage.getSelectionModel().getSelectedItem());
-                            ArrayList<PackageDetail> packD = packageDetail.getPackageDetails();
-                            for (int i = 0; i <quantity ; i++) {
-                                OrderTM orderTM = new OrderTM(packageDetail.getPackageID(), packageDetail.getName(), packageDetail.getPrice(), 1, packageDetail.getPrice() * 1,"Package");
-                                tableItems.add(orderTM);
-                                added.add(orderTM);
-                                for (PackageDetail detail:packD
-                                ) {
-                                    String description;
-                                    if (detail.getFoodType()=="Meal"){description=new ItemController().getMealDescription(detail.getFoodCode());}else if (detail.getFoodType()=="Pizza"){description=new ItemController().getPizzaDescription(detail.getFoodCode());}
-                                    else if(detail.getFoodType()=="Sub"){description=new ItemController().getSubDescription(detail.getFoodCode());}else {description=new ItemController().getDrinkDescription(detail.getFoodCode());}
-                                    OrderTM orderT = new OrderTM(packageDetail.getPackageID() + "-" + detail.getFoodCode(), description, 0, detail.getQuantity(), 0,"X");
-                                    tableItems.add(orderT);
+            if (new Validation().quantityValidation(txtQuantity)&&(!cmbMeal.getSelectionModel().isEmpty()||!cmbPizza.getSelectionModel().isEmpty()||!cmbSub.getSelectionModel().isEmpty()||!cmbPackage.getSelectionModel().isEmpty()||!cmbDrink.getSelectionModel().isEmpty())||!dineTakeTableView.getSelectionModel().isEmpty()){
+                OrderTM selectedItem = dineTakeTableView.getSelectionModel().getSelectedItem();
+                int quantity= Integer.parseInt(txtQuantity.getText());
+                if (selectedItem!=null&&selectedItem.getPrice()!=0){
+                    selectedItem.setQuantity(selectedItem.getQuantity()+Integer.valueOf(txtQuantity.getText()));
+                    selectedItem.setAmount(selectedItem.getQuantity()*selectedItem.getPrice());
+                    dineTakeTableView.refresh();}else{
+                    MealButton meal = null;
+                    PizzaButton pizza=null;
+                    SubButton sub=null;
+                    DrinkButton drink=null;
+                    if (!cmbMeal.getSelectionModel().isEmpty()){  meal= new ItemController().getMealDetailWithDiscount(cmbMeal.getSelectionModel().getSelectedItem().getMealID());}
+                    if (!cmbPizza.getSelectionModel().isEmpty()){pizza = new ItemController().getPizzaDetailWithDiscount(cmbPizza.getSelectionModel().getSelectedItem().getPizzaID()); }
+                    if (!cmbSub.getSelectionModel().isEmpty()){ sub= new ItemController().getSubDetailWithDiscount(cmbSub.getSelectionModel().getSelectedItem().getSandwichID());}
+                    if (!cmbDrink.getSelectionModel().isEmpty()){drink= new ItemController().getDrinkDetailWithDiscount(cmbDrink.getSelectionModel().getSelectedItem().getBeverageID());}
+                    if (meal!=null){
+                        double d=meal.getUnitPrice();
+                        if (meal.getDiscountPrice()!=0){d=meal.getDiscountPrice();}
+                        OrderTM tm = new OrderTM(meal.getMealID(), meal.getDescription(), d, quantity, d * quantity, "Meal");
+                        if (!searchOrderTM(tm)){
+                            tableItems.add(tm);
+                            added.add(tm);
+                        }
+                    }else if (pizza!=null){
+                        double d=pizza.getUnitPrice();
+                        if (pizza.getDiscountPrice()!=0){d=pizza.getDiscountPrice();}
+                        OrderTM tm = new OrderTM(pizza.getPizzaID(), pizza.getDescription(),d, quantity, d * quantity, "Pizza");
+                        if (!searchOrderTM(tm)){  tableItems.add(tm);   added.add(tm);}
+                    }else if (sub!=null){
+                        double d=sub.getUnitPrice();
+                        if (sub.getDiscountPrice()!=0){d=sub.getDiscountPrice();}
+                        OrderTM tm = new OrderTM(sub.getSandwichId(), sub.getDescription(), d, quantity, d * quantity, "Sub");
+                        if (!searchOrderTM(tm)){  tableItems.add(tm);   added.add(tm);}
+                    }else if (drink!=null){
+                        double d=drink.getUnitPrice();
+                        if (drink.getDiscountPrice()!=0){d=drink.getDiscountPrice();}
+                        OrderTM tm = new OrderTM(drink.getBeverageID(), drink.getDescription(), d, quantity, d * quantity, "Drink");
+                        if (!searchOrderTM(tm)){  tableItems.add(tm);   added.add(tm);}
+                    }else{
+                        try {
+                            if (!cmbPackage.getSelectionModel().isEmpty()){
+                                Package packageDetail = new PackageController().getPackageDetail(null,cmbPackage.getSelectionModel().getSelectedItem());
+                                ArrayList<PackageDetail> packD = packageDetail.getPackageDetails();
+                                for (int i = 0; i <quantity ; i++) {
+                                    OrderTM orderTM = new OrderTM(packageDetail.getPackageID(), packageDetail.getName(), packageDetail.getPrice(), 1, packageDetail.getPrice() * 1,"Package");
+                                    tableItems.add(orderTM);
+                                    added.add(orderTM);
+                                    for (PackageDetail detail:packD
+                                    ) {
+                                        String description;
+                                        if (detail.getFoodType()=="Meal"){description=new ItemController().getMealDescription(detail.getFoodCode());}else if (detail.getFoodType()=="Pizza"){description=new ItemController().getPizzaDescription(detail.getFoodCode());}
+                                        else if(detail.getFoodType()=="Sub"){description=new ItemController().getSubDescription(detail.getFoodCode());}else {description=new ItemController().getDrinkDescription(detail.getFoodCode());}
+                                        OrderTM orderT = new OrderTM(packageDetail.getPackageID() + "-" + detail.getFoodCode(), description, 0, detail.getQuantity(), 0,"X");
+                                        tableItems.add(orderT);
+                                    }
                                 }
                             }
-                        }
 
-                    }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
-                }
-            }
-            dineTakeTableView.setItems(tableItems);
-            reset(null);
-            txtQuantity.clear();
-            dineTakeTableView.getSelectionModel().clearSelection();
-            calculation();
-        }else{
-            OrderTM selectedItem = tableViewD.getSelectionModel().getSelectedItem();
-            int quantity= Integer.parseInt(txtQuantityD.getText());
-            if (selectedItem!=null&&selectedItem.getPrice()!=0){
-                selectedItem.setQuantity(selectedItem.getQuantity()+Integer.valueOf(txtQuantityD.getText()));
-                selectedItem.setAmount(selectedItem.getQuantity()*selectedItem.getPrice());
-                tableViewD.refresh();}else{
-                MealButton meal = null;
-                PizzaButton pizza=null;
-                SubButton sub=null;
-                DrinkButton drink=null;
-                if (!cmbMealD.getSelectionModel().isEmpty()){  meal= new ItemController().getMealDetailWithDiscount(cmbMealD.getSelectionModel().getSelectedItem().getMealID());}
-                if (!cmbPizzaD.getSelectionModel().isEmpty()){pizza = new ItemController().getPizzaDetailWithDiscount(cmbPizzaD.getSelectionModel().getSelectedItem().getPizzaID()); }
-                if (!cmbSubD.getSelectionModel().isEmpty()){ sub= new ItemController().getSubDetailWithDiscount(cmbSubD.getSelectionModel().getSelectedItem().getSandwichID());}
-                if (!cmbDrinkD.getSelectionModel().isEmpty()){drink= new ItemController().getDrinkDetailWithDiscount(cmbDrinkD.getSelectionModel().getSelectedItem().getBeverageID());}
-                if (meal!=null){
-                    double d=meal.getUnitPrice();
-                    if (meal.getDiscountPrice()!=0){d=meal.getDiscountPrice();}
-                    OrderTM tm = new OrderTM(meal.getMealID(), meal.getDescription(), d, quantity, d * quantity, "Meal");
-                    if (!searchOrderTM(tm)){
-                        tableItemsD.add(tm);
-                        added.add(tm);
+                        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
                     }
-                }else if (pizza!=null){
-                    double d=pizza.getUnitPrice();
-                    if (pizza.getDiscountPrice()!=0){d=pizza.getDiscountPrice();}
-                    OrderTM tm = new OrderTM(pizza.getPizzaID(), pizza.getDescription(),d, quantity, d * quantity, "Pizza");
-                    if (!searchOrderTM(tm)){  tableItemsD.add(tm);   added.add(tm);}
-                }else if (sub!=null){
-                    double d=sub.getUnitPrice();
-                    if (sub.getDiscountPrice()!=0){d=sub.getDiscountPrice();}
-                    OrderTM tm = new OrderTM(sub.getSandwichId(), sub.getDescription(), d, quantity, d * quantity, "Sub");
-                    if (!searchOrderTM(tm)){  tableItemsD.add(tm);   added.add(tm);}
-                }else if (drink!=null){
-                    double d=drink.getUnitPrice();
-                    if (drink.getDiscountPrice()!=0){d=drink.getDiscountPrice();}
-                    OrderTM tm = new OrderTM(drink.getBeverageID(), drink.getDescription(), d, quantity, d * quantity, "Drink");
-                    if (!searchOrderTM(tm)){  tableItemsD.add(tm);   added.add(tm);}
-                }else{
-                    try {
-                        if (!cmbPackageD.getSelectionModel().isEmpty()){
-                            Package packageDetail = new PackageController().getPackageDetail(null,cmbPackageD.getSelectionModel().getSelectedItem());
-                            ArrayList<PackageDetail> packD = packageDetail.getPackageDetails();
-                            for (int i = 0; i <quantity ; i++) {
-                                OrderTM orderTM = new OrderTM(packageDetail.getPackageID(), packageDetail.getName(), packageDetail.getPrice(), 1, packageDetail.getPrice() * 1,"Package");
-                                tableItemsD.add(orderTM);
-                                added.add(orderTM);
-                                for (PackageDetail detail:packD
-                                ) {
-                                    String description;
-                                    if (detail.getFoodType()=="Meal"){description=new ItemController().getMealDescription(detail.getFoodCode());}else if (detail.getFoodType()=="Pizza"){description=new ItemController().getPizzaDescription(detail.getFoodCode());}
-                                    else if(detail.getFoodType()=="Sub"){description=new ItemController().getSubDescription(detail.getFoodCode());}else {description=new ItemController().getDrinkDescription(detail.getFoodCode());}
-                                    OrderTM orderT = new OrderTM(packageDetail.getPackageID() + "-" + detail.getFoodCode(), description, 0, detail.getQuantity(), 0,"X");
-                                    tableItemsD.add(orderT);
+                }
+                dineTakeTableView.setItems(tableItems);
+                reset(null);
+                txtQuantity.clear();
+                dineTakeTableView.getSelectionModel().clearSelection();
+                calculation();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
+            }
+
+        }else{
+            if (new Validation().quantityValidation(txtQuantityD)&&(!cmbMealD.getSelectionModel().isEmpty()||!cmbPizzaD.getSelectionModel().isEmpty()||!cmbSubD.getSelectionModel().isEmpty()||!cmbPackageD.getSelectionModel().isEmpty()||!cmbDrinkD.getSelectionModel().isEmpty())||!tableViewD.getSelectionModel().isEmpty()){
+                OrderTM selectedItem = tableViewD.getSelectionModel().getSelectedItem();
+                int quantity= Integer.parseInt(txtQuantityD.getText());
+                if (selectedItem!=null&&selectedItem.getPrice()!=0){
+                    selectedItem.setQuantity(selectedItem.getQuantity()+Integer.valueOf(txtQuantityD.getText()));
+                    selectedItem.setAmount(selectedItem.getQuantity()*selectedItem.getPrice());
+                    tableViewD.refresh();}else{
+                    MealButton meal = null;
+                    PizzaButton pizza=null;
+                    SubButton sub=null;
+                    DrinkButton drink=null;
+                    if (!cmbMealD.getSelectionModel().isEmpty()){  meal= new ItemController().getMealDetailWithDiscount(cmbMealD.getSelectionModel().getSelectedItem().getMealID());}
+                    if (!cmbPizzaD.getSelectionModel().isEmpty()){pizza = new ItemController().getPizzaDetailWithDiscount(cmbPizzaD.getSelectionModel().getSelectedItem().getPizzaID()); }
+                    if (!cmbSubD.getSelectionModel().isEmpty()){ sub= new ItemController().getSubDetailWithDiscount(cmbSubD.getSelectionModel().getSelectedItem().getSandwichID());}
+                    if (!cmbDrinkD.getSelectionModel().isEmpty()){drink= new ItemController().getDrinkDetailWithDiscount(cmbDrinkD.getSelectionModel().getSelectedItem().getBeverageID());}
+                    if (meal!=null){
+                        double d=meal.getUnitPrice();
+                        if (meal.getDiscountPrice()!=0){d=meal.getDiscountPrice();}
+                        OrderTM tm = new OrderTM(meal.getMealID(), meal.getDescription(), d, quantity, d * quantity, "Meal");
+                        if (!searchOrderTM(tm)){
+                            tableItemsD.add(tm);
+                            added.add(tm);
+                        }
+                    }else if (pizza!=null){
+                        double d=pizza.getUnitPrice();
+                        if (pizza.getDiscountPrice()!=0){d=pizza.getDiscountPrice();}
+                        OrderTM tm = new OrderTM(pizza.getPizzaID(), pizza.getDescription(),d, quantity, d * quantity, "Pizza");
+                        if (!searchOrderTM(tm)){  tableItemsD.add(tm);   added.add(tm);}
+                    }else if (sub!=null){
+                        double d=sub.getUnitPrice();
+                        if (sub.getDiscountPrice()!=0){d=sub.getDiscountPrice();}
+                        OrderTM tm = new OrderTM(sub.getSandwichId(), sub.getDescription(), d, quantity, d * quantity, "Sub");
+                        if (!searchOrderTM(tm)){  tableItemsD.add(tm);   added.add(tm);}
+                    }else if (drink!=null){
+                        double d=drink.getUnitPrice();
+                        if (drink.getDiscountPrice()!=0){d=drink.getDiscountPrice();}
+                        OrderTM tm = new OrderTM(drink.getBeverageID(), drink.getDescription(), d, quantity, d * quantity, "Drink");
+                        if (!searchOrderTM(tm)){  tableItemsD.add(tm);   added.add(tm);}
+                    }else{
+                        try {
+                            if (!cmbPackageD.getSelectionModel().isEmpty()){
+                                Package packageDetail = new PackageController().getPackageDetail(null,cmbPackageD.getSelectionModel().getSelectedItem());
+                                ArrayList<PackageDetail> packD = packageDetail.getPackageDetails();
+                                for (int i = 0; i <quantity ; i++) {
+                                    OrderTM orderTM = new OrderTM(packageDetail.getPackageID(), packageDetail.getName(), packageDetail.getPrice(), 1, packageDetail.getPrice() * 1,"Package");
+                                    tableItemsD.add(orderTM);
+                                    added.add(orderTM);
+                                    for (PackageDetail detail:packD
+                                    ) {
+                                        String description;
+                                        if (detail.getFoodType()=="Meal"){description=new ItemController().getMealDescription(detail.getFoodCode());}else if (detail.getFoodType()=="Pizza"){description=new ItemController().getPizzaDescription(detail.getFoodCode());}
+                                        else if(detail.getFoodType()=="Sub"){description=new ItemController().getSubDescription(detail.getFoodCode());}else {description=new ItemController().getDrinkDescription(detail.getFoodCode());}
+                                        OrderTM orderT = new OrderTM(packageDetail.getPackageID() + "-" + detail.getFoodCode(), description, 0, detail.getQuantity(), 0,"X");
+                                        tableItemsD.add(orderT);
+                                    }
                                 }
                             }
-                        }
-                    }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+                        }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+                    }
                 }
+                tableViewD.setItems(tableItemsD);
+                reset(null);
+                txtQuantityD.clear();
+                tableViewD.getSelectionModel().clearSelection();
+                calculation();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
             }
-           tableViewD.setItems(tableItemsD);
-            reset(null);
-            txtQuantityD.clear();
-            tableViewD.getSelectionModel().clearSelection();
-            calculation();
+
         }
 
     }
@@ -456,6 +498,7 @@ public class ManageOrderFormController {
         }
     }
     public void cancelOrder(ActionEvent actionEvent) {
+
         Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION, "Are You Sure", ButtonType.YES, ButtonType.NO);
         alert1.initOwner(mainContext.getScene().getWindow());
         alert1.showAndWait().ifPresent(re->{
@@ -463,9 +506,18 @@ public class ManageOrderFormController {
                try{
                    boolean b;
                    if (tabDineIn.isSelected()){
-                      b = new OrderController().deleteOrder(txtSearchDT.getText());
+                       if(new Validation().orderID(txtSearchDT)){
+                           b = new OrderController().deleteOrder(txtSearchDT.getText());
+                       }else{
+                           b=false;
+                       }
+
                    }else{
-                       b = new OrderController().deleteOrder(txtSearchD.getText());
+                       if (new Validation().orderID(txtSearchD)){
+                           b = new OrderController().deleteOrder(txtSearchD.getText());
+                       }else{
+                           b=false;
+                       }
                    }
                    Alert alert;
                    if (b) {
@@ -505,89 +557,99 @@ public class ManageOrderFormController {
 
     public void modifyOrder(ActionEvent actionEvent) {
         if (tabDineIn.isSelected()){
-            tableItems.removeAll(added);
-            boolean b = true;
-            boolean b1 = true;
-            boolean b2 = true;
-            ArrayList<OrderDetail> orderItem=new ArrayList<>();
-            try {
-                ArrayList<OrderDetail> pd=new ArrayList<>();
-                for (OrderTM tm:added
-                ) {
-                    OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
-                    if (tm.getFoodType().equals("Package")){
-                        if (isIN(detail,tableItems)){
-                            setupPackageOrderItem(tableItems,detail);
-                        }else{
+            if (new Validation().orderID(txtSearchDT)&&!cmbOrderTypeDT.getSelectionModel().isEmpty()&&!tableItems.isEmpty()){
+                tableItems.removeAll(added);
+                boolean b = true;
+                boolean b1 = true;
+                boolean b2 = true;
+                ArrayList<OrderDetail> orderItem=new ArrayList<>();
+                try {
+                    ArrayList<OrderDetail> pd=new ArrayList<>();
+                    for (OrderTM tm:added
+                    ) {
+                        OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
+                        if (tm.getFoodType().equals("Package")){
+                            if (isIN(detail,tableItems)){
+                                setupPackageOrderItem(tableItems,detail);
+                            }else{
+                                pd.add(detail);
+                            }
+                        }else {
                             pd.add(detail);
                         }
-                    }else {
-                        pd.add(detail);
                     }
-                }
-                if (!deleted.isEmpty()){
-                    b=new OrderController().deleteItem(txtSearchDT.getText(),deleted);}
+                    if (!deleted.isEmpty()){
+                        b=new OrderController().deleteItem(txtSearchDT.getText(),deleted);}
 
-                for (OrderTM tm:tableItems
-                ) {
-                    OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
-                    orderItem.add(detail);
+                    for (OrderTM tm:tableItems
+                    ) {
+                        OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
+                        orderItem.add(detail);
+                    }
+                    if (!pd.isEmpty()){
+                        b1=new OrderController().saveOrderDetail(pd,txtSearchDT.getText());}
+                    b2 = new OrderController().updateOrder(new Order(txtSearchDT.getText(), null, null, null, cmbOrderTypeDT.getSelectionModel().getSelectedItem(), Double.valueOf(lblTotal.getText()), 0,  Double.valueOf(lblTotal.getText()), "NonPaid", orderItem));
+                }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+                Alert alert;
+                if (b&&b1&&b2){
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Modified ....", ButtonType.OK);
+                }else {
+                    alert = new Alert(Alert.AlertType.ERROR, "Try Again", ButtonType.OK);
                 }
-                if (!pd.isEmpty()){
-                    b1=new OrderController().saveOrderDetail(pd,txtSearchDT.getText());}
-                b2 = new OrderController().updateOrder(new Order(txtSearchDT.getText(), null, null, null, cmbOrderTypeDT.getSelectionModel().getSelectedItem(), Double.valueOf(lblTotal.getText()), 0,  Double.valueOf(lblTotal.getText()), "NonPaid", orderItem));
-            }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
-            Alert alert;
-            if (b&&b1&&b2){
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Modified ....", ButtonType.OK);
-            }else {
-                alert = new Alert(Alert.AlertType.ERROR, "Try Again", ButtonType.OK);
-            }
-            alert.initOwner(mainContext.getScene().getWindow());
-            alert.show();
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
+            }else {Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();}
         }else{
-            tableItemsD.removeAll(added);
-            boolean b = true;
-            boolean b1 = true;
-            boolean b2 = true;
-            boolean b3=true;
-            ArrayList<OrderDetail> orderItem=new ArrayList<>();
-            try {
-                ArrayList<OrderDetail> pd=new ArrayList<>();
-                for (OrderTM tm:added
-                ) {
-                    OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
-                    if (tm.getFoodType().equals("Package")){
-                        if (isIN(detail,tableItemsD)){
-                            setupPackageOrderItem(tableItemsD,detail);
-                        }else{
+            if (new Validation().orderID(txtSearchD)&&!cmbDriver.getSelectionModel().isEmpty()){
+                tableItemsD.removeAll(added);
+                boolean b = true;
+                boolean b1 = true;
+                boolean b2 = true;
+                boolean b3=true;
+                ArrayList<OrderDetail> orderItem=new ArrayList<>();
+                try {
+                    ArrayList<OrderDetail> pd=new ArrayList<>();
+                    for (OrderTM tm:added
+                    ) {
+                        OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
+                        if (tm.getFoodType().equals("Package")){
+                            if (isIN(detail,tableItemsD)){
+                                setupPackageOrderItem(tableItemsD,detail);
+                            }else{
+                                pd.add(detail);
+                            }
+                        }else {
                             pd.add(detail);
                         }
-                    }else {
-                        pd.add(detail);
                     }
-                }
-                if (!deleted.isEmpty()){
-                    b=new OrderController().deleteItem(txtSearchD.getText(),deleted);}
+                    if (!deleted.isEmpty()){
+                        b=new OrderController().deleteItem(txtSearchD.getText(),deleted);}
 
-            for (OrderTM tm:tableItemsD
-            ) {
-                OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
-                orderItem.add(detail);
+                    for (OrderTM tm:tableItemsD
+                    ) {
+                        OrderDetail detail = new OrderDetail(tm.getFoodCode(), tm.getDescription(), tm.getPrice(), tm.getQuantity(), tm.getFoodType());
+                        orderItem.add(detail);
+                    }
+                    if (!pd.isEmpty()){
+                        b1=new OrderController().saveOrderDetail(pd,txtSearchD.getText());}
+                    b2 = new OrderController().updateOrder(new Order(txtSearchD.getText(), null, null, null, "Delivery", Double.valueOf(lblSubTotalD.getText()), Double.valueOf(lblDeliveryChargesD.getText()), Double.valueOf(lblGrandTotalD.getText()), "NonPaid", orderItem));
+                    b3=new DeliveryController().updateDriver(txtSearchD.getText(),cmbDriver.getSelectionModel().getSelectedItem().getEmployeeID());
+                }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+                Alert alert;
+                if (b&&b1&&b2&&b3){
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Modified ....", ButtonType.OK);
+                }else {
+                    alert = new Alert(Alert.AlertType.ERROR, "Try Again", ButtonType.OK);
+                }
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Check Fields Again .....", ButtonType.CLOSE);
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
             }
-            if (!pd.isEmpty()){
-                    b1=new OrderController().saveOrderDetail(pd,txtSearchD.getText());}
-             b2 = new OrderController().updateOrder(new Order(txtSearchD.getText(), null, null, null, "Delivery", Double.valueOf(lblSubTotalD.getText()), Double.valueOf(lblDeliveryChargesD.getText()), Double.valueOf(lblGrandTotalD.getText()), "NonPaid", orderItem));
-                b3=new DeliveryController().updateDriver(txtSearchD.getText(),cmbDriver.getSelectionModel().getSelectedItem().getEmployeeID());
-            }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
-            Alert alert;
-            if (b&&b1&&b2&&b3){
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Modified ....", ButtonType.OK);
-            }else {
-                alert = new Alert(Alert.AlertType.ERROR, "Try Again", ButtonType.OK);
-            }
-            alert.initOwner(mainContext.getScene().getWindow());
-            alert.show();
         }
         added.clear();
         deleted.clear();
@@ -596,38 +658,51 @@ public class ManageOrderFormController {
     public void doPayment(ActionEvent actionEvent) {
         boolean b = false;
         if (tabDineIn.isSelected()){
-            double totalD= Double.parseDouble(lblTotal.getText());
-            double paidAmountD= Double.parseDouble(txtCashDT.getText());
-            double balanceD=paidAmountD-totalD;
-            lblBalanceDT.setText(String.valueOf(balanceD));
-            try {
-                PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("INSERT INTO transaction VALUES (?,?,?,?,?,?)");
-                preparedStatement.setString(1,txtSearchDT.getText());
-                preparedStatement.setString(2,customerID);
-                preparedStatement.setString(3,CashierMainFormController.cashierID);
-                preparedStatement.setDouble(4,totalD);
-                preparedStatement.setDouble(5,paidAmountD);
-                preparedStatement.setDouble(6,balanceD);
-                 b=preparedStatement.executeUpdate()>0;
-                if(b){b=new OrderController().orderPaid(txtSearchDT.getText());}
+            if (new Validation().priceValidation(txtCashDT)){
+                double totalD= Double.parseDouble(lblTotal.getText());
+                double paidAmountD= Double.parseDouble(txtCashDT.getText());
+                double balanceD=paidAmountD-totalD;
+                lblBalanceDT.setText(String.valueOf(balanceD));
+                try {
+                    PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("INSERT INTO transaction VALUES (?,?,?,?,?,?)");
+                    preparedStatement.setString(1,txtSearchDT.getText());
+                    preparedStatement.setString(2,customerID);
+                    preparedStatement.setString(3,CashierMainFormController.cashierID);
+                    preparedStatement.setDouble(4,totalD);
+                    preparedStatement.setDouble(5,paidAmountD);
+                    preparedStatement.setDouble(6,balanceD);
+                    b=preparedStatement.executeUpdate()>0;
+                    if(b){b=new OrderController().orderPaid(txtSearchDT.getText());}
 
-            }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+                }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+            }else{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid Input .....", ButtonType.CLOSE);
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
+            }
+
         }else{
-            double totalD= Double.parseDouble(lblGrandTotalD.getText());
-            double paidAmountD= Double.parseDouble(txtCashD.getText());
-            double balanceD=paidAmountD-totalD;
-            lblBalanceD.setText(String.valueOf(balanceD));
-            try {
-                PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("INSERT INTO transaction VALUES (?,?,?,?,?,?)");
-                preparedStatement.setString(1,txtSearchD.getText());
-                preparedStatement.setString(2,customerID);
-                preparedStatement.setString(3,CashierMainFormController.cashierID);
-                preparedStatement.setDouble(4,totalD);
-                preparedStatement.setDouble(5,paidAmountD);
-                preparedStatement.setDouble(6,balanceD);
-                b=preparedStatement.executeUpdate()>0;
-                if(b){b=new OrderController().orderPaid(txtSearchD.getText());}
-            }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+            if (new Validation().priceValidation(txtCashD)){
+                double totalD= Double.parseDouble(lblGrandTotalD.getText());
+                double paidAmountD= Double.parseDouble(txtCashD.getText());
+                double balanceD=paidAmountD-totalD;
+                lblBalanceD.setText(String.valueOf(balanceD));
+                try {
+                    PreparedStatement preparedStatement = DbConnection.getInstance().getConnection().prepareStatement("INSERT INTO transaction VALUES (?,?,?,?,?,?)");
+                    preparedStatement.setString(1,txtSearchD.getText());
+                    preparedStatement.setString(2,customerID);
+                    preparedStatement.setString(3,CashierMainFormController.cashierID);
+                    preparedStatement.setDouble(4,totalD);
+                    preparedStatement.setDouble(5,paidAmountD);
+                    preparedStatement.setDouble(6,balanceD);
+                    b=preparedStatement.executeUpdate()>0;
+                    if(b){b=new OrderController().orderPaid(txtSearchD.getText());}
+                }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+            }else{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid Input .....", ButtonType.CLOSE);
+                alert.initOwner(mainContext.getScene().getWindow());
+                alert.show();
+            }
         }
         Alert alert;
         if (b){
@@ -654,6 +729,10 @@ public class ManageOrderFormController {
         cmbSub.getSelectionModel().clearSelection();
         cmbPackage.getSelectionModel().clearSelection();
         cmbDrink.getSelectionModel().clearSelection();
+        txtSearchDT.setStyle("-fx-border-radius :8;-fx-background-radius:8;-fx-border-width:3;-fx-border-color: #2c3e50");
+        txtCashDT.setStyle("-fx-border-radius :8;-fx-background-radius:8;-fx-border-width:3;-fx-border-color: #2c3e50");
+        txtQuantity.setStyle("-fx-border-radius :8;-fx-background-radius:8;-fx-border-width:3;-fx-border-color: #2c3e50");
+
     }
     private void clearDelivery(){
         cmbDriver.getSelectionModel().select(null);
@@ -672,6 +751,9 @@ public class ManageOrderFormController {
         lblGrandTotalD.setText(null);
         lblBalanceD.setText(null);
         txtAddress.clear();
+        txtSearchD.setStyle("-fx-border-radius :8;-fx-background-radius:8;-fx-border-width:3;-fx-border-color: #2c3e50");
+        txtCashD.setStyle("-fx-border-radius :8;-fx-background-radius:8;-fx-border-width:3;-fx-border-color: #2c3e50");
+        txtQuantityD.setStyle("-fx-border-radius :8;-fx-background-radius:8;-fx-border-width:3;-fx-border-color: #2c3e50");
     }
     public void dineTakeTab(Event event) {
         clearDineTakeAway();

@@ -55,4 +55,13 @@ public class CustomerController {
             return resultSet.getString(1);
         }else{return null;}
     }
+
+    public String getCustomerNumberOnOrderID(String orderID) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = DbConnection.getInstance().getConnection().prepareStatement("SELECT custMobileNumber FROM customer INNER JOIN orders ON  customer.custID=orders.custID WHERE orders.OrderID='" + orderID + "'").executeQuery();
+        if (resultSet.next()){
+            return resultSet.getString(1);
+        }else {
+            return null;
+        }
+    }
 }

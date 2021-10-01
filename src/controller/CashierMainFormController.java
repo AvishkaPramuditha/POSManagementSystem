@@ -26,6 +26,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.*;
 import model.Package;
+import net.sf.jasperreports.engine.JRException;
 import view.tm.OrderTM;
 
 import java.io.IOException;
@@ -497,7 +498,7 @@ public class CashierMainFormController {
         return false;
     }
 
-    public void placeOrder(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+    public void placeOrder(ActionEvent actionEvent) throws SQLException, ClassNotFoundException, JRException {
         Validation validation = new Validation();
         if (cmbOrderType.getSelectionModel().getSelectedItem()==("Delivery")){
             if (validation.mobileNumberValidation(txtCustomerMobile)&&validation.nameValidation(txtCustomerName)&&validation.addressValidation(txtCustomerAddress,"Customer")&&!cmbOrderType.getSelectionModel().isEmpty()&&!cmbDriver.getSelectionModel().isEmpty()&&!orderTMS.isEmpty()){
@@ -514,6 +515,7 @@ public class CashierMainFormController {
                b=new DeliveryController().addDelivery(lblOrderNo.getText(),cmbDriver.getSelectionModel().getSelectedItem().getEmployeeID());
                 Alert alert;
                 if (b){
+                    new ReportController().printKOT(orderTMS,lblOrderNo.getText(),txtCustomerName.getText(),txtCustomerMobile.getText(),cmbOrderType.getSelectionModel().getSelectedItem());
                     alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Placed ....", ButtonType.OK);
                     btnCancelOrder.setText("Next Order");
                     btnCancelOrder.setStyle("-fx-background-color : blue");
@@ -538,6 +540,7 @@ public class CashierMainFormController {
                 boolean b = new OrderController().placeOrder(new Order(lblOrderNo.getText(), customerID, lblDate.getText(), lblTime.getText(), cmbOrderType.getSelectionModel().getSelectedItem(), Double.valueOf(lblSubTot.getText()), Double.valueOf(lblDelivery.getText()), Double.valueOf(lblGrandTot.getText()), "NonPaid", list));
                 Alert alert;
                 if (b){
+                    new ReportController().printKOT(orderTMS,lblOrderNo.getText(),txtCustomerName.getText(),txtCustomerMobile.getText(),cmbOrderType.getSelectionModel().getSelectedItem());
                     alert = new Alert(Alert.AlertType.CONFIRMATION, "Order Placed ....", ButtonType.OK);
                     btnCancelOrder.setText("Next Order");
                     btnCancelOrder.setStyle("-fx-background-color : blue");
@@ -588,6 +591,7 @@ public class CashierMainFormController {
                 if(b){b=new OrderController().orderPaid(lblOrderNo.getText());}
                 Alert alert;
                 if (b){
+                    new ReportController().printBill(orderTMS,lblOrderNo.getText(),txtCustomerName.getText(),txtCustomerMobile.getText(),cmbOrderType.getSelectionModel().getSelectedItem(),lblSubTot.getText(),lblDelivery.getText(),lblGrandTot.getText(),txtCash.getText(),lblBalance.getText());
                     alert = new Alert(Alert.AlertType.CONFIRMATION, "Paid  ....", ButtonType.OK);
                     btnCancelOrder.setText("Next Order");
                     btnCancelOrder.setStyle("-fx-background-color : blue");
@@ -598,7 +602,8 @@ public class CashierMainFormController {
                 alert.initOwner(mainContext.getScene().getWindow());
                 alert.show();
 
-            }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+            }catch (ClassNotFoundException | SQLException | JRException e){e.printStackTrace();}
         }
     }
+
 }

@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.*;
 import model.Package;
+import net.sf.jasperreports.engine.JRException;
 import view.tm.OrderTM;
 
 import java.io.IOException;
@@ -672,9 +673,11 @@ public class ManageOrderFormController {
                     preparedStatement.setDouble(5,paidAmountD);
                     preparedStatement.setDouble(6,balanceD);
                     b=preparedStatement.executeUpdate()>0;
-                    if(b){b=new OrderController().orderPaid(txtSearchDT.getText());}
+                    if(b){b=new OrderController().orderPaid(txtSearchDT.getText());
+                        new ReportController().printBill(tableItems,txtSearchDT.getText(),lblCustomerNameDT.getText(),new CustomerController().getCustomerNumberOnOrderID(txtSearchDT.getText()),cmbOrderTypeDT.getSelectionModel().getSelectedItem(),lblTotal.getText(),"00.00",lblTotal.getText(),txtCashDT.getText(),lblBalanceDT.getText());
+                    }
 
-                }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+                }catch (ClassNotFoundException | SQLException | JRException e){e.printStackTrace();}
             }else{
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid Input .....", ButtonType.CLOSE);
                 alert.initOwner(mainContext.getScene().getWindow());
@@ -696,8 +699,10 @@ public class ManageOrderFormController {
                     preparedStatement.setDouble(5,paidAmountD);
                     preparedStatement.setDouble(6,balanceD);
                     b=preparedStatement.executeUpdate()>0;
-                    if(b){b=new OrderController().orderPaid(txtSearchD.getText());}
-                }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
+                    if(b){b=new OrderController().orderPaid(txtSearchD.getText());
+                        new ReportController().printBill(tableItemsD,txtSearchD.getText(),lblCustomerNameD.getText(),new CustomerController().getCustomerNumberOnOrderID(txtSearchD.getText()),"Delivery",lblSubTotalD.getText(),lblDeliveryChargesD.getText(),lblGrandTotalD.getText(),txtCashD.getText(),lblBalanceD.getText());
+                    }
+                }catch (ClassNotFoundException | SQLException | JRException e){e.printStackTrace();}
             }else{
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Invalid Input .....", ButtonType.CLOSE);
                 alert.initOwner(mainContext.getScene().getWindow());

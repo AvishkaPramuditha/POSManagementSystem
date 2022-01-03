@@ -1,6 +1,6 @@
 package controller;
 
-import com.jfoenix.controls.JFXButton;
+
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
@@ -8,17 +8,13 @@ import database.DbConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Password;
-
-import javax.swing.*;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -92,13 +88,7 @@ public class LoginFormController {
                 }
             }catch (SQLException | ClassNotFoundException e){e.printStackTrace();}
         }
-       /* if(rdioAdmin.isSelected()){
-            context.getChildren().clear();
-            context.getChildren().add(FXMLLoader.load(getClass().getResource("../view/AdminHomeForm.fxml")));
-        }else{
-            context.getChildren().clear();
-            context.getChildren().add(FXMLLoader.load(getClass().getResource("../view/CashierMainForm.fxml")));
-        }*/
+
     }
 
     public void btnShutDown(MouseEvent mouseEvent) {

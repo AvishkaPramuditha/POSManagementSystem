@@ -68,6 +68,7 @@ public class CashierMainFormController {
     private String customerID;
     public static String cashierID;
     private  ObservableList<OrderTM> orderTMS= FXCollections.observableArrayList();
+
     public void initialize() {
         txtCash.setDisable(true);
         setCmd();
@@ -85,8 +86,8 @@ public class CashierMainFormController {
         orderTblView.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("price"));
         orderTblView.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("quantity"));
         orderTblView.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("amount"));
-
     }
+
     private void setDateAndTime(){
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -97,6 +98,7 @@ public class CashierMainFormController {
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }
+
     private void setOrderID(){
         try {
             lblOrderNo.setText(new OrderController().getNextOrderID());
@@ -106,6 +108,7 @@ public class CashierMainFormController {
             e.printStackTrace();
         }
     }
+
     private void setCmd(){
         try {
             cmbOrderType.setItems(FXCollections.observableArrayList("Dine - IN","Take-Away","Delivery"));
@@ -120,6 +123,7 @@ public class CashierMainFormController {
         }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
 
     }
+
     private void setPackageButton(){
         try {
             for (String packageCode:new PackageController().getPackageCode()
@@ -157,6 +161,7 @@ public class CashierMainFormController {
 
         }catch (ClassNotFoundException | SQLException e){e.printStackTrace();}
     }
+
     private void setDrinkButton(){
         try {
             for (DrinkButton drink :new ItemController().getDrink()

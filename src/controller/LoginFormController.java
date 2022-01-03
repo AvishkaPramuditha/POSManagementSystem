@@ -29,10 +29,7 @@ public class LoginFormController {
     public JFXTextField txtUserName;
     public AnchorPane context;
 
-
-
     public void initialize(){
-     
     }
 
     public void btnLogin(ActionEvent actionEvent) throws IOException {
@@ -60,14 +57,14 @@ public class LoginFormController {
                             AdminHomeFormController controller = loader.getController();
                             controller.lblAdmin.setText(admin.getEmployeeName());
                             context.getChildren().add(load);
-
+                            System.out.println("aaaaa");
                         }else{
                             alert=new Alert(Alert.AlertType.ERROR,"Password Is Wrong", ButtonType.CLOSE);
+
                             alert.initOwner(context.getScene().getWindow());
                             alert.show();
                         }
                     }
-
                 }else{
                     Password cashier = checkPassword(txtUserName.getText(), "Cashier");
                     if (cashier==null){
@@ -92,10 +89,16 @@ public class LoginFormController {
                             alert.show();
                         }
                     }
-
                 }
             }catch (SQLException | ClassNotFoundException e){e.printStackTrace();}
         }
+       /* if(rdioAdmin.isSelected()){
+            context.getChildren().clear();
+            context.getChildren().add(FXMLLoader.load(getClass().getResource("../view/AdminHomeForm.fxml")));
+        }else{
+            context.getChildren().clear();
+            context.getChildren().add(FXMLLoader.load(getClass().getResource("../view/CashierMainForm.fxml")));
+        }*/
     }
 
     public void btnShutDown(MouseEvent mouseEvent) {

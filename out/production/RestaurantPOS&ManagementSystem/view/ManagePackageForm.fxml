@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="context" prefHeight="776.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManagePackageFormController">
+   <children>
+      <Text layoutX="9.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Package Code :" wrappingWidth="158.92138671875">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <TextField fx:id="txtPackageCode" layoutX="166.0" layoutY="114.0" prefHeight="38.0" prefWidth="199.0" style="-fx-border-color: #1abc9c; -fx-border-width: 3;">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <Text layoutX="382.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Package Name :" wrappingWidth="158.92138671875">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <TextField fx:id="txtPackageName" layoutX="551.0" layoutY="114.0" prefHeight="38.0" prefWidth="294.0" style="-fx-border-color: #1abc9c; -fx-border-width: 3;">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <Text layoutX="11.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Food Item       :" wrappingWidth="150.92138671875">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="cmbFoodItem" layoutX="169.0" layoutY="249.0" prefHeight="35.0" prefWidth="322.0" style="-fx-border-width: 3; -fx-border-color: #1abc9c;" />
+      <Text layoutX="541.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantity :" wrappingWidth="104.92138671875">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <TextField fx:id="txtQuantity" layoutX="648.0" layoutY="248.0" prefHeight="38.0" prefWidth="199.0" style="-fx-border-color: #1abc9c; -fx-border-width: 3;">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <Separator layoutX="3.0" layoutY="90.0" prefHeight="15.0" prefWidth="857.0" />
+      <TableView fx:id="tblView" layoutX="11.0" layoutY="373.0" prefHeight="233.0" prefWidth="838.0" style="-fx-background-color: #d1d8e0; -fx-border-color: #16a085; -fx-border-width: 3;">
+         <columns>
+            <TableColumn prefWidth="154.0" style="-fx-border-width: 3; -fx-border-color: #16a085;" text="Food Code" />
+            <TableColumn prefWidth="436.0" style="-fx-border-width: 3; -fx-border-color: #16a085;" text="Description" />
+            <TableColumn prefWidth="243.0" style="-fx-border-width: 3; -fx-border-color: #16a085;" text="Quantity" />
+         </columns>
+      </TableView>
+      <JFXButton buttonType="RAISED" layoutX="731.0" layoutY="305.0" onAction="#addItem" prefHeight="35.0" prefWidth="116.0" style="-fx-background-color: #44bd32; -fx-background-radius: 8;" text="Add Item">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <Text layoutX="11.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Package price :" wrappingWidth="158.92138671875">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <TextField fx:id="txtPackagePrice" layoutX="169.0" layoutY="173.0" prefHeight="38.0" prefWidth="199.0" style="-fx-border-color: #1abc9c; -fx-border-width: 3;">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <JFXButton buttonType="RAISED" layoutX="187.0" layoutY="632.0" onAction="#deleteItem" prefHeight="44.0" prefWidth="142.0" style="-fx-background-color: #c0392b; -fx-background-radius: 8;" text="Delete Item" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnSave" buttonType="RAISED" layoutX="689.0" layoutY="632.0" onAction="#savePackage" prefHeight="44.0" prefWidth="157.0" style="-fx-background-color: #3498db; -fx-background-radius: 8;" text="Save Package" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <Text layoutX="9.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Package Name :">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="cmbPackageName" layoutX="175.0" layoutY="34.0" prefHeight="36.0" prefWidth="268.0" style="-fx-border-width: 3; -fx-border-color: #16a085;" />
+      <Text layoutX="490.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Package Code  :" wrappingWidth="160.92138671875">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="cmbPackageCode" layoutX="660.0" layoutY="34.0" prefHeight="36.0" prefWidth="182.0" style="-fx-border-width: 3; -fx-border-color: #16a085;" />
+      <JFXButton buttonType="RAISED" layoutX="13.0" layoutY="635.0" onAction="#clear" prefHeight="28.0" prefWidth="151.0" style="-fx-background-color: #f1c40f; -fx-background-radius: 8;" text="Clear Selection">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnUpdate" buttonType="RAISED" layoutX="356.0" layoutY="632.0" onAction="#update" prefHeight="44.0" prefWidth="116.0" style="-fx-background-color: #0652DD; -fx-background-radius: 8;" text="Update" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnDelete" buttonType="RAISED" layoutX="493.0" layoutY="632.0" onAction="#deletePackage" prefHeight="44.0" prefWidth="175.0" style="-fx-background-color: #ff3f34; -fx-background-radius: 8;" text="Delete Package" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+   </children>
+</Pane>

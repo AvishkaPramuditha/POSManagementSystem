@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="context" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #ecf0f1;" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminHomeFormController">
+   <children>
+      <JFXButton buttonType="RAISED" layoutX="91.0" layoutY="254.0" onAction="#moveToManageFoodItem" prefHeight="215.0" prefWidth="274.0" style="-fx-background-color: #1abc9c;" stylesheets="@../styles/Styles.css" text="Manage Food Item">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="569.0" layoutY="254.0" onAction="#moveToManageEmployee" prefHeight="215.0" prefWidth="274.0" style="-fx-background-color: #1abc9c;" text="Manage Employee">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="1561.0" layoutY="617.0" onAction="#moveToReports" prefHeight="215.0" prefWidth="274.0" style="-fx-background-color: #1abc9c;" text="Reports">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="91.0" layoutY="617.0" onAction="#moveToManageCustomer" prefHeight="215.0" prefWidth="274.0" style="-fx-background-color: #1abc9c;" text="Manage Customer ">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="1054.0" layoutY="254.0" onAction="#moveToManageDiscount" prefHeight="215.0" prefWidth="274.0" style="-fx-background-color: #1abc9c;" text="Manage Discount">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="1054.0" layoutY="617.0" onAction="#moveToManageTrash" prefHeight="215.0" prefWidth="274.0" style="-fx-background-color: #1abc9c;" text="Manage Trash">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="569.0" layoutY="617.0" onAction="#moveToChangePassword" prefHeight="215.0" prefWidth="274.0" style="-fx-background-color: #1abc9c;" text="Change Password">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </JFXButton>
+      <Pane layoutY="-1.0" prefHeight="114.0" prefWidth="1920.0" style="-fx-background-color: #16a085;">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <children>
+            <Text layoutX="46.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Name :">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Text>
+            <Text fx:id="lblDate" layoutX="881.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2021/9/5">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </Text>
+            <Text fx:id="lblTime" layoutX="1408.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3:15 AM">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </Text>
+            <Text layoutX="782.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date :">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Text>
+            <Text layoutX="1305.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time :">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Text>
+            <Text fx:id="lblAdmin" layoutX="252.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avishka">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </Text>
+            <JFXButton buttonType="RAISED" layoutX="1779.0" layoutY="30.0" onAction="#logout" prefHeight="57.0" prefWidth="113.0" style="-fx-background-color: #34ace0;" text="Logout">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </Pane>
+      <JFXButton buttonType="RAISED" layoutX="1561.0" layoutY="254.0" onAction="#moveToManagePackage" prefHeight="215.0" prefWidth="274.0" style="-fx-background-color: #1abc9c;" text=" Manage Packages">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </JFXButton>
+      <Pane layoutY="1008.0" prefHeight="72.0" prefWidth="1920.0" style="-fx-background-color: #16a085;">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <children>
+            <Text layoutX="798.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To Admin Portal">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

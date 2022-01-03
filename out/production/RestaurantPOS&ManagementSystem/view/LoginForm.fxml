@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="context" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #16a085;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
+   <children>
+      <Pane layoutX="1174.0" prefHeight="1080.0" prefWidth="746.0" style="-fx-background-color: #ecf0f1;">
+         <children>
+            <Text layoutX="319.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN">
+               <font>
+                  <Font name="Bell MT Bold" size="47.0" />
+               </font>
+            </Text>
+            <Text layoutX="73.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Name :" wrappingWidth="190.9091796875">
+               <font>
+                  <Font size="33.0" />
+               </font>
+            </Text>
+            <Text layoutX="73.0" layoutY="541.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password    :" wrappingWidth="190.9091796875">
+               <font>
+                  <Font size="33.0" />
+               </font>
+            </Text>
+            <JFXButton buttonType="RAISED" layoutX="319.0" layoutY="731.0" onAction="#btnLogin" prefHeight="63.0" prefWidth="182.0" style="-fx-background-color: #16a085;" stylesheets="@../styles/Styles.css" text="Login" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </JFXButton>
+            <JFXRadioButton fx:id="rdioAdmin" layoutX="472.0" layoutY="608.0" text="Log As Admin">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </JFXRadioButton>
+            <Text layoutX="601.0" layoutY="1068.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Version 1.0.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <JFXTextField fx:id="txtUserName" layoutX="289.0" layoutY="341.0" prefHeight="87.0" prefWidth="406.0">
+               <effect>
+                  <ColorAdjust brightness="-1.0" contrast="1.0" />
+               </effect>
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </JFXTextField>
+            <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="687.0" layoutY="5.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#btnShutDown" prefHeight="50.0" prefWidth="50.0">
+               <graphic>
+                  <ImageView fitHeight="99.0" fitWidth="57.0" onMouseClicked="#btnShutDown" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../asset/st.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <JFXPasswordField fx:id="txtPassword" layoutX="289.0" layoutY="486.0" prefHeight="87.0" prefWidth="406.0">
+               <font>
+                  <Font size="35.0" />
+               </font>
+               <effect>
+                  <ColorAdjust brightness="-1.0" contrast="1.0" />
+               </effect>
+            </JFXPasswordField>
+         </children>
+      </Pane>
+      <Text layoutX="149.0" layoutY="556.0" strokeType="OUTSIDE" strokeWidth="0.0" text="POS &amp; Management System" wrappingWidth="1022.026611328125">
+         <font>
+            <Font name="Perpetua" size="86.0" />
+         </font>
+      </Text>
+      <Text layoutX="415.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Toscano Chilis' Restaurant" wrappingWidth="787.3599853515625">
+         <font>
+            <Font name="Perpetua" size="70.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="336.0" fitWidth="379.0" layoutX="11.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../asset/logo.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

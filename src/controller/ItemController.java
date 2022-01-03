@@ -20,7 +20,7 @@ public class ItemController {
            File file = new File("E:\\image\\image.png");
            FileOutputStream fos = new FileOutputStream(file);
            byte content[] = new byte[1024];
-           int size = 0;
+            int size = 0;
            while ((size = is.read(content)) != -1) {
                fos.write(content, 0, size);
            }

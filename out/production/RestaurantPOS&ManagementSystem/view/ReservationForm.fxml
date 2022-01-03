@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="context" prefHeight="556.0" prefWidth="862.0" style="-fx-background-color: #CAD3C8;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReservationFormController">
+   <children>
+      <TabPane prefHeight="556.0" prefWidth="862.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="40.0">
+        <tabs>
+            <Tab onSelectionChanged="#clearView" style="-fx-font-size: 15; -fx-font-weight: bold; -fx-tab-min-width: 50;" text="View">
+               <content>
+                  <Pane prefHeight="556.0" prefWidth="862.0">
+                     <children>
+                        <Text layoutX="24.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date :" wrappingWidth="52.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <JFXDatePicker fx:id="viewDatePicker" layoutX="87.0" layoutY="33.0" onHiding="#getReservations" prefHeight="34.0" prefWidth="199.0" style="-fx-border-width: 3; -fx-border-color: #2c3e50; -fx-font-size: 15; -fx-font-weight: bold;" />
+                        <TableView fx:id="tblView" layoutX="16.0" layoutY="90.0" prefHeight="386.0" prefWidth="829.0">
+                           <columns>
+                              <TableColumn fx:id="viewRID" prefWidth="113.0" style="-fx-font-size: 15;" text="Reservation ID" />
+                              <TableColumn fx:id="viewCName" prefWidth="248.0" style="-fx-font-size: 15;" text="Customer Name" />
+                              <TableColumn fx:id="viewCMobile" prefWidth="192.0" style="-fx-font-size: 15;" text="Customer Mobile" />
+                              <TableColumn fx:id="viewTime" prefWidth="168.0" style="-fx-font-size: 15;" text="Time " />
+                              <TableColumn fx:id="viewParticipant" prefWidth="105.0" style="-fx-font-size: 15;" text="Paricipants" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </Pane>
+               </content>
+            </Tab>
+          <Tab onSelectionChanged="#clearReservation" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Add Reservation">
+               <content>
+                  <Pane prefHeight="434.0" prefWidth="862.0">
+                     <children>
+                        <Text layoutX="23.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Name                  :" wrappingWidth="234.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="23.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Mobile Number :" wrappingWidth="240.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="addTabCustomerMobile" layoutX="264.0" layoutY="15.0" onAction="#searchCustomer" prefHeight="34.0" prefWidth="224.0" promptText="Search Here" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="addTabCustomerName" layoutX="265.0" layoutY="78.0" prefHeight="34.0" prefWidth="224.0" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <JFXButton fx:id="btnCustomerAdd" layoutX="519.0" layoutY="85.0" onAction="#addCustomer" prefHeight="42.0" prefWidth="71.0" style="-fx-background-color: #1abc9c;" stylesheets="@../styles/Styles.css" text="ADD" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <Text layoutX="608.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reservation ID :" wrappingWidth="136.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="lblReservation" layoutX="753.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R-0000001" wrappingWidth="94.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="23.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date :" wrappingWidth="52.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="323.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time :" wrappingWidth="52.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="584.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Participants :" wrappingWidth="112.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <JFXDatePicker fx:id="addTabDatePicker" layoutX="86.0" layoutY="176.0" prefHeight="34.0" prefWidth="199.0" style="-fx-border-width: 3; -fx-border-color: #2c3e50; -fx-font-size: 15; -fx-font-weight: bold;" />
+                        <JFXTimePicker fx:id="addTabTimePicker" layoutX="383.0" layoutY="176.0" prefHeight="37.0" prefWidth="177.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3; -fx-font-size: 15; -fx-font-weight: bold;" />
+                        <TextField fx:id="addTabParticipants" layoutX="703.0" layoutY="171.0" prefHeight="37.0" prefWidth="136.0" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <JFXButton fx:id="btnAddReservation" layoutX="439.0" layoutY="345.0" onAction="#addReservation" prefHeight="38.0" prefWidth="160.0" style="-fx-background-color: #27ae60;" stylesheets="@../styles/Styles.css" text="Add Reservation" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton layoutX="257.0" layoutY="345.0" onAction="#cancel" prefHeight="24.0" prefWidth="82.0" style="-fx-background-color: #e74c3c;" stylesheets="@../styles/Styles.css" text="Cancel" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </Pane>
+               </content>
+          </Tab>
+          <Tab onSelectionChanged="#clearManageReservation" style="-fx-font-size: 15; -fx-font-weight: bold;" text="Mange Reservations">
+               <content>
+                  <Pane prefHeight="556.0" prefWidth="862.0">
+                     <children>
+                        <Text layoutX="472.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Name :" wrappingWidth="234.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="23.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Mobile Number :" wrappingWidth="240.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="txtManageCustomerMobile" layoutX="264.0" layoutY="15.0" onAction="#searchCustomerManage" prefHeight="50.0" prefWidth="177.0" promptText="Search Here" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="txtManageCustomerName" layoutX="627.0" layoutY="15.0" prefHeight="34.0" prefWidth="224.0" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="23.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date :" wrappingWidth="52.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="323.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time :" wrappingWidth="52.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="584.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Participants :" wrappingWidth="112.173828125">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <JFXDatePicker fx:id="manageDatePicker" layoutX="86.0" layoutY="329.0" prefHeight="34.0" prefWidth="199.0" style="-fx-border-width: 3; -fx-border-color: #2c3e50; -fx-font-size: 15; -fx-font-weight: bold;" />
+                        <JFXTimePicker fx:id="manageTimePicker" layoutX="383.0" layoutY="329.0" prefHeight="37.0" prefWidth="177.0" style="-fx-border-color: #2c3e50; -fx-border-width: 3; -fx-font-size: 15; -fx-font-weight: bold;" />
+                        <TextField fx:id="txtManageParticipant" layoutX="703.0" layoutY="324.0" prefHeight="37.0" prefWidth="136.0" style="-fx-border-color: #2c3e50;" stylesheets="@../styles/Styles.css">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <JFXButton layoutX="745.0" layoutY="431.0" onAction="#Managedelete" prefHeight="38.0" prefWidth="85.0" style="-fx-background-color: #e74c3c;" stylesheets="@../styles/Styles.css" text="Delete">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <TableView fx:id="manageTblView" layoutX="16.0" layoutY="87.0" prefHeight="217.0" prefWidth="828.0">
+                          <columns>
+                            <TableColumn fx:id="manageRID" prefWidth="150.0" style="-fx-font-size: 15;" text="Reservation ID" />
+                            <TableColumn fx:id="manageRDate" prefWidth="248.0" style="-fx-font-size: 15;" text="Reservation Date " />
+                              <TableColumn fx:id="manageRTime" prefWidth="285.0" style="-fx-font-size: 15;" text="Reservation Time" />
+                              <TableColumn fx:id="manageRParticipants" prefWidth="142.0" style="-fx-font-size: 15;" text="Participants" />
+                          </columns>
+                        </TableView>
+                        <JFXButton layoutX="620.0" layoutY="432.0" onAction="#manageUpdate" prefHeight="38.0" prefWidth="89.0" style="-fx-background-color: #2980b9;" stylesheets="@../styles/Styles.css" text="Update" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </Pane>
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

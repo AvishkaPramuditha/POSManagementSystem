@@ -771,4 +771,32 @@ public class ManageOrderFormController {
         added.clear();
         deleted.clear();
     }
+
+    public void getInvoiceDineTake(ActionEvent actionEvent) {
+        if (new Validation().orderID(txtSearchDT)&&!tableItems.isEmpty()){
+            try {
+                new ReportController().printInvoice(tableItems,txtSearchDT.getText(),lblCustomerNameDT.getText(),new CustomerController().getCustomerNumberOnOrderID(txtSearchDT.getText()),cmbOrderTypeDT.getSelectionModel().getSelectedItem(),lblTotal.getText(),"00.00",lblTotal.getText());
+            } catch (JRException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void getInvoiceDelivery(ActionEvent actionEvent) {
+        if (new Validation().orderID(txtSearchD)&&!tableItemsD.isEmpty()){
+            try {
+                new ReportController().printInvoice(tableItemsD,txtSearchD.getText(),lblCustomerNameD.getText(),new CustomerController().getCustomerNumberOnOrderID(txtSearchD.getText()),"Delivery",lblSubTotalD.getText(),lblDeliveryChargesD.getText(),lblGrandTotalD.getText());
+            } catch (JRException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
